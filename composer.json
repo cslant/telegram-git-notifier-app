@@ -1,0 +1,41 @@
+{
+  "name": "tanhongit/telegram-bot-github-notify",
+  "description": "A simple Telegram bot to notify Github events",
+  "keywords": [
+    "telegram",
+    "bot",
+    "github",
+    "notify",
+    "events",
+    "webhook",
+    "telegram-notifier",
+    "github-notifier"
+  ],
+  "homepage": "https://github.com/tanhongit/telegram-bot-github-notify",
+  "require": {
+    "ext-json": "*",
+    "eleirbag89/telegrambotphp": "^1.4",
+    "guzzlehttp/guzzle": "^7.7",
+    "symfony/http-foundation": "^6.3"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "TelegramGithubNotify\\App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Tan Nguyen",
+      "email": "tannp27@gmail.com",
+      "homepage": "https://tanhongit.com",
+      "role": "Lead"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/tanhongit/telegram-bot-github-notify/issues"
+  }
+}
