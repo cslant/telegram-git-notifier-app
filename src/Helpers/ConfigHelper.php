@@ -23,7 +23,7 @@ class ConfigHelper
      * @param string $string
      * @return array|mixed
      */
-    public function config(string $string): mixed
+    public function execConfig(string $string): mixed
     {
         $config = explode('.', $string);
         $result = $this->config;

@@ -16,7 +16,8 @@
     "ext-json": "*",
     "eleirbag89/telegrambotphp": "^1.4",
     "guzzlehttp/guzzle": "^7.7",
-    "symfony/http-foundation": "^6.3"
+    "symfony/http-foundation": "^6.3",
+    "vlucas/phpdotenv": "^5.5"
   },
   "config": {
     "optimize-autoloader": true,
@@ -25,7 +26,10 @@
   "autoload": {
     "psr-4": {
       "TelegramGithubNotify\\App\\": "src/"
-    }
+    },
+    "files": [
+      "common/helpers.php"
+    ]
   },
   "authors": [
     {

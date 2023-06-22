@@ -2,9 +2,9 @@
 
 return [
     'app_name' => 'Telegram Github Notify',
-    'default' => [
-        'tg_token' => getenv('TELEGRAM_BOT_TOKEN'),
-        'tg_chat_ids' => explode('|', getenv('TELEGRAM_BOT_CHAT_IDS')),
+    'telegram-bot' => [
+        'token' => $_ENV['TELEGRAM_BOT_TOKEN'] ?? 'TELEGRAM_BOT_TOKEN',
+        'chat_ids' => explode('|', $_ENV['TELEGRAM_BOT_CHAT_IDS'] ?? 'TELEGRAM_BOT_CHAT_IDS'),
     ],
-    'timezone' => getenv('TIMEZONE', 'Asia/Ho_Chi_Minh'),
+    'timezone' => $_ENV['TIMEZONE'] ?? 'Asia/Ho_Chi_Minh',
 ];
