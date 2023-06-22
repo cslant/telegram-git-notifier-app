@@ -14,7 +14,7 @@ class SendNotifyAction
         $this->telegramService = new TelegramNotifyService();
         $this->telegramService->setToken();
         $this->telegramService->setChatId();
-        $this->telegramService->getDataOfMessage();
         $this->telegramService->storeByToken();
+        $this->telegramService->getDataOfMessage();
     }
 }
