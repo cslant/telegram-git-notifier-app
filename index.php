@@ -1,6 +1,6 @@
 <?php
 
-use TelegramGithubNotify\App\Http\Actions\SetWebhookAction;
+use TelegramGithubNotify\App\Http\Actions\SendNotifyAction;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -8,5 +8,4 @@ require __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$setWebhookAction = new SetWebhookAction();
-echo $setWebhookAction();
+new SendNotifyAction();
