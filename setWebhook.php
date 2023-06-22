@@ -7,4 +7,6 @@ require __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-return new SetWebhookAction();
+$setWebhookAction = new SetWebhookAction();
+
+var_dump($setWebhookAction->__invoke());
