@@ -8,5 +8,4 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 $setWebhookAction = new SetWebhookAction();
-
-var_dump($setWebhookAction->__invoke());
+echo $setWebhookAction();

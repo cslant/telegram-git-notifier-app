@@ -19,10 +19,6 @@
     "symfony/http-foundation": "^6.3",
     "vlucas/phpdotenv": "^5.5"
   },
-  "config": {
-    "optimize-autoloader": true,
-    "sort-packages": true
-  },
   "autoload": {
     "psr-4": {
       "TelegramGithubNotify\\App\\": "src/"

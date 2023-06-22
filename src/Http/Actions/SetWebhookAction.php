@@ -14,6 +14,6 @@ class SetWebhookAction
 
         $url = "https://api.telegram.org/bot{$token}/setWebhook?url={$appUrl}";
 
-        return @file_get_contents($url);
+        return file_get_contents($url);
     }
 }
