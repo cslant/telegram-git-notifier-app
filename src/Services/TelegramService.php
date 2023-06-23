@@ -61,10 +61,10 @@ class TelegramService
     }
 
     /**
-     * @param string $text
+     * @param string|null $text
      * @return void
      */
-    public function telegramToolHandler(string $text = ''): void
+    public function telegramToolHandler(string $text = null): void
     {
         switch ($text) {
             case '/start':
