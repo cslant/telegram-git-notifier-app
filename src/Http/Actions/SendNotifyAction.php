@@ -17,9 +17,9 @@ class SendNotifyAction
 
     public function __construct()
     {
+        $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
-        $this->request = Request::createFromGlobals();
     }
 
     /**
@@ -34,7 +34,7 @@ class SendNotifyAction
 
         if ($this->telegramService->chatId) {
             $this->notificationService->setPayload($this->request);
-            $this->notificationService->sendNotify($this->telegramService);
+            $this->notificationService->sendNotify($this->telegramService->chatId);
         } elseif ($this->telegramService->chatId || in_array($this->telegramService->chatId, $grChat)) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
         } else {
