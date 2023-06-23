@@ -11,8 +11,8 @@ $dotenv->load();
 
 date_default_timezone_set(config('app.timezone'));
 
-$sendNotifyAction = new SendNotifyAction();
 try {
+    $sendNotifyAction = new SendNotifyAction();
     $sendNotifyAction->handle();
 } catch (GuzzleException $e) {
     echo $e->getMessage();

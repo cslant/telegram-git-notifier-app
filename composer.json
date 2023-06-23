@@ -9,7 +9,8 @@
     "events",
     "webhook",
     "telegram-notifier",
-    "github-notifier"
+    "github-notifier",
+    "github-telegram-bot"
   ],
   "homepage": "https://github.com/tanhongit/telegram-bot-github-notify",
   "require": {

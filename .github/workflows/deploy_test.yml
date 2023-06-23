@@ -5,9 +5,18 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy_test:
-    runs-on: self-hosted
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
 
+  deploy_test:
+    name: Deploy to Test Server
+    runs-on: self-hosted
+    # needs: shellcheck
     steps:
       - name: Deploy to Remote Host
         uses: appleboy/ssh-action@master
