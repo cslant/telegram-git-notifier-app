@@ -56,6 +56,8 @@ class TelegramService
     }
 
     /**
+     * Send callback response to telegram
+     *
      * @param string|null $text
      * @return void
      */
@@ -141,6 +143,8 @@ class TelegramService
     }
 
     /**
+     * Send callback response to telegram
+     *
      * @param string|null $callback
      * @return void
      */

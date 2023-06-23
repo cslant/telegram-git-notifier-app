@@ -5,6 +5,8 @@ namespace TelegramGithubNotify\App\Http\Actions;
 class SetWebhookAction
 {
     /**
+     * Set webhook for telegram bot
+     *
      * @return false|string
      */
     public function __invoke(): false|string

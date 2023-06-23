@@ -12,6 +12,8 @@ class ConfigHelper
     }
 
     /**
+     * Handle config and return value
+     *
      * @param string $string
      * @return array|mixed
      */
