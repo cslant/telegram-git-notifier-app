@@ -10,7 +10,7 @@ class SetWebhookAction
     public function __invoke(): false|string
     {
         $token = config('telegram-bot.token');
-        $appUrl = config('app_url');
+        $appUrl = config('app.url');
 
         $url = "https://api.telegram.org/bot{$token}/setWebhook?url={$appUrl}";
 
