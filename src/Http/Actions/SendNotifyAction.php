@@ -23,10 +23,12 @@ class SendNotifyAction
 
     public function handle(): void
     {
+        $this->checkCallback();
+
         $grChat = config('telegram-bot.gr_chat_ids');
 
         if (!$this->telegramService->chatId) {
-
+            // handle
         } elseif ($this->telegramService->chatId || in_array($this->telegramService->chatId, $grChat)) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
         } else {
@@ -34,5 +36,18 @@ class SendNotifyAction
         }
     }
 
+    /**
+     * @return bool
+     */
+    public function checkCallback(): bool
+    {
+        if (!is_null($this->telegramService->telegram->Callback_ChatID())) {
+            $callback = $this->telegramService->telegram->Callback_Data();
+            $this->telegramService->sendCallbackResponse($callback);
 
+            return true;
+        }
+
+        return false;
+    }
 }
