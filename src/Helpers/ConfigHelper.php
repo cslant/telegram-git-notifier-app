@@ -12,14 +12,6 @@ class ConfigHelper
     }
 
     /**
-     * @return array|mixed
-     */
-    public function getConfig(): mixed
-    {
-        return $this->config;
-    }
-
-    /**
      * @param string $string
      * @return array|mixed
      */
