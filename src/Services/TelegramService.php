@@ -2,7 +2,6 @@
 
 namespace TelegramGithubNotify\App\Services;
 
-use Symfony\Component\HttpFoundation\Request;
 use Telegram;
 
 class TelegramService
@@ -15,16 +14,12 @@ class TelegramService
 
     public array $messageData;
 
-    protected Request $request;
-
     public function __construct()
     {
         $this->setToken();
         $this->setChatId();
         $this->storeByToken();
         $this->getDataOfMessage();
-
-        $this->request = Request::createFromGlobals();
     }
 
     /**

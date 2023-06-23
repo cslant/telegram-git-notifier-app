@@ -26,7 +26,9 @@ if (!function_exists('dd')) {
     function dd(mixed ...$args): void
     {
         foreach ($args as $arg) {
+            print_r('<pre>');
             var_dump($arg);
+            print_r('</pre>');
         }
         die();
     }
