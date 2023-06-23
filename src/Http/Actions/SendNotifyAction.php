@@ -2,19 +2,27 @@
 
 namespace TelegramGithubNotify\App\Http\Actions;
 
-use Telegram;
-use TelegramGithubNotify\App\Services\TelegramNotifyService;
+use Symfony\Component\HttpFoundation\Request;
+use TelegramGithubNotify\App\Services\TelegramService;
 
 class SendNotifyAction
 {
-    protected TelegramNotifyService $telegramService;
+    protected TelegramService $telegramService;
+
+    protected Request $request;
 
     public function __construct()
     {
-        $this->telegramService = new TelegramNotifyService();
-        $this->telegramService->setToken();
-        $this->telegramService->setChatId();
-        $this->telegramService->storeByToken();
-        $this->telegramService->getDataOfMessage();
+        $this->telegramService = new TelegramService();
+        $this->request = Request::createFromGlobals();
+    }
+
+    public function handle(): void
+    {
+        $grChat = config('telegram-bot.gr_chat_ids');
+
+        if (!$this->telegramService->chatId) {
+
+        }
     }
 }
