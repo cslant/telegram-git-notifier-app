@@ -20,3 +20,4 @@ jobs:
             cd /home/tannp/telegram-bot-github-notify
             git reset --hard HEAD
             git pull origin main
+            composer install
