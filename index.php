@@ -10,4 +10,5 @@ $dotenv->load();
 
 date_default_timezone_set(config('app.timezone'));
 
-new SendNotifyAction();
+$sendNotifyAction = new SendNotifyAction();
+$sendNotifyAction->handle();
