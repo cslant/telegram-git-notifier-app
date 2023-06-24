@@ -13,6 +13,8 @@ class NotificationService
     public string $message = "";
 
     /**
+     * Notify access denied to other chat ids
+     *
      * @param TelegramService $telegramService
      * @return void
      */
@@ -23,12 +25,14 @@ class NotificationService
             'chat_id' => $telegramService->chatId,
             'text' => $reply,
             'disable_web_page_preview' => true,
-            'parse_mode' => "HTML"
+            'parse_mode' => 'HTML'
         );
         $telegramService->telegram->sendMessage($content);
     }
 
     /**
+     * Set payload from request
+     *
      * @param Request $request
      * @return void
      */
@@ -36,7 +40,7 @@ class NotificationService
     {
         $this->payload = json_decode($request->request->get('payload'));
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            echo "invalid request";
+            echo 'invalid request';
             die;
         } else {
             $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
@@ -44,6 +48,8 @@ class NotificationService
     }
 
     /**
+     * Set message from payload
+     *
      * @param string $typeEvent
      * @return void
      */
@@ -112,6 +118,8 @@ class NotificationService
     }
 
     /**
+     * Send notify to telegram
+     *
      * @param string $chatId
      * @param string|null $message
      * @return bool
