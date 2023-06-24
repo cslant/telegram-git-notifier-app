@@ -65,7 +65,7 @@ class TelegramService
     {
         switch ($text) {
             case '/start':
-                $img = curl_file_create('img/github.jpeg', 'image/png');
+                $img = curl_file_create('public/images/github.jpeg', 'image/png');
                 $reply = "<b>🙋🏻 "
                     . config('app.name')
                     . " 🤓</b>\n\nHey <b>{$this->telegram->FirstName()}</b>,\n\nI can send you notifications from your GitHub Repository instantly to your Telegram. use /help for more information about me.";

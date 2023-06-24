@@ -44,10 +44,10 @@ class NotificationService
     }
 
     /**
-     * @param $typeEvent
+     * @param string $typeEvent
      * @return void
      */
-    private function setMessage($typeEvent): void
+    private function setMessage(string $typeEvent): void
     {
         switch ($typeEvent) {
             case 'push':
@@ -112,12 +112,12 @@ class NotificationService
     }
 
     /**
-     * @param $chatId
+     * @param string $chatId
      * @param string|null $message
      * @return bool
      * @throws GuzzleException
      */
-    public function sendNotify($chatId, string $message = null): bool
+    public function sendNotify(string $chatId, string $message = null): bool
     {
         if (!is_null($message)) {
             $this->message = $message;
