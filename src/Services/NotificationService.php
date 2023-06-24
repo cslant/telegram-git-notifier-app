@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public object $payload;
+    public mixed $payload;
 
     public string $message = "";
 
@@ -85,6 +85,18 @@ class NotificationService
                     $this->message .= " {$this->payload->pull_request->body}";
                 } elseif ($this->payload->action == "closed") {
                     $this->message .= "✅ <b>Pull Request Merged </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "reopened") {
+                    $this->message .= "🔓 <b>Pull Request Reopened </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "assigned") {
+                    $this->message .= "👨‍💻 <b>Pull Request Assigned </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "review_requested") {
+                    $this->message .= "👨‍💻 <b>Pull Request Review Requested </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
                     $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
                     $this->message .= " {$this->payload->pull_request->body}";
                 }

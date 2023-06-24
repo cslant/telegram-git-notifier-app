@@ -43,18 +43,18 @@ class SendNotifyAction
             return;
         }
 
-        if (empty($this->telegramService->messageData['message']['chat']['id'])
-            || in_array($this->telegramService->messageData['message']['chat']['id'], $this->chatIds)
-        ) {
-            $this->notificationService->setPayload($this->request);
-            foreach ($this->chatIds as $chatId) {
-                $this->notificationService->sendNotify((int)$chatId);
-            }
+        // Send deny access to other chat ids
+        if (!in_array($this->telegramService->messageData['message']['chat']['id'], $this->chatIds)) {
+            $this->notificationService->accessDenied($this->telegramService);
 
             return;
         }
 
-        $this->notificationService->accessDenied($this->telegramService);
+        // Send notify to all chat ids
+        $this->notificationService->setPayload($this->request);
+        foreach ($this->chatIds as $chatId) {
+            $this->notificationService->sendNotify($chatId);
+        }
     }
 
     /**
