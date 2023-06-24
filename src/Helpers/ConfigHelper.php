@@ -19,7 +19,7 @@ class ConfigHelper
      */
     public function execConfig(string $string): mixed
     {
-        $config = explode(',', $string);
+        $config = explode('.', $string);
         $result = $this->config;
         foreach ($config as $value) {
             $result = $result[$value];
