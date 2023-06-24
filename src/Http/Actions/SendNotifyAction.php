@@ -35,7 +35,17 @@ class SendNotifyAction
     {
         $this->checkCallback();
 
-        if (empty($this->telegramService->messageData['message']['chat']['id'])) {
+        // Send a result to only the bot owner
+        if (!empty($this->telegramService->messageData['message']['chat']['id'])
+            && $this->telegramService->messageData['message']['chat']['id'] == $this->telegramService->chatId) {
+            $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
+
+            return;
+        }
+
+        if (empty($this->telegramService->messageData['message']['chat']['id'])
+            || in_array($this->telegramService->messageData['message']['chat']['id'], $this->chatIds)
+        ) {
             $this->notificationService->setPayload($this->request);
             foreach ($this->chatIds as $chatId) {
                 $this->notificationService->sendNotify((int)$chatId);
@@ -44,12 +54,7 @@ class SendNotifyAction
             return;
         }
 
-        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'];
-        if ($chatMessageId == $this->telegramService->chatId) {
-            $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
-        } else {
-            $this->notificationService->accessDenied($this->telegramService);
-        }
+        $this->notificationService->accessDenied($this->telegramService);
     }
 
     /**
