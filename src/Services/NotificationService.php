@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public $payload;
+    public mixed $payload;
 
     public string $message = "";
 
@@ -87,6 +87,18 @@ class NotificationService
                     $this->message .= "✅ <b>Pull Request Merged </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
                     $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
                     $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "reopened") {
+                    $this->message .= "🔓 <b>Pull Request Reopened </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "assigned") {
+                    $this->message .= "👨‍💻 <b>Pull Request Assigned </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
+                } elseif ($this->payload->action == "review_requested") {
+                    $this->message .= "👨‍💻 <b>Pull Request Review Requested </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
+                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
+                    $this->message .= " {$this->payload->pull_request->body}";
                 }
 
                 break;
@@ -100,13 +112,19 @@ class NotificationService
     }
 
     /**
+     * @param $chatId
+     * @param string|null $message
+     * @return bool
      * @throws GuzzleException
      */
-    public function sendNotify($chatId): bool
+    public function sendNotify($chatId, string $message = null): bool
     {
-        $text = urlencoded_message($this->message);
+        if (!is_null($message)) {
+            $this->message = $message;
+        }
+
         $method_url = 'https://api.telegram.org/bot' . config('telegram-bot.token') . '/sendMessage';
-        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text=' . $text;
+        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text=' . urlencoded_message($this->message);
 
         $client = new Client();
         $response = $client->request('GET', $url);
