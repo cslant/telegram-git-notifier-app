@@ -65,16 +65,15 @@ class TelegramService
     {
         switch ($text) {
             case '/start':
-                $img = curl_file_create('public/images/github.jpeg', 'image/png');
-                $reply = "<b>🙋🏻 "
-                    . config('app.name')
+                ;
+                $reply = "<b>🙋🏻 " . config('app.name')
                     . " 🤓</b>\n\nHey <b>{$this->telegram->FirstName()}</b>,\n\nI can send you notifications from your GitHub Repository instantly to your Telegram. use /help for more information about me.";
                 $content = array(
                     'chat_id' => $this->chatId,
-                    'photo' => $img,
+                    'photo' => curl_file_create('public/images/github.jpeg', 'image/png'),
                     'caption' => $reply,
                     'disable_web_page_preview' => true,
-                    'parse_mode' => "HTML"
+                    'parse_mode' => 'HTML'
                 );
                 $this->telegram->sendPhoto($content);
 
@@ -98,7 +97,7 @@ class TelegramService
                     'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
                     'text' => $reply,
                     'disable_web_page_preview' => true,
-                    'parse_mode' => "HTML"
+                    'parse_mode' => 'HTML'
                 );
                 $this->telegram->sendMessage($content);
 
@@ -109,7 +108,7 @@ class TelegramService
                     'chat_id' => $this->chatId,
                     'text' => $reply,
                     'disable_web_page_preview' => true,
-                    'parse_mode' => "HTML"
+                    'parse_mode' => 'HTML'
                 );
                 $this->telegram->sendMessage($content);
 
@@ -120,7 +119,7 @@ class TelegramService
                     'chat_id' => $this->chatId,
                     'text' => $reply,
                     'disable_web_page_preview' => true,
-                    'parse_mode' => "HTML"
+                    'parse_mode' => 'HTML'
                 );
                 $this->telegram->sendMessage($content);
 
@@ -131,7 +130,7 @@ class TelegramService
                     'chat_id' => $this->chatId,
                     'text' => $reply,
                     'disable_web_page_preview' => true,
-                    'parse_mode' => "HTML"
+                    'parse_mode' => 'HTML'
                 );
                 $this->telegram->sendMessage($content);
 

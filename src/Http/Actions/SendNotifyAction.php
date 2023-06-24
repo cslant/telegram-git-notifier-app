@@ -28,36 +28,38 @@ class SendNotifyAction
     }
 
     /**
+     * Send notify to telegram
+     *
      * @return void
      * @throws GuzzleException
      */
     public function handle(): void
     {
         $this->checkCallback();
+        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? null;
 
         // Send a result to only the bot owner
-        if (!empty($this->telegramService->messageData['message']['chat']['id'])
-            && $this->telegramService->messageData['message']['chat']['id'] == $this->telegramService->chatId) {
+        if (!empty($chatMessageId) && $chatMessageId == $this->telegramService->chatId) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
-
             return;
         }
 
-        // Send deny access to other chat ids
-        if (!in_array($this->telegramService->messageData['message']['chat']['id'], $this->chatIds)) {
-            $this->notificationService->accessDenied($this->telegramService);
-
+        // Send a result to all chat ids in config
+        if (!in_array($chatMessageId, $this->chatIds)) {
+            $this->notificationService->setPayload($this->request);
+            foreach ($this->chatIds as $chatId) {
+                $this->notificationService->sendNotify($chatId);
+            }
             return;
         }
 
-        // Send notify to all chat ids
-        $this->notificationService->setPayload($this->request);
-        foreach ($this->chatIds as $chatId) {
-            $this->notificationService->sendNotify($chatId);
-        }
+        // Notify access denied to other chat ids
+        $this->notificationService->accessDenied($this->telegramService);
     }
 
     /**
+     * Check callback from a telegram
+     *
      * @return bool
      */
     public function checkCallback(): bool
