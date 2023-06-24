@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public $payload;
+    public object $payload;
 
     public string $message = "";
 
@@ -100,13 +100,19 @@ class NotificationService
     }
 
     /**
+     * @param $chatId
+     * @param string|null $message
+     * @return bool
      * @throws GuzzleException
      */
-    public function sendNotify($chatId): bool
+    public function sendNotify($chatId, string $message = null): bool
     {
-        $text = urlencoded_message($this->message);
+        if (!is_null($message)) {
+            $this->message = $message;
+        }
+
         $method_url = 'https://api.telegram.org/bot' . config('telegram-bot.token') . '/sendMessage';
-        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text=' . $text;
+        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text=' . urlencoded_message($this->message);
 
         $client = new Client();
         $response = $client->request('GET', $url);
