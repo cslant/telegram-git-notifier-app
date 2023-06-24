@@ -15,11 +15,16 @@ class SendNotifyAction
 
     protected Request $request;
 
+    protected array $chatIds = [];
+
     public function __construct()
     {
         $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
+
+        $this->chatIds = config('telegram-bot.gr_chat_ids');
+        $this->chatIds[] = $this->telegramService->chatId;
     }
 
     /**
@@ -30,12 +35,17 @@ class SendNotifyAction
     {
         $this->checkCallback();
 
-        $grChat = config('telegram-bot.gr_chat_ids');
-
-        if ($this->telegramService->chatId) {
+        if (empty($this->telegramService->messageData['message']['chat']['id'])) {
             $this->notificationService->setPayload($this->request);
-            $this->notificationService->sendNotify($this->telegramService->chatId);
-        } elseif ($this->telegramService->chatId || in_array($this->telegramService->chatId, $grChat)) {
+            foreach ($this->chatIds as $chatId) {
+                $this->notificationService->sendNotify((int)$chatId);
+            }
+
+            return;
+        }
+
+        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'];
+        if ($chatMessageId == $this->telegramService->chatId) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
         } else {
             $this->notificationService->accessDenied($this->telegramService);

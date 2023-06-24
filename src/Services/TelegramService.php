@@ -66,7 +66,9 @@ class TelegramService
         switch ($text) {
             case '/start':
                 $img = curl_file_create('img/github.jpeg', 'image/png');
-                $reply = "<b>🙋🏻 " . config('app.name') . " 🤓</b>\n\nHey <b>{$this->telegram->FirstName()}</b>,\n\nI can send you notifications from your GitHub Repository instantly to your Telegram. use /help for more information about me";
+                $reply = "<b>🙋🏻 " . config(
+                        'app.name'
+                    ) . " 🤓</b>\n\nHey <b>{$this->telegram->FirstName()}</b>,\n\nI can send you notifications from your GitHub Repository instantly to your Telegram. use /help for more information about me.";
                 $content = array(
                     'chat_id' => $this->chatId,
                     'photo' => $img,
@@ -74,8 +76,8 @@ class TelegramService
                     'disable_web_page_preview' => true,
                     'parse_mode' => "HTML"
                 );
-
                 $this->telegram->sendPhoto($content);
+
                 break;
             case '/help':
                 $option = [
@@ -98,8 +100,8 @@ class TelegramService
                     'disable_web_page_preview' => true,
                     'parse_mode' => "HTML"
                 );
-
                 $this->telegram->sendMessage($content);
+
                 break;
             case '/id':
                 $reply = "Your id is <code>{$this->chatId}</code>";
@@ -109,8 +111,8 @@ class TelegramService
                     'disable_web_page_preview' => true,
                     'parse_mode' => "HTML"
                 );
-
                 $this->telegram->sendMessage($content);
+
                 break;
             case '/host':
                 $reply = "Server Address : <a href=\"{$_SERVER['REMOTE_ADDR']}\">{$_SERVER['REMOTE_ADDR']}</a>";
@@ -120,8 +122,8 @@ class TelegramService
                     'disable_web_page_preview' => true,
                     'parse_mode' => "HTML"
                 );
-
                 $this->telegram->sendMessage($content);
+
                 break;
             case '/usage':
                 $reply = "<b>Adding webhook (Website Address) to your GitHub repository</b>\n\n 1) Redirect to <i>Repository Settings->Set Webhook->Add Webhook</i> \n 2) Set your Payload URL\n 3) Set content type to \"<code>application/x-www-form-urlencoded</code>\"\n\n <b>Thats it. you will receive all notifications through me 🤗</b>";
@@ -131,8 +133,8 @@ class TelegramService
                     'disable_web_page_preview' => true,
                     'parse_mode' => "HTML"
                 );
-
                 $this->telegram->sendMessage($content);
+
                 break;
             default:
                 $reply = "🤨 Invalid Request";
