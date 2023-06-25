@@ -44,6 +44,12 @@ class SendNotifyAction
 
         // Send a result to all chat ids in config
         try {
+            // check github event
+            if (is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
+                $this->notificationService->sendNotify($this->telegramService->chatId, 'invalid request');
+                return;
+            }
+
             $this->notificationService->setPayload($this->request);
             foreach ($this->chatIds as $chatId) {
                 $this->notificationService->sendNotify($chatId);
