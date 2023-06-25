@@ -25,7 +25,7 @@ class TelegramService
     /**
      * @return void
      */
-    public function setToken(): void
+    private function setToken(): void
     {
         $this->token = config('telegram-bot.token');
     }
@@ -33,24 +33,23 @@ class TelegramService
     /**
      * @return void
      */
-    public function setChatId(): void
+    private function setChatId(): void
     {
         $this->chatId = config('telegram-bot.chat_id');
     }
 
     /**
-     * @return Telegram
+     * @return void
      */
-    public function storeByToken(): Telegram
+    private function storeByToken(): void
     {
         $this->telegram = new Telegram($this->token);
-        return $this->telegram;
     }
 
     /**
      * @return void
      */
-    public function getDataOfMessage(): void
+    private function getDataOfMessage(): void
     {
         $this->messageData = $this->telegram->getData() ?? [];
     }
@@ -149,7 +148,7 @@ class TelegramService
      * @param string|null $callback
      * @return void
      */
-    public function sendCallbackResponse(string $callback = null): void
+    protected function sendCallbackResponse(string $callback = null): void
     {
         if (!empty($callback) && $callback == 'about') {
             $reply = "Thanks for using our bot.\n\nThe bot is designed to send notifications based on GitHub events from your github repo instantly to your Telegram account.";
