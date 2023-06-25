@@ -12,6 +12,7 @@
     "github-notifier",
     "github-telegram-bot"
   ],
+  "type": "project",
   "homepage": "https://github.com/tanhongit/telegram-bot-github-notify",
   "license": "MIT",
   "require": {

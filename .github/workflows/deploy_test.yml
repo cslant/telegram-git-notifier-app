@@ -16,7 +16,7 @@ jobs:
   deploy_test:
     name: Deploy to Test Server
     runs-on: self-hosted
-    # needs: shellcheck
+    needs: shellcheck
     steps:
       - name: Deploy to Remote Host
         uses: appleboy/ssh-action@master
@@ -29,4 +29,4 @@ jobs:
             cd /home/tannp/telegram-bot-github-notify
             git reset --hard HEAD
             git pull origin main
-            composer install
+            composer update
