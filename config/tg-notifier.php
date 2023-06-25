@@ -10,7 +10,7 @@ return [
     'telegram-bot' => [
         'token' => $_ENV['TELEGRAM_BOT_TOKEN'] ?? '',
         'chat_id' => $_ENV['TELEGRAM_BOT_CHAT_ID'] ?? '',
-        'gr_chat_ids' => explode(',', $_ENV['TELEGRAM_GROUP_CHAT_IDS'] ?? ''),
+        'notify_chat_ids' => explode(',', $_ENV['TELEGRAM_NOTIFY_CHAT_IDS'] ?? ''),
 
         'set_webhook_url' => $_ENV['SET_WEBHOOK_URL'] ?? $_ENV['APP_URL'] . '/setWebhook',
     ],
