@@ -30,27 +30,33 @@ class SendNotifyAction
      * Handle send notify to telegram action
      *
      * @return void
+     * @throws GuzzleException
      */
     public function __invoke(): void
     {
         $this->telegramService->checkCallback();
         $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
 
-        // Send a result to only the bot owner
-        if (!empty($chatMessageId) && $chatMessageId == $this->telegramService->chatId) {
-            $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
-            return;
+        if (!empty($chatMessageId)) {
+            // Send a result to only the bot owner
+            if ($chatMessageId == $this->telegramService->chatId) {
+                $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
+                return;
+            }
+
+            // Notify access denied to other chat ids
+            if (!in_array($chatMessageId, $this->chatIds)) {
+                $this->notificationService->accessDenied($this->telegramService);
+                return;
+            }
         }
 
         // Send a result to all chat ids in config
-        try {
+        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
             $this->notificationService->setPayload($this->request);
             foreach ($this->chatIds as $chatId) {
                 $this->notificationService->sendNotify($chatId);
             }
-        } catch (GuzzleException $e) {
-            error_log($e->getMessage());
-            $this->notificationService->accessDenied($this->telegramService); // Notify access denied to other chat ids
         }
     }
 }
