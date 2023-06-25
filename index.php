@@ -15,5 +15,5 @@ try {
     $sendNotifyAction = new SendNotifyAction();
     $sendNotifyAction();
 } catch (GuzzleException $e) {
-    error_log($e->getMessage());
+    error_log('\nError: ' . $e->getMessage());
 }
