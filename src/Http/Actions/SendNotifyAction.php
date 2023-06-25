@@ -48,6 +48,7 @@ class SendNotifyAction
             foreach ($this->chatIds as $chatId) {
                 $this->notificationService->sendNotify($chatId);
             }
+            return;
         } catch (GuzzleException $e) {
             error_log($e->getMessage());
             $this->notificationService->accessDenied($this->telegramService); // Notify access denied to other chat ids
