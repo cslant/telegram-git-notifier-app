@@ -23,16 +23,15 @@ class SendNotifyAction
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
 
-        $this->chatIds = config('telegram-bot.gr_chat_ids');
+        $this->chatIds = config('telegram-bot.notify_chat_ids');
     }
 
     /**
-     * Send notify to telegram
+     * Handle send notify to telegram action
      *
      * @return void
-     * @throws GuzzleException
      */
-    public function handle(): void
+    public function __invoke(): void
     {
         $this->telegramService->checkCallback();
         $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
@@ -44,15 +43,14 @@ class SendNotifyAction
         }
 
         // Send a result to all chat ids in config
-        if (!in_array($chatMessageId, $this->chatIds)) {
+        try {
             $this->notificationService->setPayload($this->request);
             foreach ($this->chatIds as $chatId) {
                 $this->notificationService->sendNotify($chatId);
             }
-            return;
+        } catch (GuzzleException $e) {
+            error_log($e->getMessage());
+            $this->notificationService->accessDenied($this->telegramService); // Notify access denied to other chat ids
         }
-
-        // Notify access denied to other chat ids
-        $this->notificationService->accessDenied($this->telegramService);
     }
 }
