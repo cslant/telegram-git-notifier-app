@@ -161,4 +161,21 @@ class TelegramService
             $this->telegram->answerCallbackQuery($content);
         }
     }
+
+    /**
+     * Check callback from a telegram
+     *
+     * @return bool
+     */
+    public function checkCallback(): bool
+    {
+        if (!is_null($this->telegram->Callback_ChatID())) {
+            $callback = $this->telegram->Callback_Data();
+            $this->sendCallbackResponse($callback);
+
+            return true;
+        }
+
+        return false;
+    }
 }

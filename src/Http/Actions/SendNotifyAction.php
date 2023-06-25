@@ -24,7 +24,6 @@ class SendNotifyAction
         $this->notificationService = new NotificationService();
 
         $this->chatIds = config('telegram-bot.gr_chat_ids');
-        $this->chatIds[] = $this->telegramService->chatId;
     }
 
     /**
@@ -35,8 +34,8 @@ class SendNotifyAction
      */
     public function handle(): void
     {
-        $this->checkCallback();
-        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? null;
+        $this->telegramService->checkCallback();
+        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
 
         // Send a result to only the bot owner
         if (!empty($chatMessageId) && $chatMessageId == $this->telegramService->chatId) {
@@ -55,22 +54,5 @@ class SendNotifyAction
 
         // Notify access denied to other chat ids
         $this->notificationService->accessDenied($this->telegramService);
-    }
-
-    /**
-     * Check callback from a telegram
-     *
-     * @return bool
-     */
-    public function checkCallback(): bool
-    {
-        if (!is_null($this->telegramService->telegram->Callback_ChatID())) {
-            $callback = $this->telegramService->telegram->Callback_Data();
-            $this->telegramService->sendCallbackResponse($callback);
-
-            return true;
-        }
-
-        return false;
     }
 }
