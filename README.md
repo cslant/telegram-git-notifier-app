@@ -1,5 +1,6 @@
 # Welcome to Telegram Bot GitHub Notify 👋
 
+[![Latest Version](https://img.shields.io/github/release/tanhongit/telegram-bot-github-notify.svg?style=flat-square)](https://github.com/tanhongit/telegram-bot-github-notify/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/tanhongit/telegram-bot-github-notify.svg?style=flat-square)](https://packagist.org/packages/tanhongit/telegram-bot-github-notify)
 [![StyleCI](https://styleci.io/repos/656960426/shield)](https://styleci.io/repos/656960426)
 [![Maintainability](https://api.codeclimate.com/v1/badges/460e2b6fba334a156b2e/maintainability)](https://codeclimate.com/github/tanhongit/telegram-bot-github-notify/maintainability)

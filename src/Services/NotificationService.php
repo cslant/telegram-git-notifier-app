@@ -70,7 +70,7 @@ class NotificationService
 
                 break;
             case 'ping':
-                $this->message .= "♻️ <b>Connection Successful</b>\n\n";
+                $this->message .= "♻️ <b>Connection Successful</b>\n\n Repository: <b>{$this->payload->repository->full_name}</b>\n";
                 break;
             case 'issues':
                 if ($this->payload->action == "opened") {

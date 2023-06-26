@@ -16,6 +16,7 @@
   "homepage": "https://github.com/tanhongit/telegram-bot-github-notify",
   "license": "MIT",
   "require": {
+    "php": "^8.0",
     "ext-json": "*",
     "eleirbag89/telegrambotphp": "^1.4",
     "guzzlehttp/guzzle": "^7.7",
