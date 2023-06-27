@@ -48,12 +48,25 @@ class NotificationService
     }
 
     /**
+     * @param string $typeEvent
+     * @return void
+     */
+    public function setMessage(string $typeEvent): void
+    {
+        if (isset($this->payload->action)) {
+            $this->message = get_event_template($typeEvent . '/' . $this->payload->action, ['payload' => $this->payload]);
+        } else {
+            $this->message = get_event_template($typeEvent . '/default', ['payload' => $this->payload]);
+        }
+    }
+
+    /**
      * Set message from payload
      *
      * @param string $typeEvent
      * @return void
      */
-    private function setMessage(string $typeEvent): void
+    /*private function setMessageBK(string $typeEvent): void
     {
         switch ($typeEvent) {
             case 'push':
@@ -115,7 +128,7 @@ class NotificationService
 
                 break;
         }
-    }
+    }*/
 
     /**
      * Send notify to telegram

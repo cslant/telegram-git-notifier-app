@@ -2,6 +2,8 @@
 
 namespace TelegramGithubNotify\App\Helpers;
 
+use Exception;
+
 class ConfigHelper
 {
     public array $config;
@@ -43,12 +45,16 @@ class ConfigHelper
             return '';
         }
 
-        extract($data);
+        try {
+            extract($data);
 
-        ob_start();
-        require $viewPathFile;
-        $content = ob_get_contents();
-        ob_end_clean();
+            ob_start();
+            require $viewPathFile;
+            $content = ob_get_contents();
+            ob_end_clean();
+        } catch (Exception $e) {
+            $content = $e->getMessage();
+        }
 
         return $content;
     }
