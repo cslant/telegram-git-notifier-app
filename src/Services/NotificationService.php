@@ -48,87 +48,19 @@ class NotificationService
     }
 
     /**
-     * @param string $typeEvent
-     * @return void
-     */
-    public function setMessage(string $typeEvent): void
-    {
-        if (isset($this->payload->action)) {
-            $this->message = get_event_template($typeEvent . '.' . $this->payload->action, ['payload' => $this->payload]);
-        } else {
-            $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
-        }
-    }
-
-    /**
      * Set message from payload
      *
      * @param string $typeEvent
      * @return void
      */
-    /*private function setMessageBK(string $typeEvent): void
+    public function setMessage(string $typeEvent): void
     {
-        switch ($typeEvent) {
-            case 'push':
-                $count = count($this->payload->commits);
-                $noun = ($count > 1) ? "commits" : "commit";
-                $this->message .= "⚙️ <b>{$count}</b> new {$noun} to <b>{$this->payload->repository->name}:{$this->payload->repository->default_branch}</b>\n\n";
-
-                foreach ($this->payload->commits as $commit) {
-                    $commitId = substr($commit->id, -7);
-                    $this->message .= "<a href=\"{$commit->url}\">{$commitId}</a>: {$commit->message} by <i>{$commit->author->name}</i>\n";
-                }
-
-                $this->message .= "\nPushed by : <b>{$this->payload->pusher->name}</b>\n";
-
-                break;
-            case 'ping':
-                $this->message .= "♻️ <b>Connection Successful</b>\n\n Repository: <b>{$this->payload->repository->full_name}</b>\n";
-                break;
-            case 'issues':
-                if ($this->payload->action == "opened") {
-                    $this->message .= "⚠️ <b>New Issue</b> - <a href=\"{$this->payload->issue->html_url}\">{$this->payload->repository->full_name}#{$this->payload->issue->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->issue->html_url}\">{$this->payload->issue->title}</a> by <a href=\"{$this->payload->issue->user->html_url}\">@{$this->payload->issue->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->issue->body}";
-                } elseif ($this->payload->action == "closed") {
-                    $this->message .= "🚫 <b>Issue Closed </b> - <a href=\"{$this->payload->issue->html_url}\">{$this->payload->repository->full_name}#{$this->payload->issue->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->issue->html_url}\">{$this->payload->issue->title}</a> by <a href=\"{$this->payload->issue->user->html_url}\">@{$this->payload->issue->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->issue->body}";
-                }
-
-                break;
-            case 'pull_request':
-                if ($this->payload->action == "opened") {
-                    $this->message .= "👷‍♂️🛠️ <b>New Pull Request</b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->pull_request->url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->pull_request->body}";
-                } elseif ($this->payload->action == "closed") {
-                    $this->message .= "✅ <b>Pull Request Merged </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->pull_request->body}";
-                } elseif ($this->payload->action == "reopened") {
-                    $this->message .= "🔓 <b>Pull Request Reopened </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->pull_request->body}";
-                } elseif ($this->payload->action == "assigned") {
-                    $this->message .= "👨‍💻 <b>Pull Request Assigned </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->pull_request->body}";
-                } elseif ($this->payload->action == "review_requested") {
-                    $this->message .= "👨‍💻 <b>Pull Request Review Requested </b> - <a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->repository->full_name}#{$this->payload->pull_request->number}</a>\n\n";
-                    $this->message .= "<a href=\"{$this->payload->pull_request->html_url}\">{$this->payload->pull_request->title}</a> by <a href=\"{$this->payload->pull_request->user->html_url}\">@{$this->payload->pull_request->user->login}</a>\n\n";
-                    $this->message .= " {$this->payload->pull_request->body}";
-                }
-
-                break;
-            case 'issue_comment':
-                $this->message .= "📬 <b>New comment </b> on <a href=\"{$this->payload->comment->html_url}\">{$this->payload->repository->full_name}#{$this->payload->issue->number}</a>\n\n";
-                $this->message .= "<a href=\"{$this->payload->comment->html_url}\">comment</a> by <a href=\"{$this->payload->comment->user->html_url}\">@{$this->payload->comment->user->login}</a>\n\n";
-                $this->message .= " {$this->payload->comment->body}";
-
-                break;
+        if (isset($this->payload->action) && !empty($this->payload->action)) {
+            $this->message = get_event_template($typeEvent . '.action.' . $this->payload->action, ['payload' => $this->payload]);
+        } else {
+            $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
         }
-    }*/
+    }
 
     /**
      * Send notify to telegram
