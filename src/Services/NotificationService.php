@@ -54,9 +54,9 @@ class NotificationService
     public function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action)) {
-            $this->message = get_event_template($typeEvent . '/' . $this->payload->action, ['payload' => $this->payload]);
+            $this->message = get_event_template($typeEvent . '.' . $this->payload->action, ['payload' => $this->payload]);
         } else {
-            $this->message = get_event_template($typeEvent . '/default', ['payload' => $this->payload]);
+            $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
         }
     }
 
