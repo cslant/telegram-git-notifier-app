@@ -12,7 +12,7 @@
 
 ## Requirement
 
-- PHP ^7.2|^8.0
+- PHP ^8.0
 - Composer
 - Telegram Bot
 
