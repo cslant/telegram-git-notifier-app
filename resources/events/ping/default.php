@@ -14,7 +14,7 @@ if (isset($payload->repository)) {
 }
 
 if (isset($payload->sender)) {
-    $message .= "🙋 Sender (triggered the event): <b>{$payload->sender->login}</b>\n";
+    $message .= "👤 Sender (triggered the event): <b>{$payload->sender->login}</b>\n";
 }
 
 echo $message;

@@ -13,4 +13,6 @@ foreach ($payload->commits as $commit) {
     $message .= "<a href=\"{$commit->url}\">{$commitId}</a>: {$commit->message} - by <i>{$commit->author->name}</i>\n";
 }
 
-$message .= "\nPushed by : <b>{$payload->pusher->name}</b>\n";
+$message .= "\n👤 Pushed by : <b>{$payload->pusher->name}</b>\n";
+
+echo $message;
