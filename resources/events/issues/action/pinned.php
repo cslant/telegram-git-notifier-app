@@ -3,7 +3,7 @@
  * @var $payload mixed
  */
 
-$message = "⚠️ <b>New Issue</b> to <a href=\"{$payload->issue->html_url}\">{$payload->repository->full_name}#{$payload->issue->number}</a> by <a href=\"{$payload->issue->user->html_url}\">@{$payload->issue->user->login}</a>\n\n";
+$message = "📌 <b>Issue Pinned</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name} </a> by <a href=\"{$payload->sender->html_url}\">@{$payload->sender->login}</a>\n\n";
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
