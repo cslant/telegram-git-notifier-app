@@ -47,15 +47,31 @@ if (!function_exists('urlencoded_message')) {
     }
 }
 
+if (!function_exists('get_template')) {
+    /**
+     * Get template
+     *
+     * @param string $partialPath
+     * @param array $data
+     * @return bool|string
+     */
+    function get_template(string $partialPath, array $data = []): bool|string
+    {
+        return (new ConfigHelper())->getTemplateData($partialPath, $data);
+    }
+}
+
 if (!function_exists('get_event_template')) {
     /**
+     * Get event template
+     *
      * @param string $partialPath
      * @param array $data
      * @return bool|string
      */
     function get_event_template(string $partialPath, array $data = []): bool|string
     {
-        return (new ConfigHelper())->getEventTemplate('events/' . $partialPath, $data);
+        return (new ConfigHelper())->getTemplateData('events/' . $partialPath, $data);
     }
 }
 
@@ -69,6 +85,6 @@ if (!function_exists('get_tool_template')) {
      */
     function get_tool_template(string $partialPath, array $data = []): bool|string
     {
-        return (new ConfigHelper())->getEventTemplate('tools/' . $partialPath, $data);
+        return (new ConfigHelper())->getTemplateData('tools/' . $partialPath, $data);
     }
 }
