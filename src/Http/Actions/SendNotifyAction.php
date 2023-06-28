@@ -55,7 +55,7 @@ class SendNotifyAction
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
             $this->notificationService->setPayload($this->request);
             foreach ($this->chatIds as $chatId) {
-                if (empty($chatId) || !$this->telegramService->telegram->getChatMember($chatId)) {
+                if (empty($chatId)) {
                     continue;
                 }
 
