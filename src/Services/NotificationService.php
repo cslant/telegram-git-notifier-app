@@ -20,7 +20,7 @@ class NotificationService
      */
     public function accessDenied(TelegramService $telegramService): void
     {
-        $reply = "🔒 <b>Access Denied to Bot </b>🚫\n\nPlease contact administrator for further information, Thank You..";
+        $reply = get_template('globals.access_denied');
         $content = array(
             'chat_id' => $telegramService->chatId,
             'text' => $reply,
