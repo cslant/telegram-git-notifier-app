@@ -56,7 +56,10 @@ class NotificationService
     public function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
-            $this->message = get_event_template($typeEvent . '.action.' . $this->payload->action, ['payload' => $this->payload]);
+            $this->message = get_event_template(
+                $typeEvent . '.' . $this->payload->action,
+                ['payload' => $this->payload]
+            );
         } else {
             $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
         }
@@ -77,7 +80,8 @@ class NotificationService
         }
 
         $method_url = 'https://api.telegram.org/bot' . config('telegram-bot.token') . '/sendMessage';
-        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text=' . urlencoded_message($this->message);
+        $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text='
+            . urlencoded_message($this->message);
 
         $client = new Client();
         $response = $client->request('GET', $url);
