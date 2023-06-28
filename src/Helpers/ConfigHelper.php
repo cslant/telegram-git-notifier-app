@@ -37,7 +37,7 @@ class ConfigHelper
      * @param array $data
      * @return bool|string
      */
-    public function getEventTemplate($partialPath, array $data = []): bool|string
+    public function getTemplateData($partialPath, array $data = []): bool|string
     {
         $viewPathFile = self::VIEW_PATH . '/' . str_replace('.', '/', $partialPath) . '.php';
 
