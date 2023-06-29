@@ -1,4 +1,4 @@
-<b>Available Commands </b>
+<b>Available Commands</b>
 
 /server - To get Server Information.
 /id - To get chat id.

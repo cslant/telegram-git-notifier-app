@@ -7,12 +7,10 @@ $message = "👷‍♂️🛠️ <b>New Pull Request</b> - <a href=\"{$payload->
 
 $message .= "🛠 <b>{$payload->pull_request->title}</b> \n\n";
 
-if (isset($payload->pull_request->assignee)) {
-    $message .= "🙋 Assignee: <a href=\"{$payload->pull_request->assignee->html_url}\">@{$payload->pull_request->assignee->login}</a>\n";
-}
+$message .= require __DIR__ . '/../../shared/partials/_assignee.php';
 
 $message .= require __DIR__ . '/partials/_reviewers.php';
 
-$message .= require __DIR__ . '/partials/_body.php';
+require __DIR__ . '/../../shared/partials/_body.php';
 
 echo $message;
