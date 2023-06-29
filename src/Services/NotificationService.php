@@ -60,7 +60,7 @@ class NotificationService
                 $typeEvent . '.' . $this->payload->action,
                 [
                     'payload' => $this->payload,
-                    'event' => $typeEvent,
+                    'event' => singularity($typeEvent),
                 ]
             );
         } else {

@@ -11,6 +11,6 @@ $message .= require __DIR__ . '/../../shared/partials/_assignee.php';
 
 $message .= require __DIR__ . '/partials/_reviewers.php';
 
-require __DIR__ . '/../../shared/partials/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/_body.php';
 
 echo $message;
