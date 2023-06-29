@@ -86,12 +86,12 @@ class NotificationService
         $url = $method_url . '?chat_id=' . $chatId . '&disable_web_page_preview=1&parse_mode=html&text='
             . urlencoded_message($this->message);
 
+        $client = new Client();
+
         try {
-            $client = new Client();
             $response = $client->request('GET', $url);
 
-            $response = json_decode($response->getBody()->getContents());
-            if ($response->ok) {
+            if ($response->getStatusCode() === 200) {
                 return true;
             }
 
