@@ -86,7 +86,7 @@ class TelegramService
                     [
                         $this->telegram->buildInlineKeyBoardButton(
                             "💠 Source Code",
-                            "https://github.com/tanhongit/telegram-bot-github-notify"
+                            "https://github.com/lbiltech/telegram-bot-github-notify"
                         ),
                     ]
                 ];
