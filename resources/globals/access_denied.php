@@ -1,3 +1,3 @@
-🔒 <b>Access Denied to Bot </b>🚫
+🔒 <b>Access Denied to Bot</b> 🚫
 
-Please contact administrator for further information, Thank You..
+Please contact the administrator for further information, Thank You..

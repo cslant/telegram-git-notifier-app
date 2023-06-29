@@ -58,7 +58,10 @@ class NotificationService
         if (isset($this->payload->action) && !empty($this->payload->action)) {
             $this->message = get_event_template(
                 $typeEvent . '.' . $this->payload->action,
-                ['payload' => $this->payload]
+                [
+                    'payload' => $this->payload,
+                    'event' => $typeEvent,
+                ]
             );
         } else {
             $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
