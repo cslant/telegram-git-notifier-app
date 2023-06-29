@@ -1,8 +1,9 @@
 <b>Available Commands </b>
 
+/server - To get Server Information.
 /id - To get chat id.
-/host - To get Host Address.
-/help - To show this Message.
+/token - To get this bot token.
 /usage - How to use me.
+/help - To show this Message.
 
-Select a command :
+Select a command:
