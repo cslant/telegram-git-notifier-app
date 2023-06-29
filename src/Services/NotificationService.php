@@ -16,11 +16,12 @@ class NotificationService
      * Notify access denied to other chat ids
      *
      * @param TelegramService $telegramService
+     * @param string|null $chatId
      * @return void
      */
-    public function accessDenied(TelegramService $telegramService): void
+    public function accessDenied(TelegramService $telegramService, string $chatId = null): void
     {
-        $reply = get_template('globals.access_denied');
+        $reply = get_template('globals.access_denied', ['chatId' => $chatId]);
         $content = array(
             'chat_id' => $telegramService->chatId,
             'text' => $reply,
@@ -41,7 +42,7 @@ class NotificationService
         $this->payload = json_decode($request->request->get('payload'));
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
             echo 'invalid request';
-            die;
+            exit;
         } else {
             $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
         }
@@ -74,7 +75,6 @@ class NotificationService
      * @param string $chatId
      * @param string|null $message
      * @return bool
-     * @throws GuzzleException
      */
     public function sendNotify(string $chatId, string $message = null): bool
     {
@@ -87,12 +87,17 @@ class NotificationService
             . urlencoded_message($this->message);
 
         $client = new Client();
-        $response = $client->request('GET', $url);
 
-        if ($response->getStatusCode() == 200) {
-            return true;
+        try {
+            $response = $client->request('GET', $url);
+
+            if ($response->getStatusCode() === 200) {
+                return true;
+            }
+
+            return false;
+        } catch (GuzzleException $e) {
+            return false;
         }
-
-        return false;
     }
 }
