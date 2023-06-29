@@ -2,7 +2,6 @@
 
 namespace TelegramGithubNotify\App\Http\Actions;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Request;
 use TelegramGithubNotify\App\Services\NotificationService;
 use TelegramGithubNotify\App\Services\TelegramService;
@@ -30,7 +29,6 @@ class SendNotifyAction
      * Handle send notify to telegram action
      *
      * @return void
-     * @throws GuzzleException
      */
     public function __invoke(): void
     {
@@ -59,7 +57,9 @@ class SendNotifyAction
                     continue;
                 }
 
-                $this->notificationService->sendNotify($chatId);
+                if (!$this->notificationService->sendNotify($chatId)) {
+                    $this->notificationService->accessDenied($this->telegramService, $chatId);
+                }
             }
         }
     }
