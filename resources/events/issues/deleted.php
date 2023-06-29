@@ -7,8 +7,6 @@ $message = "️🗑 <b>Issue Deleted</b> from <a href=\"{$payload->repository->h
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-if (isset($payload->issue->assignee)) {
-    $message .= "🙋 Assignee: <a href=\"{$payload->issue->assignee->html_url}\">@{$payload->issue->assignee->login}</a>\n\n";
-}
+$message .= require __DIR__ . '/../../shared/partials/_assignee.php';
 
 echo $message;

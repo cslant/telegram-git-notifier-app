@@ -7,9 +7,7 @@ $message = "⚠️ <b>Issue has been edited</b> to <a href=\"{$payload->issue->h
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-if (isset($payload->issue->assignee)) {
-    $message .= "🙋 Assignee: <a href=\"{$payload->issue->assignee->html_url}\">@{$payload->issue->assignee->login}</a>\n\n";
-}
+$message .= require __DIR__ . '/../../shared/partials/_assignee.php';
 
 if (isset($payload->changes->title)) {
     $message .= "📖 <b>Title</b> has been changed\n";

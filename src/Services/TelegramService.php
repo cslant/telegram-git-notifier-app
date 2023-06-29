@@ -112,8 +112,19 @@ class TelegramService
                 $this->telegram->sendMessage($content);
 
                 break;
-            case '/host':
-                $reply = get_tool_template('host');
+            case '/server':
+                $reply = get_tool_template('server');
+                $content = array(
+                    'chat_id' => $this->chatId,
+                    'text' => $reply,
+                    'disable_web_page_preview' => true,
+                    'parse_mode' => 'HTML'
+                );
+                $this->telegram->sendMessage($content);
+
+                break;
+            case '/token':
+                $reply = "This bot token is: <code>{$this->token}</code>";
                 $content = array(
                     'chat_id' => $this->chatId,
                     'text' => $reply,
