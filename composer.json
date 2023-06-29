@@ -1,5 +1,5 @@
 {
-  "name": "tanhongit/telegram-bot-github-notify",
+  "name": "lbiltech/telegram-bot-github-notify",
   "description": "A Telegram bot send notify Github events to Telegram channels",
   "keywords": [
     "telegram",
@@ -13,7 +13,7 @@
     "github-telegram-bot"
   ],
   "type": "project",
-  "homepage": "https://github.com/tanhongit/telegram-bot-github-notify",
+  "homepage": "https://github.com/lbiltech/telegram-bot-github-notify",
   "license": "MIT",
   "require": {
     "php": "^8.0",
@@ -40,7 +40,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/tanhongit/telegram-bot-github-notify/issues"
+    "issues": "https://github.com/lbiltech/telegram-bot-github-notify/issues"
   },
   "config": {
     "sort-packages": true,
