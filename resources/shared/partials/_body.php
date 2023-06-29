@@ -9,7 +9,7 @@ if (isset($event) && isset($payload) && !empty($payload->{$event}->body)) {
     if (strlen($body) > 50) {
         $body = substr($body, 0, 50) . '...';
     }
-    return "📖 <b>Body:</b>\n{$body}";
+    return "📖 <b>Content:</b>\n{$body}";
 }
 
 return '';
