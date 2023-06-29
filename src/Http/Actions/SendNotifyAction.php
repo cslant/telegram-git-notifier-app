@@ -57,9 +57,7 @@ class SendNotifyAction
                     continue;
                 }
 
-                if (!$this->notificationService->sendNotify($chatId)) {
-                    $this->notificationService->accessDenied($this->telegramService, $chatId);
-                }
+                $this->notificationService->sendNotify($chatId);
             }
         }
     }
