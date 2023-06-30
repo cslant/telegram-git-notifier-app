@@ -21,7 +21,7 @@ class NotificationService
      */
     public function accessDenied(TelegramService $telegramService, string $chatId = null): void
     {
-        $reply = get_template('globals.access_denied', ['chatId' => $chatId]);
+        $reply = view('globals.access_denied', ['chatId' => $chatId]);
         $content = array(
             'chat_id' => $telegramService->chatId,
             'text' => $reply,
@@ -57,15 +57,15 @@ class NotificationService
     public function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
-            $this->message = get_event_template(
-                $typeEvent . '.' . $this->payload->action,
+            $this->message = view(
+                'events.' . $typeEvent . '.' . $this->payload->action,
                 [
                     'payload' => $this->payload,
                     'event' => singularity($typeEvent),
                 ]
             );
         } else {
-            $this->message = get_event_template($typeEvent . '.default', ['payload' => $this->payload]);
+            $this->message = view('events.' . $typeEvent . '.default', ['payload' => $this->payload]);
         }
     }
 
