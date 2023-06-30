@@ -64,7 +64,7 @@ class TelegramService
     {
         switch ($text) {
             case '/start':
-                $reply = get_tool_template('start', [
+                $reply = view('tools.start', [
                     'first_name' => $this->telegram->FirstName()
                 ]);
                 $content = array(
@@ -86,11 +86,11 @@ class TelegramService
                     [
                         $this->telegram->buildInlineKeyBoardButton(
                             "💠 Source Code",
-                            "https://github.com/tanhongit/telegram-bot-github-notify"
+                            "https://github.com/lbiltech/telegram-bot-github-notify"
                         ),
                     ]
                 ];
-                $reply = get_tool_template('help');
+                $reply = view('tools.help');
                 $content = array(
                     'chat_id' => $this->chatId,
                     'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
@@ -113,7 +113,7 @@ class TelegramService
 
                 break;
             case '/server':
-                $reply = get_tool_template('server');
+                $reply = view('tools.server');
                 $content = array(
                     'chat_id' => $this->chatId,
                     'text' => $reply,
@@ -135,7 +135,7 @@ class TelegramService
 
                 break;
             case '/usage':
-                $reply = get_tool_template('usage');
+                $reply = view('tools.usage');
                 $content = array(
                     'chat_id' => $this->chatId,
                     'text' => $reply,
@@ -162,7 +162,7 @@ class TelegramService
     protected function sendCallbackResponse(string $callback = null): void
     {
         if (!empty($callback) && $callback == 'about') {
-            $reply = get_tool_template('about');
+            $reply = view('tools.about');
             $content = array(
                 'callback_query_id' => $this->telegram->Callback_ID(),
                 'text' => $reply,
