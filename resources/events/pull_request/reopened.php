@@ -7,6 +7,8 @@ $message = "👷‍♂️🛠️ <b>Reopened Pull Request</b> - <a href=\"{$payl
 
 $message .= "🛠 <b>{$payload->pull_request->title}</b> \n\n";
 
+$message .= "🌳 {$payload->pull_request->head->ref} -> {$payload->pull_request->base->ref} 🎯 \n";
+
 $message .= require __DIR__ . '/../../shared/partials/_assignee.php';
 
 $message .= require __DIR__ . '/partials/_reviewers.php';
