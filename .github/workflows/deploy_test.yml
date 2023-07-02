@@ -2,7 +2,7 @@ name: Deploy Server
 
 on:
   push:
-    branches: [ main ]
+    branches: [ deploy ]
 
 jobs:
   shellcheck:
@@ -27,6 +27,10 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           script: |
             cd /home/tannp/telegram-bot-github-notify
+            git reset --hard HEAD
+            git pull origin main
+            composer update
+            cd /home/tannp/githubworkrun/telegram-bot-github-notify
             git reset --hard HEAD
             git pull origin main
             composer update
