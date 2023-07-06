@@ -3,14 +3,27 @@
  * @var $payload mixed
  */
 
-if ($payload->workflow_run->conclusion === 'success') {
-    $message = "🎉 <b>Workflow Completed</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+switch ($payload->workflow_run->conclusion) {
+    case 'success':
+        $message = "🎉 <b>Workflow Completed</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
-    $message .= "Done workflow: 🎉 <b>{$payload->workflow_run->name}</b> ✨ \n\n";
-} else {
-    $message = "🚫 <b>Canceled Workflow</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+        $message .= "Done workflow: 🎉 <b>{$payload->workflow_run->name}</b> ✨ \n\n";
+        break;
+    case 'failure':
+        $message = "🚫 <b>Workflow Failed</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
-    $message .= "Failed workflow: 🚫 <b>{$payload->workflow_run->name}</b> ❌ \n\n";
+        $message .= "Failed workflow: 🚫 <b>{$payload->workflow_run->name}</b> ❌ \n\n";
+        break;
+    case 'cancelled':
+        $message = "❌ <b>Workflow Cancelled</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+
+        $message .= "Cancelled workflow: 🚨 <b>{$payload->workflow_run->name}</b> ❌ \n\n";
+        break;
+    default:
+        $message = "🚨 <b>Workflow Can't Success</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+
+        $message .= "Can't Success workflow: 🚨 <b>{$payload->workflow_run->name}</b> ❌ \n\n";
+        break;
 }
 
 // $message .= "📤 Commit: <b>{$payload->workflow_run->head_commit->message}</b>\n\n";

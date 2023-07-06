@@ -51,7 +51,6 @@ if (!function_exists('singularity')) {
      */
     function singularity($word): bool|string
     {
-        $singular = $word;
         $singular_rules = [
             '/(quiz)zes$/i' => '$1',
             '/(matr)ices$/i' => '$1ix',
@@ -81,11 +80,11 @@ if (!function_exists('singularity')) {
 
         foreach ($singular_rules as $rule => $replacement) {
             if (preg_match($rule, $word)) {
-                $singular = preg_replace($rule, $replacement, $word);
+                $word = preg_replace($rule, $replacement, $word);
                 break;
             }
         }
 
-        return $singular;
+        return $word;
     }
 }
