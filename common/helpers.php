@@ -77,14 +77,6 @@ if (!function_exists('singularity')) {
             '/(n)ews$/i' => '$1ews',
             '/(.)s$/i' => '$1'
         ];
-
-        foreach ($singular_rules as $rule => $replacement) {
-            if (preg_match($rule, $word)) {
-                $word = preg_replace($rule, $replacement, $word);
-                break;
-            }
-        }
-
-        return $word;
+        return preg_replace(array_keys($singular_rules), array_values($singular_rules), $word);
     }
 }
