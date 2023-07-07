@@ -65,7 +65,7 @@ class TelegramService
         switch ($text) {
             case '/start':
                 $reply = view('tools.start', ['first_name' => $this->telegram->FirstName()]);
-                $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'photo');
+                $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'Photo');
                 break;
             case '/help':
                 $replyMarkup = [
@@ -96,7 +96,7 @@ class TelegramService
      * @param string $sendType
      * @return void
      */
-    public function sendMessage(string $message = '', array $options = [], string $sendType = 'message'): void
+    public function sendMessage(string $message = '', array $options = [], string $sendType = 'Message'): void
     {
         $content = array(
             'chat_id' => $this->chatId,
@@ -104,9 +104,9 @@ class TelegramService
             'parse_mode' => 'HTML'
         );
 
-        if ($sendType == 'message') {
+        if ($sendType === 'Message') {
             $content['text'] = $message;
-        } elseif ($sendType == 'photo' && !empty($options)) {
+        } elseif ($sendType === 'Photo' && !empty($options)) {
             $content['photo'] = $options['photo'];
             $content['caption'] = $message;
         }
@@ -115,7 +115,7 @@ class TelegramService
             $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
         }
 
-        $this->telegram->sendMessage($content);
+        $this->telegram->{'send' . $sendType}($content);
     }
 
     /**
