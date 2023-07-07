@@ -64,93 +64,58 @@ class TelegramService
     {
         switch ($text) {
             case '/start':
-                $reply = view('tools.start', [
-                    'first_name' => $this->telegram->FirstName()
-                ]);
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'photo' => curl_file_create('public/images/github.jpeg', 'image/png'),
-                    'caption' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendPhoto($content);
-
+                $reply = view('tools.start', ['first_name' => $this->telegram->FirstName()]);
+                $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'photo');
                 break;
             case '/help':
-                $option = [
+                $replyMarkup = [
                     [
                         $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
-                        $this->telegram->buildInlineKeyBoardButton("📞 Contact", "https://t.me/tannp27")
+                        $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
                     ],
-                    [
-                        $this->telegram->buildInlineKeyBoardButton(
-                            "💠 Source Code",
-                            "https://github.com/lbiltech/telegram-bot-github-notify"
-                        ),
-                    ]
+                    [$this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))]
                 ];
-                $reply = view('tools.help');
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-                    'text' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendMessage($content);
-
-                break;
-            case '/id':
-                $reply = "Your id is <code>{$this->chatId}</code>";
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'text' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendMessage($content);
-
-                break;
-            case '/server':
-                $reply = view('tools.server');
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'text' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendMessage($content);
-
+                $this->sendMessage(view('tools.help'), ['reply_markup' => $replyMarkup]);
                 break;
             case '/token':
-                $reply = "This bot token is: <code>{$this->token}</code>";
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'text' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendMessage($content);
-
-                break;
+            case '/id':
             case '/usage':
-                $reply = view('tools.usage');
-                $content = array(
-                    'chat_id' => $this->chatId,
-                    'text' => $reply,
-                    'disable_web_page_preview' => true,
-                    'parse_mode' => 'HTML'
-                );
-                $this->telegram->sendMessage($content);
-
+            case '/server':
+                $this->sendMessage(view('tools.' . trim($text, '/')));
                 break;
             default:
-                $reply = "🤨 Invalid Request";
-                $content = array('chat_id' => $this->chatId, 'text' => $reply);
-
-                $this->telegram->sendMessage($content);
+                $this->sendMessage('🤨 Invalid Request!');
         }
+    }
+
+    /**
+     * Send a message to telegram
+     *
+     * @param string $message
+     * @param array $options
+     * @param string $sendType
+     * @return void
+     */
+    public function sendMessage(string $message = '', array $options = [], string $sendType = 'message'): void
+    {
+        $content = array(
+            'chat_id' => $this->chatId,
+            'disable_web_page_preview' => true,
+            'parse_mode' => 'HTML'
+        );
+
+        if ($sendType == 'message') {
+            $content['text'] = $message;
+        } elseif ($sendType == 'photo' && !empty($options)) {
+            $content['photo'] = $options['photo'];
+            $content['caption'] = $message;
+        }
+
+        if (!empty($options) && isset($options['reply_markup'])) {
+            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
+        }
+
+        $this->telegram->sendMessage($content);
     }
 
     /**

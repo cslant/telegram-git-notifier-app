@@ -5,6 +5,7 @@ return [
         'name' => $_ENV['APP_NAME'] ?? 'Telegram Github Notify',
         'url' => $_ENV['APP_URL'] ?? 'APP_URL',
         'timezone' => $_ENV['TIMEZONE'] ?? 'Asia/Ho_Chi_Minh',
+        'image' => $_ENV['APP_IMAGE'] ?? 'public/images/github.jpeg',
     ],
 
     'telegram-bot' => [
@@ -13,5 +14,10 @@ return [
         'notify_chat_ids' => explode(',', $_ENV['TELEGRAM_NOTIFY_CHAT_IDS'] ?? ''),
 
         'set_webhook_url' => $_ENV['SET_WEBHOOK_URL'] ?? $_ENV['APP_URL'] . '/setWebhook',
+    ],
+
+    'author' => [
+        'contact' => $_ENV['AUTHOR_CONTACT'] ?? 'https://t.me/tannp27',
+        'source_code' => $_ENV['AUTHOR_SOURCE_CODE'] ?? 'https://github.com/lbiltech/telegram-bot-github-notify',
     ],
 ];
