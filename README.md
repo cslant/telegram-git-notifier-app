@@ -54,15 +54,31 @@ TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 TELEGRAM_BOT_CHAT_ID=123456789
 ```
 
+### Set up your domain and SSL certificate
+
+**You need to set up your domain and SSL certificate to use the webhook**. You can build your own server or use a service like [Heroku](https://www.heroku.com/).
+
+In this example, we will use localhost and ngrok to set up domain and webhook:
+1. Download and install [ngrok](https://ngrok.com/download).
+2. Run command in terminal: `php -S localhost:8000`
+3. Run command in terminal: `ngrok http 8000`
+4. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
+
+```shell
+APP_URL=https://123456789.ngrok.io
+```
+
 ### Set the webhook
 
 #### Set the webhook from the source code
 
 After setting up your domain and SSL certificate, you need to set up the webhook for your bot. Go to:
 
-```http request
+```text
 <APP_URL>/setWebhook.php
 ```
+
+> **Note:** Replace `<APP_URL>` with your app URL in .env file.
 
 If you see the following message, it means that the webhook has been sent successfully.
 
@@ -74,14 +90,16 @@ If you see the following message, it means that the webhook has been sent succes
 
 If you want to set the webhook manually, you can use the following URL:
 
-```http request
+```text
 https://api.telegram.org/bot<YourBOTToken>/setWebhook?url=<APP_URL>
 ```
+
+> **Note:** Replace `<YourBOTToken>` with your bot token and `<APP_URL>` with your app URL in .env file.
 
 ### Add chat ids you want to receive notifications to the .env file
 
 ```shell
-TELEGRAM_NOTIFY_CHAT_IDS="123456789,987654321,-123456789"
+TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 ```
 
 Now your configuration is complete. And it will be like this:
@@ -90,7 +108,7 @@ Now your configuration is complete. And it will be like this:
 APP_NAME='Telegram Github Notify Bot'
 
 # Set your app URL here
-APP_URL=https://tele-noti-git.com
+APP_URL=https://123456789.ngrok.io
 
 TELEGRAM_BOT_TOKEN=6162840106:AAH3g20lMQIkG_wHHu8R_ngdtG541uzoq4
 TELEGRAM_BOT_CHAT_ID=6872320129
