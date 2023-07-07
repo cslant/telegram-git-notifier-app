@@ -8,7 +8,7 @@
 
 ## Information
 
-- Send GitHub notifications of your repositories to Telegram Bot, Groups, Channels.
+- Send GitHub notifications of your repositories to Telegram Bots, Groups, and Channels.
 - The bot must be created using the [BotFather](https://core.telegram.org/bots#6-botfather)
 
 ## Requirement
@@ -20,7 +20,7 @@
 
 ## Installation
 
-The first, please clone and install this project via [Composer](https://getcomposer.org/):
+First, please clone and install this project via [Composer](https://getcomposer.org/):
 
 ```bash
 composer create-project lbiltech/telegram-bot-github-notify
@@ -36,7 +36,7 @@ To create a new bot, you need to talk to [BotFather](https://core.telegram.org/b
 1. Open a chat with [BotFather](https://telegram.me/botfather) and send `/newbot` command.
 2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
 3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
-4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it in your `.env` file.
+4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
 
 ```shell
 TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -56,15 +56,15 @@ TELEGRAM_BOT_CHAT_ID=123456789
 
 ### Set the webhook
 
-#### Set the webhook from source code
+#### Set the webhook from the source code
 
-After setting up your domain and SSL certificate, you need to set the webhook for your bot. Go to:
+After setting up your domain and SSL certificate, you need to set up the webhook for your bot. Go to:
 
 ```http request
 <APP_URL>/setWebhook.php
 ```
 
-If you see the following message, it means that the webhook has been set successfully.
+If you see the following message, it means that the webhook has been sent successfully.
 
 ```json
 {"ok":true,"result":true,"description":"Webhook was set"}
@@ -72,7 +72,7 @@ If you see the following message, it means that the webhook has been set success
 
 #### Set the webhook manually
 
-If you want to set the webhook manually, you can use the following url:
+If you want to set the webhook manually, you can use the following URL:
 
 ```http request
 https://api.telegram.org/bot<YourBOTToken>/setWebhook?url=<APP_URL>
@@ -89,7 +89,7 @@ Now your configuration is complete. And it will be like this:
 ```shell
 APP_NAME='Telegram Github Notify Bot'
 
-# Set your app url here
+# Set your app URL here
 APP_URL=https://tele-noti-git.com
 
 TELEGRAM_BOT_TOKEN=6162840106:AAH3g20lMQIkG_wHHu8R_ngdtG541uzoq4
@@ -112,12 +112,12 @@ Now you can send a message to your bot, and you will receive a notification.
 ## Set webhook on your GitHub repository
 
 1. Go to your repository settings
-2. Go to `Webhooks` section
+2. Go to the `Webhooks` section
 3. Click on `Add webhook`
 4. Set `Payload URL` to `<APP_URL>`
 5. Set `Content type` to `application/x-www-form-urlencoded`
 6. Which events would you like to trigger this webhook? Select `Let me select individual events.`
-7. Click on `Active` checkbox and Add webhook button.
+7. Click on the `Active` checkbox and Add webhook button.
 8. Done. You will receive a notification when your repository has a new event.
 
 Here is the first notification you will receive: ♻️ **Connection Successful**
