@@ -45,5 +45,13 @@
   "config": {
     "sort-packages": true,
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "post-update-cmd": [
+      "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ]
   }
 }
