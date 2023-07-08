@@ -49,16 +49,24 @@ class SendNotifyAction
             }
         }
 
-        // Send a result to all chat ids in config
+        // Send a GitHub event result to all chat ids in env
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
             $this->notificationService->setPayload($this->request);
-            foreach ($this->chatIds as $chatId) {
-                if (empty($chatId)) {
-                    continue;
-                }
+            $this->sendNotification();
+        }
+    }
 
-                $this->notificationService->sendNotify($chatId);
+    /**
+     * @return void
+     */
+    protected function sendNotification(): void
+    {
+        foreach ($this->chatIds as $chatId) {
+            if (empty($chatId)) {
+                continue;
             }
+
+            $this->notificationService->sendNotify($chatId);
         }
     }
 }
