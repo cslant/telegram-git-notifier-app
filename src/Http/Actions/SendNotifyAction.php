@@ -36,29 +36,45 @@ class SendNotifyAction
         $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
 
         if (!empty($chatMessageId)) {
-            // Send a result to only the bot owner
-            if ($chatMessageId == $this->telegramService->chatId) {
-                $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
-                return;
-            }
-
-            // Notify access denied to other chat ids
-            if (!in_array($chatMessageId, $this->chatIds)) {
-                $this->notificationService->accessDenied($this->telegramService);
-                return;
-            }
+            $this->handleEventInTelegram($chatMessageId);
         }
 
-        // Send a result to all chat ids in config
+        // Send a GitHub event result to all chat ids in env
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
             $this->notificationService->setPayload($this->request);
-            foreach ($this->chatIds as $chatId) {
-                if (empty($chatId)) {
-                    continue;
-                }
+            $this->sendNotification();
+        }
+    }
 
-                $this->notificationService->sendNotify($chatId);
+    /**
+     * @param string $chatMessageId
+     * @return void
+     */
+    public function handleEventInTelegram(string $chatMessageId): void
+    {
+        // Send a result to only the bot owner
+        if ($chatMessageId == $this->telegramService->chatId) {
+            $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
+            return;
+        }
+
+        // Notify access denied to other chat ids
+        if (!in_array($chatMessageId, $this->chatIds)) {
+            $this->notificationService->accessDenied($this->telegramService);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function sendNotification(): void
+    {
+        foreach ($this->chatIds as $chatId) {
+            if (empty($chatId)) {
+                continue;
             }
+
+            $this->notificationService->sendNotify($chatId);
         }
     }
 }
