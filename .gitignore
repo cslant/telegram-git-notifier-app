@@ -5,3 +5,4 @@ node_modules
 logs
 composer.lock
 .env
+storage

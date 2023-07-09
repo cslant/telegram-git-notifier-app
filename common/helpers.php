@@ -1,6 +1,7 @@
 <?php
 
 use TelegramGithubNotify\App\Helpers\ConfigHelper;
+use TelegramGithubNotify\App\Helpers\EventHelper;
 
 if (!function_exists('config')) {
     /**
@@ -78,5 +79,17 @@ if (!function_exists('singularity')) {
             '/(.)s$/i' => '$1'
         ];
         return preg_replace(array_keys($singular_rules), array_values($singular_rules), $word);
+    }
+}
+
+if (!function_exists('event_config')) {
+    /**
+     * Return event config
+     *
+     * @return array
+     */
+    function event_config(): array
+    {
+        return (new EventHelper())->getEventConfig();
     }
 }
