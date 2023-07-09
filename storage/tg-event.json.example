@@ -1,0 +1,89 @@
+{
+  "ping": 1,
+  "push": 1,
+  "pull_request": {
+    "closed": {
+      "merged": 1,
+      "unmerged": 0
+    },
+    "opened": 1,
+    "reopened": 0,
+    "review_request_removed": 0,
+    "review_requested": 0,
+    "synchronize": 0,
+    "unlabeled": 0,
+    "labeled": 0,
+    "edited": 0,
+    "assigned": 0,
+    "unassigned": 0,
+    "review_request": 0
+  },
+  "pull_request_review": {
+    "submitted": 1,
+    "edited": 0,
+    "dismissed": 0
+  },
+  "pull_request_review_comment": {
+    "created": 1,
+    "edited": 0,
+    "deleted": 0
+  },
+  "issue": {
+    "closed": 1,
+    "opened": 1,
+    "reopened": 0,
+    "edited": 0,
+    "assigned": 1,
+    "unassigned": 0,
+    "labeled": 0,
+    "unlabeled": 0,
+    "milestoned": 0,
+    "demilestoned": 0,
+    "locked": 0,
+    "unlocked": 0,
+    "transferred": 0,
+    "pinned": 1,
+    "unpinned": 0,
+    "deleted": 1
+  },
+  "issue_comment": {
+    "created": 1,
+    "edited": 0,
+    "deleted": 0
+  },
+  "release": {
+    "published": 0,
+    "unpublished": 0,
+    "created": 0,
+    "edited": 0,
+    "deleted": 0,
+    "prereleased": 0,
+    "released": 1
+  },
+  "watch": {
+    "started": 0
+  },
+  "fork": {
+    "created": 0
+  },
+  "member": {
+    "added": 0,
+    "edited": 0,
+    "removed": 0
+  },
+  "check_run": {
+    "created": 0,
+    "rerequested": 0,
+    "completed": 0
+  },
+  "workflow_dispatch": 0,
+  "workflow_job": {
+    "queued": 0,
+    "in_progress": 0,
+    "completed": 0
+  },
+  "workflow_run": {
+    "completed": 1,
+    "requested": 1
+  }
+}

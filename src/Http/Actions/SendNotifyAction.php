@@ -37,10 +37,11 @@ class SendNotifyAction
 
         if (!empty($chatMessageId)) {
             $this->handleEventInTelegram($chatMessageId);
+            return;
         }
 
         // Send a GitHub event result to all chat ids in env
-        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
+        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
             $this->notificationService->setPayload($this->request);
             $this->sendNotification();
         }
