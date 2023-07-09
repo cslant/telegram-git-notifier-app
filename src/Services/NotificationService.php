@@ -35,9 +35,9 @@ class NotificationService
      * Set payload from request
      *
      * @param Request $request
-     * @return void
+     * @return mixed|void
      */
-    public function setPayload(Request $request): void
+    public function setPayload(Request $request)
     {
         $this->payload = json_decode($request->request->get('payload'));
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
@@ -46,6 +46,8 @@ class NotificationService
         } else {
             $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
         }
+
+        return $this->payload;
     }
 
     /**
