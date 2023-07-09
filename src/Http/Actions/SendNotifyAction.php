@@ -3,6 +3,7 @@
 namespace TelegramGithubNotify\App\Http\Actions;
 
 use Symfony\Component\HttpFoundation\Request;
+use TelegramGithubNotify\App\Services\EventSettingService;
 use TelegramGithubNotify\App\Services\NotificationService;
 use TelegramGithubNotify\App\Services\TelegramService;
 
@@ -11,6 +12,8 @@ class SendNotifyAction
     protected TelegramService $telegramService;
 
     protected NotificationService $notificationService;
+
+    protected EventSettingService $eventSettingService;
 
     protected Request $request;
 
@@ -21,6 +24,7 @@ class SendNotifyAction
         $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
+        $this->eventSettingService = new EventSettingService();
 
         $this->chatIds = config('telegram-bot.notify_chat_ids');
     }
@@ -37,11 +41,11 @@ class SendNotifyAction
 
         if (!empty($chatMessageId)) {
             $this->handleEventInTelegram($chatMessageId);
+            return;
         }
 
         // Send a GitHub event result to all chat ids in env
-        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT')) && empty($chatMessageId)) {
-            $this->notificationService->setPayload($this->request);
+        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
             $this->sendNotification();
         }
     }
@@ -69,6 +73,12 @@ class SendNotifyAction
      */
     protected function sendNotification(): void
     {
+        $payload = $this->notificationService->setPayload($this->request);
+
+        if (!$this->eventSettingService->validateAccessEvent($this->request, $payload)) {
+            return;
+        }
+
         foreach ($this->chatIds as $chatId) {
             if (empty($chatId)) {
                 continue;
