@@ -24,10 +24,13 @@ class EventSettingService
         $eventConfig = $eventConfig[$event] ?? false;
 
         if (isset($payload->action) && isset($eventConfig[$payload->action])) {
-            return (bool)$eventConfig[$payload->action];
+            $eventConfig = $eventConfig[$payload->action];
         }
 
-        error_log('\n Event config is not found \n');
-        return false;
+        if (!$eventConfig) {
+            error_log('\n Event config is not found \n');
+        }
+
+        return (bool)$eventConfig;
     }
 }
