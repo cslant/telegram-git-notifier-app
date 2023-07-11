@@ -68,14 +68,7 @@ class TelegramService
                 $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'Photo');
                 break;
             case '/help':
-                $replyMarkup = [
-                    [
-                        $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
-                        $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
-                    ],
-                    [$this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))]
-                ];
-                $this->sendMessage(view('tools.help'), ['reply_markup' => $replyMarkup]);
+                $this->sendMessage(view('tools.help'), ['reply_markup' => $this->helpMarkup()]);
                 break;
             case '/token':
             case '/id':
@@ -152,5 +145,19 @@ class TelegramService
         }
 
         return false;
+    }
+
+    /**
+     * @return array[]
+     */
+    public function helpMarkup(): array
+    {
+        return [
+            [
+                $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
+                $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
+            ],
+            [$this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))]
+        ];
     }
 }

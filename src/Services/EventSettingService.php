@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 class EventSettingService
 {
     /**
+     * Validate access event before send notify
+     *
      * @param Request $request
      * @param $payload
      * @return bool
