@@ -18,7 +18,7 @@
   },
   "push": true,
   "fork": true,
-  "gollum": false,
+  "gollum": true,
   "pull_request": {
     "closed": true,
     "opened": true,

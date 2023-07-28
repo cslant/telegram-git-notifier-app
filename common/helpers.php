@@ -2,6 +2,7 @@
 
 use TelegramGithubNotify\App\Helpers\ConfigHelper;
 use TelegramGithubNotify\App\Helpers\EventHelper;
+use TelegramGithubNotify\App\Helpers\SettingHelper;
 
 if (!function_exists('config')) {
     /**
@@ -91,5 +92,17 @@ if (!function_exists('event_config')) {
     function event_config(): array
     {
         return (new EventHelper())->getEventConfig();
+    }
+}
+
+if (!function_exists('enable_all_events')) {
+    /**
+     * Return enable all events
+     *
+     * @return bool
+     */
+    function enable_all_events(): bool
+    {
+        return (new SettingHelper())->enableAllEvents();
     }
 }
