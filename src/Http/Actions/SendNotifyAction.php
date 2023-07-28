@@ -57,7 +57,7 @@ class SendNotifyAction
     public function handleEventInTelegram(string $chatMessageId): void
     {
         // Send a result to only the bot owner
-        if ($chatMessageId == $this->telegramService->chatId) {
+        if ($chatMessageId == config('telegram-bot.chat_id')) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
             return;
         }

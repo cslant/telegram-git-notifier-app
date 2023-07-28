@@ -2,55 +2,16 @@
 
 namespace TelegramGithubNotify\App\Services;
 
-use Telegram;
-
-class TelegramService
+class TelegramService extends AppService
 {
-    public string $token;
-
-    public string $chatId;
-
-    public Telegram $telegram;
-
     public array $messageData;
+
+    public SettingService $settingService;
 
     public function __construct()
     {
-        $this->setToken();
-        $this->setChatId();
-        $this->storeByToken();
-        $this->getDataOfMessage();
-    }
+        parent::__construct();
 
-    /**
-     * @return void
-     */
-    private function setToken(): void
-    {
-        $this->token = config('telegram-bot.token');
-    }
-
-    /**
-     * @return void
-     */
-    private function setChatId(): void
-    {
-        $this->chatId = config('telegram-bot.chat_id');
-    }
-
-    /**
-     * @return void
-     */
-    private function storeByToken(): void
-    {
-        $this->telegram = new Telegram($this->token);
-    }
-
-    /**
-     * @return void
-     */
-    private function getDataOfMessage(): void
-    {
         $this->messageData = $this->telegram->getData() ?? [];
     }
 
@@ -76,39 +37,12 @@ class TelegramService
             case '/server':
                 $this->sendMessage(view('tools.' . trim($text, '/')));
                 break;
+            case '/settings':
+                $this->settingService->settingMarkup($this->telegram);
+                break;
             default:
                 $this->sendMessage('🤨 Invalid Request!');
         }
-    }
-
-    /**
-     * Send a message to telegram
-     *
-     * @param string $message
-     * @param array $options
-     * @param string $sendType
-     * @return void
-     */
-    public function sendMessage(string $message = '', array $options = [], string $sendType = 'Message'): void
-    {
-        $content = array(
-            'chat_id' => $this->chatId,
-            'disable_web_page_preview' => true,
-            'parse_mode' => 'HTML'
-        );
-
-        if ($sendType === 'Message') {
-            $content['text'] = $message;
-        } elseif ($sendType === 'Photo' && !empty($options)) {
-            $content['photo'] = $options['photo'];
-            $content['caption'] = $message;
-        }
-
-        if (!empty($options) && isset($options['reply_markup'])) {
-            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-        }
-
-        $this->telegram->{'send' . $sendType}($content);
     }
 
     /**

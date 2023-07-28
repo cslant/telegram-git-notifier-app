@@ -1,3 +1,4 @@
 {
-  "enable_full_event": false
+  "is_notified": true,
+  "enable_all_event": false
 }
