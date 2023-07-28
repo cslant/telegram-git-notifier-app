@@ -140,10 +140,8 @@ class TelegramService
         if (!is_null($this->telegram->Callback_ChatID())) {
             $callback = $this->telegram->Callback_Data();
             $this->sendCallbackResponse($callback);
-
             return true;
         }
-
         return false;
     }
 
@@ -156,8 +154,9 @@ class TelegramService
             [
                 $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
                 $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
-            ],
-            [$this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))]
+            ], [
+                $this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))
+            ]
         ];
     }
 }
