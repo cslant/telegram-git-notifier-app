@@ -4,6 +4,7 @@
 /id - To get your Chat ID.
 /token - To get this bot token.
 /usage - How to use me.
-/help - To show this Message.
+/settings - Settings github notify.
+/menu - To get this menu.
 
 Select a command:

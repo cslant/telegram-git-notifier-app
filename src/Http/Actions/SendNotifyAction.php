@@ -36,7 +36,6 @@ class SendNotifyAction
      */
     public function __invoke(): void
     {
-        $this->telegramService->checkCallback();
         $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
 
         if (!empty($chatMessageId)) {
@@ -47,7 +46,10 @@ class SendNotifyAction
         // Send a GitHub event result to all chat ids in env
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
             $this->sendNotification();
+            return;
         }
+
+        $this->telegramService->checkCallback();
     }
 
     /**
@@ -62,7 +64,7 @@ class SendNotifyAction
             return;
         }
 
-        // Notify access denied to other chat ids
+        // Notify access denied to other/invalid chat ids
         if (!in_array($chatMessageId, $this->chatIds)) {
             $this->notificationService->accessDenied($this->telegramService);
         }

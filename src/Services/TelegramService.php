@@ -13,6 +13,7 @@ class TelegramService extends AppService
         parent::__construct();
 
         $this->messageData = $this->telegram->getData() ?? [];
+        $this->settingService = new SettingService();
     }
 
     /**
@@ -28,8 +29,8 @@ class TelegramService extends AppService
                 $reply = view('tools.start', ['first_name' => $this->telegram->FirstName()]);
                 $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'Photo');
                 break;
-            case '/help':
-                $this->sendMessage(view('tools.help'), ['reply_markup' => $this->helpMarkup()]);
+            case '/menu':
+                $this->sendMessage(view('tools.menu'), ['reply_markup' => $this->menuMarkup()]);
                 break;
             case '/token':
             case '/id':
@@ -38,7 +39,7 @@ class TelegramService extends AppService
                 $this->sendMessage(view('tools.' . trim($text, '/')));
                 break;
             case '/settings':
-                $this->settingService->settingMarkup($this->telegram);
+                $this->settingService->settingHandle();
                 break;
             default:
                 $this->sendMessage('🤨 Invalid Request!');
@@ -53,7 +54,11 @@ class TelegramService extends AppService
      */
     protected function sendCallbackResponse(string $callback = null): void
     {
-        if (!empty($callback) && $callback == 'about') {
+        if (empty($callback)) {
+            return;
+        }
+
+        if ($callback === 'about') {
             $reply = view('tools.about');
             $content = array(
                 'callback_query_id' => $this->telegram->Callback_ID(),
@@ -61,6 +66,8 @@ class TelegramService extends AppService
                 'show_alert' => true
             );
             $this->telegram->answerCallbackQuery($content);
+        } elseif (str_contains($callback, 'setting.')) {
+            $this->settingService->settingCallbackHandler($callback);
         }
     }
 
@@ -82,7 +89,7 @@ class TelegramService extends AppService
     /**
      * @return array[]
      */
-    public function helpMarkup(): array
+    public function menuMarkup(): array
     {
         return [
             [
