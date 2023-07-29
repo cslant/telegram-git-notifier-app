@@ -8,4 +8,5 @@
 
 Hey <b><?= $first_name ?></b>,
 
-I can send you notifications from your GitHub Repository instantly to your Telegram. use /help for more information about me.
+I can send you notifications from your GitHub Repository instantly to your Telegram.
+Use /menu for more information about me.

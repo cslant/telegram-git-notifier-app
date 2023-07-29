@@ -15,6 +15,10 @@ class EventSettingService
      */
     public function validateAccessEvent(Request $request, $payload): bool
     {
+        if (enable_all_events()) {
+            return true;
+        }
+
         $eventConfig = event_config();
 
         if (empty($eventConfig)) {

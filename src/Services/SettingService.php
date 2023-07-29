@@ -4,7 +4,10 @@ namespace TelegramGithubNotify\App\Services;
 
 class SettingService extends AppService
 {
-    public function settingMarkup(): array
+    /**
+     * @return void
+     */
+    public function settingHandle(): void
     {
         $settings = setting_config();
 
@@ -20,7 +23,7 @@ class SettingService extends AppService
             $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 Enable All Events', '', 'setting.enable_all_events');
         }
 
-        return [
+        $keyboard = [
             [
                 $notificationSetting,
             ], [
@@ -28,5 +31,11 @@ class SettingService extends AppService
                 $this->telegram->buildInlineKeyBoardButton('Check Events', '', 'setting.check_events'),
             ],
         ];
+
+        $this->sendMessage(view('tools.settings'), ['reply_markup' => $keyboard]);
+    }
+
+    public function settingCallbackHandler(string $callback)
+    {
     }
 }
