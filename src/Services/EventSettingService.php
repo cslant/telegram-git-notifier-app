@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 class EventSettingService
 {
     /**
+     * Validate access event before send notify
+     *
      * @param Request $request
      * @param $payload
      * @return bool
@@ -24,10 +26,13 @@ class EventSettingService
         $eventConfig = $eventConfig[$event] ?? false;
 
         if (isset($payload->action) && isset($eventConfig[$payload->action])) {
-            return (bool)$eventConfig[$payload->action];
+            $eventConfig = $eventConfig[$payload->action];
         }
 
-        error_log('\n Event config is not found \n');
-        return false;
+        if (!$eventConfig) {
+            error_log('\n Event config is not found \n');
+        }
+
+        return (bool)$eventConfig;
     }
 }

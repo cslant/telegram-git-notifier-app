@@ -49,11 +49,13 @@
   "scripts": {
     "post-install-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "php -r \"file_exists('storage/tg-event.json') || copy('storage/tg-event.example.json', 'storage/tg-event.json');\""
+      "php -r \"file_exists('storage/tg-event.json') || copy('config/jsons/tg-event.json', 'storage/tg-event.json');\"",
+      "php -r \"file_exists('storage/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/tg-setting.json');\""
     ],
     "post-update-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "php -r \"file_exists('storage/tg-event.json') || copy('storage/tg-event.example.json', 'storage/tg-event.json');\""
+      "php -r \"file_exists('storage/tg-event.json') || copy('config/jsons/tg-event.json', 'storage/tg-event.json');\"",
+      "php -r \"file_exists('storage/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/tg-setting.json');\""
     ]
   }
 }

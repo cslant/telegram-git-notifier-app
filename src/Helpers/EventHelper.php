@@ -4,23 +4,25 @@ namespace TelegramGithubNotify\App\Helpers;
 
 class EventHelper
 {
+    public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
+
     public array $eventConfig = [];
 
     public function __construct()
     {
-        if (file_exists(__DIR__ . '/../../storage/tg-event.json')) {
-            $this->loadEventConfig();
+        if (file_exists(self::EVENT_FILE)) {
+            $this->setEventConfig();
         }
     }
 
     /**
-     * Load event config
+     * Set event config
      *
      * @return void
      */
-    public function loadEventConfig(): void
+    public function setEventConfig(): void
     {
-        $json = file_get_contents(__DIR__ . '/../../storage/tg-event.json');
+        $json = file_get_contents(self::EVENT_FILE);
         $this->eventConfig = json_decode($json, true);
     }
 

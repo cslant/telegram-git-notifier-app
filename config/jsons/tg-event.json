@@ -1,6 +1,24 @@
 {
+  "branch_protection_rule": {
+    "created": true,
+    "edited": false,
+    "deleted": false
+  },
+  "package": {
+    "published": true,
+    "updated": false
+  },
   "ping": true,
+  "project": {
+    "created": true,
+    "closed": true,
+    "reopened": false,
+    "edited": false,
+    "deleted": false
+  },
   "push": true,
+  "fork": true,
+  "gollum": true,
   "pull_request": {
     "closed": true,
     "opened": true,
@@ -13,7 +31,7 @@
     "edited": false,
     "assigned": false,
     "unassigned": false,
-    "review_request": false
+    "review_request": true
   },
   "pull_request_review": {
     "submitted": true,
@@ -24,6 +42,10 @@
     "created": true,
     "edited": false,
     "deleted": false
+  },
+  "pull_request_review_thread": {
+    "resolved": false,
+    "unresolved": false
   },
   "issue": {
     "closed": true,
@@ -49,7 +71,7 @@
     "deleted": false
   },
   "release": {
-    "published": false,
+    "published": true,
     "unpublished": false,
     "created": false,
     "edited": false,
@@ -57,21 +79,27 @@
     "prereleased": false,
     "released": true
   },
-  "watch": {
-    "started": false
+  "secret_scanning_alert": {
+    "created": true,
+    "reopened": false,
+    "resolved": false
   },
-  "fork": {
-    "created": false
+  "star": {
+    "created": true,
+    "deleted": false
+  },
+  "watch": {
+    "started": true
   },
   "member": {
-    "added": false,
+    "added": true,
     "edited": false,
     "removed": false
   },
   "check_run": {
     "created": false,
     "rerequested": false,
-    "completed": false
+    "completed": true
   },
   "workflow_dispatch": false,
   "workflow_job": {
