@@ -38,7 +38,7 @@ class TelegramService extends AppService
                 $this->sendMessage(view('tools.' . trim($text, '/')));
                 break;
             case '/settings':
-                $this->settingService->settingMarkup($this->telegram);
+                $this->sendMessage(view('tools.settings'), ['reply_markup' => $this->settingService->settingMarkup($this->telegram)]);
                 break;
             default:
                 $this->sendMessage('🤨 Invalid Request!');

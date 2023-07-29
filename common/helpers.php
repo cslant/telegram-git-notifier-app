@@ -106,3 +106,15 @@ if (!function_exists('enable_all_events')) {
         return (new SettingHelper())->enableAllEvents();
     }
 }
+
+if (!function_exists('setting_config')) {
+    /**
+     * Return setting config
+     *
+     * @return array
+     */
+    function setting_config(): array
+    {
+        return (new SettingHelper())->getSettingConfig();
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace TelegramGithubNotify\App\Services;
 
+use Exception;
 use Telegram;
 
 class AppService
@@ -29,17 +30,24 @@ class AppService
             'parse_mode' => 'HTML'
         );
 
-        if ($sendType === 'Message') {
-            $content['text'] = $message;
-        } elseif ($sendType === 'Photo' && !empty($options)) {
-            $content['photo'] = $options['photo'];
-            $content['caption'] = $message;
-        }
+        try {
+            if ($sendType === 'Message') {
+                $content['text'] = $message;
+            } elseif ($sendType === 'Photo' && !empty($options)) {
+                $content['photo'] = $options['photo'];
+                $content['caption'] = $message;
+            }
 
-        if (!empty($options) && isset($options['reply_markup'])) {
-            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-        }
+            if (!empty($options) && isset($options['reply_markup'])) {
+                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard(
+                    $options['reply_markup']
+                );
+            }
 
-        $this->telegram->{'send' . $sendType}($content);
+            $this->telegram->{'send'.$sendType}($content);
+        } catch (Exception $e) {
+            $content['text'] = $e->getMessage();
+            $this->telegram->sendMessage($content);
+        }
     }
 }

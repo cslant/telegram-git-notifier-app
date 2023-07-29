@@ -4,27 +4,31 @@ namespace TelegramGithubNotify\App\Services;
 
 use Telegram;
 
-class SettingService extends AppService
+class SettingService
 {
-    public function settingMarkup(Telegram $telegram): void
+    public function settingMarkup(Telegram $telegram): array
     {
-        $keyboard = [
-            [
-                $telegram->buildInlineKeyBoardButton('🔔 Notification', '', '/notification'),
-            ]
-        ];
+        $settings = setting_config();
 
-        if (enable_all_events()) {
+        if ($settings['is_notified'] === true) {
+            $notificationSetting = $telegram->buildInlineKeyBoardButton('🔕 Disable Notification', '', '/disable_notification');
+        } else {
+            $notificationSetting = $telegram->buildInlineKeyBoardButton('🔔 Enable Notification', '', '/enable_notification');
+        }
+
+        if ($settings['enable_all_event'] === true) {
             $eventSetting = $telegram->buildInlineKeyBoardButton('🔕 Disable All Events', '', '/disable_all_events');
         } else {
             $eventSetting = $telegram->buildInlineKeyBoardButton('🔔 Enable All Events', '', '/enable_all_events');
         }
 
-        $keyboard[0][] = [
-            $eventSetting,
-            $telegram->buildInlineKeyBoardButton('Check Events', '', '/check_events'),
+        return [
+            [
+                $notificationSetting,
+            ], [
+                $eventSetting,
+                $telegram->buildInlineKeyBoardButton('Check Events', '', '/check_events'),
+            ],
         ];
-
-        $this->sendMessage(view('tools.settings'), ['reply_markup' => $keyboard]);
     }
 }
