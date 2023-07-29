@@ -28,9 +28,11 @@ jobs:
           script: |
             cd /home/tannp/telegram-bot-github-notify
             git reset --hard HEAD
+            git clean -fd
             git pull origin deploy
             composer update
             cd /home/tannp/githubworkrun/telegram-bot-github-notify
             git reset --hard HEAD
+            git clean -fd
             git pull origin deploy
             composer update
