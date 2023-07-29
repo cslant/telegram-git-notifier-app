@@ -5,6 +5,6 @@
 /token - To get this bot token.
 /usage - How to use me.
 /settings - Settings github notify.
-/help - To show this Message.
+/menu - To get this menu.
 
 Select a command:
