@@ -23,7 +23,7 @@ class NotificationService
     {
         $reply = view('globals.access_denied', ['chatId' => $chatId]);
         $content = array(
-            'chat_id' => $telegramService->chatId,
+            'chat_id' => config('telegram-bot.chat_id'),
             'text' => $reply,
             'disable_web_page_preview' => true,
             'parse_mode' => 'HTML'
