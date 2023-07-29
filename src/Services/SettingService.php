@@ -2,24 +2,22 @@
 
 namespace TelegramGithubNotify\App\Services;
 
-use Telegram;
-
-class SettingService
+class SettingService extends AppService
 {
-    public function settingMarkup(Telegram $telegram): array
+    public function settingMarkup(): array
     {
         $settings = setting_config();
 
-        if ($settings['is_notified'] === true) {
-            $notificationSetting = $telegram->buildInlineKeyBoardButton('🔕 Disable Notification', '', '/disable_notification');
+        if ($settings['is_notified']) {
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('🔕 Disable Notification', '', 'setting.disable_notification');
         } else {
-            $notificationSetting = $telegram->buildInlineKeyBoardButton('🔔 Enable Notification', '', '/enable_notification');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('🔔 Enable Notification', '', 'setting.enable_notification');
         }
 
-        if ($settings['enable_all_event'] === true) {
-            $eventSetting = $telegram->buildInlineKeyBoardButton('🔕 Disable All Events', '', '/disable_all_events');
+        if ($settings['enable_all_event']) {
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔕 Disable All Events', '', 'setting.disable_all_events');
         } else {
-            $eventSetting = $telegram->buildInlineKeyBoardButton('🔔 Enable All Events', '', '/enable_all_events');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 Enable All Events', '', 'setting.enable_all_events');
         }
 
         return [
@@ -27,7 +25,7 @@ class SettingService
                 $notificationSetting,
             ], [
                 $eventSetting,
-                $telegram->buildInlineKeyBoardButton('Check Events', '', '/check_events'),
+                $this->telegram->buildInlineKeyBoardButton('Check Events', '', 'setting.check_events'),
             ],
         ];
     }

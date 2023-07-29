@@ -1,1 +1,1 @@
-Settings for github notify.
+<b>Settings for github notify.</b>

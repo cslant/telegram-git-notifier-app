@@ -13,6 +13,7 @@ class TelegramService extends AppService
         parent::__construct();
 
         $this->messageData = $this->telegram->getData() ?? [];
+        $this->settingService = new SettingService();
     }
 
     /**
@@ -38,7 +39,7 @@ class TelegramService extends AppService
                 $this->sendMessage(view('tools.' . trim($text, '/')));
                 break;
             case '/settings':
-                $this->sendMessage(view('tools.settings'), ['reply_markup' => $this->settingService->settingMarkup($this->telegram)]);
+                $this->sendMessage(view('tools.settings'), ['reply_markup' => $this->settingService->settingMarkup(0)]);
                 break;
             default:
                 $this->sendMessage('🤨 Invalid Request!');

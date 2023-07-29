@@ -44,7 +44,7 @@ class AppService
                 );
             }
 
-            $this->telegram->{'send'.$sendType}($content);
+            $this->telegram->{'send' . $sendType}($content);
         } catch (Exception $e) {
             $content['text'] = $e->getMessage();
             $this->telegram->sendMessage($content);
