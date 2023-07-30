@@ -39,15 +39,12 @@ class AppService
             }
 
             if (!empty($options) && isset($options['reply_markup'])) {
-                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard(
-                    $options['reply_markup']
-                );
+                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
             }
 
             $this->telegram->{'send' . $sendType}($content);
         } catch (Exception $e) {
-            $content['text'] = $e->getMessage();
-            $this->telegram->sendMessage($content);
+            error_log($e->getMessage());
         }
     }
 }

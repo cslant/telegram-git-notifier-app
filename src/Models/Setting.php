@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramGithubNotify\App\Helpers;
+namespace TelegramGithubNotify\App\Models;
 
-class SettingHelper
+class Setting
 {
     public const SETTING_FILE = __DIR__ . '/../../storage/tg-setting.json';
 
@@ -39,9 +39,9 @@ class SettingHelper
     /**
      * @return bool
      */
-    public function enableAllEvents(): bool
+    public function allEventsNotify(): bool
     {
-        if (!empty($this->settings) && $this->settings['enable_all_event'] === true) {
+        if (!empty($this->settings) && $this->settings['all_events_notify'] === true) {
             return true;
         }
 
