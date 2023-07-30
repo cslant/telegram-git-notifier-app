@@ -22,15 +22,15 @@ class SettingService extends AppService
     public function settingHandle(): void
     {
         if ($this->settingConfig['is_notified']) {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('🔕 Disable Notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('❌ Notification', '', 'setting.is_notified');
         } else {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('🔔 Enable Notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Notification', '', 'setting.is_notified');
         }
 
         if ($this->settingConfig['all_events_notify']) {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔕 Disable All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔕 All Events Notify', '', 'setting.all_events_notify');
         } else {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 Enable All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 All Events Notify', '', 'setting.all_events_notify');
         }
 
         $keyboard = [
@@ -56,6 +56,8 @@ class SettingService extends AppService
             return;
         }
 
+        $callback = str_replace('setting.', '', $callback);
+
         $this->updateSetting($callback, !$this->settingConfig[$callback]);
         $this->settingHandle();
     }
@@ -80,19 +82,26 @@ class SettingService extends AppService
 
         if (isset($nestedSettings[$lastKey])) {
             $nestedSettings[$lastKey] = $settingValue ?? !$nestedSettings[$lastKey];
-            $this->saveSettingsToFile();
-            return true;
+            if ($this->saveSettingsToFile()) {
+                return true;
+            }
         }
 
         return false;
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    private function saveSettingsToFile(): void
+    private function saveSettingsToFile(): bool
     {
         $json = json_encode($this->settingConfig, JSON_PRETTY_PRINT);
-        file_put_contents(Setting::SETTING_FILE, $json);
+        if (file_exists(Setting::SETTING_FILE)) {
+            file_put_contents(Setting::SETTING_FILE, $json, LOCK_EX);
+
+            return true;
+        }
+
+        return false;
     }
 }
