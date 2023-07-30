@@ -39,7 +39,9 @@ class SettingService extends AppService
             ], [
                 $eventSetting,
                 $this->telegram->buildInlineKeyBoardButton('Custom individual events', '', 'setting.custom_events'),
-            ],
+            ], [
+                $this->telegram->buildInlineKeyBoardButton('🔙 Back', '', 'back.menu'),
+            ]
         ];
 
         $this->sendMessage(view('tools.settings'), ['reply_markup' => $keyboard]);
