@@ -7,4 +7,4 @@
 /settings - Settings github notify.
 /menu - To get this menu.
 
-Select a command:
+Select a button:

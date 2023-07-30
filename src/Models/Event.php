@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramGithubNotify\App\Helpers;
+namespace TelegramGithubNotify\App\Models;
 
-class EventHelper
+class Event
 {
     public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
 

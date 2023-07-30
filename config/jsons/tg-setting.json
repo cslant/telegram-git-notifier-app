@@ -1,4 +1,4 @@
 {
   "is_notified": true,
-  "enable_all_event": false
+  "all_events_notify": false
 }

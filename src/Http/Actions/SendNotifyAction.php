@@ -3,7 +3,7 @@
 namespace TelegramGithubNotify\App\Http\Actions;
 
 use Symfony\Component\HttpFoundation\Request;
-use TelegramGithubNotify\App\Services\EventSettingService;
+use TelegramGithubNotify\App\Services\EventService;
 use TelegramGithubNotify\App\Services\NotificationService;
 use TelegramGithubNotify\App\Services\TelegramService;
 
@@ -13,7 +13,7 @@ class SendNotifyAction
 
     protected NotificationService $notificationService;
 
-    protected EventSettingService $eventSettingService;
+    protected EventService $eventSettingService;
 
     protected Request $request;
 
@@ -24,7 +24,7 @@ class SendNotifyAction
         $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
-        $this->eventSettingService = new EventSettingService();
+        $this->eventSettingService = new EventService();
 
         $this->chatIds = config('telegram-bot.notify_chat_ids');
     }
