@@ -16,21 +16,22 @@ class SettingService extends AppService
         $this->setting = new Setting();
         $this->settingConfig = $this->setting->getSettingConfig();
     }
+
     /**
      * @return void
      */
     public function settingHandle(): void
     {
         if ($this->settingConfig['is_notified']) {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('❌ Notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Github notification', '', 'setting.is_notified');
         } else {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('Github notification', '', 'setting.is_notified');
         }
 
         if ($this->settingConfig['all_events_notify']) {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔕 All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('✅ Enable All Events Notify', '', 'setting.all_events_notify');
         } else {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('Enable All Events Notify', '', 'setting.all_events_notify');
         }
 
         $keyboard = [
@@ -38,9 +39,9 @@ class SettingService extends AppService
                 $notificationSetting,
             ], [
                 $eventSetting,
-                $this->telegram->buildInlineKeyBoardButton('Custom individual events', '', 'setting.custom_events'),
+                $this->telegram->buildInlineKeyBoardButton('➡ Custom individual events', '', 'setting.custom_events'),
             ], [
-                $this->telegram->buildInlineKeyBoardButton('🔙 Back', '', 'back.menu'),
+                $this->telegram->buildInlineKeyBoardButton('🔙 Back to menu', '', 'back.menu'),
             ]
         ];
 

@@ -3,9 +3,17 @@
 namespace TelegramGithubNotify\App\Services;
 
 use Symfony\Component\HttpFoundation\Request;
+use TelegramGithubNotify\App\Models\Setting;
 
 class EventService
 {
+    protected Setting $setting;
+
+    public function __construct()
+    {
+        $this->setting = new Setting();
+    }
+
     /**
      * Validate access event before send notify
      *
@@ -15,7 +23,11 @@ class EventService
      */
     public function validateAccessEvent(Request $request, $payload): bool
     {
-        if (all_events_notify()) {
+        if (!$this->setting->isNotified()) {
+            return false;
+        }
+
+        if ($this->setting->allEventsNotifyStatus()) {
             return true;
         }
 

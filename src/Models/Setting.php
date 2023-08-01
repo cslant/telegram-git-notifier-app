@@ -39,9 +39,21 @@ class Setting
     /**
      * @return bool
      */
-    public function allEventsNotify(): bool
+    public function allEventsNotifyStatus(): bool
     {
         if (!empty($this->settings) && $this->settings['all_events_notify'] === true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotified(): bool
+    {
+        if (!empty($this->settings) && $this->settings['is_notified'] === true) {
             return true;
         }
 
