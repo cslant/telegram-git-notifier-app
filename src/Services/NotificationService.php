@@ -21,14 +21,12 @@ class NotificationService
      */
     public function accessDenied(TelegramService $telegramService, string $chatId = null): void
     {
-        $reply = view('globals.access_denied', ['chatId' => $chatId]);
-        $content = array(
+        $telegramService->telegram->sendMessage([
             'chat_id' => config('telegram-bot.chat_id'),
-            'text' => $reply,
+            'text' => view('globals.access_denied', ['chatId' => $chatId]),
             'disable_web_page_preview' => true,
             'parse_mode' => 'HTML'
-        );
-        $telegramService->telegram->sendMessage($content);
+        ]);
     }
 
     /**
@@ -39,13 +37,13 @@ class NotificationService
      */
     public function setPayload(Request $request)
     {
-        $this->payload = json_decode($request->request->get('payload'));
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
             echo 'invalid request';
             exit;
-        } else {
-            $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
         }
+
+        $this->payload = json_decode($request->request->get('payload'));
+        $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
 
         return $this->payload;
     }
@@ -96,10 +94,10 @@ class NotificationService
             if ($response->getStatusCode() === 200) {
                 return true;
             }
-
-            return false;
         } catch (GuzzleException $e) {
-            return false;
+            error_log($e->getMessage());
         }
+
+        return false;
     }
 }

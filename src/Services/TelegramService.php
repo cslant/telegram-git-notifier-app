@@ -2,6 +2,8 @@
 
 namespace TelegramGithubNotify\App\Services;
 
+use TelegramGithubNotify\App\Models\Setting;
+
 class TelegramService extends AppService
 {
     public array $messageData;
@@ -59,14 +61,12 @@ class TelegramService extends AppService
         }
 
         if ($callback === 'about') {
-            $reply = view('tools.about');
-            $content = array(
+            $this->telegram->answerCallbackQuery([
                 'callback_query_id' => $this->telegram->Callback_ID(),
-                'text' => $reply,
+                'text' => view('tools.about'),
                 'show_alert' => true
-            );
-            $this->telegram->answerCallbackQuery($content);
-        } elseif (str_contains($callback, 'setting.')) {
+            ]);
+        } elseif (str_contains($callback, Setting::SETTING_PREFIX)) {
             $this->settingService->settingCallbackHandler($callback);
         }
     }
@@ -79,8 +79,7 @@ class TelegramService extends AppService
     public function checkCallback(): bool
     {
         if (!is_null($this->telegram->Callback_ChatID())) {
-            $callback = $this->telegram->Callback_Data();
-            $this->sendCallbackResponse($callback);
+            $this->sendCallbackResponse($this->telegram->Callback_Data());
             return true;
         }
         return false;

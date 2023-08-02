@@ -36,16 +36,16 @@ class SendNotifyAction
      */
     public function __invoke(): void
     {
-        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
-
-        if (!empty($chatMessageId)) {
-            $this->handleEventInTelegram($chatMessageId);
-            return;
-        }
-
         // Send a GitHub event result to all chat ids in env
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
             $this->sendNotification();
+            return;
+        }
+
+        // Telegram bot handler
+        $chatMessageId = $this->telegramService->messageData['message']['chat']['id'] ?? '';
+        if (!empty($chatMessageId)) {
+            $this->handleEventInTelegram($chatMessageId);
             return;
         }
 
