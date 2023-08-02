@@ -23,15 +23,15 @@ class SettingService extends AppService
     public function settingHandle(): void
     {
         if ($this->settingConfig['is_notified']) {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Github notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Github notification', '', $this->setting::SETTING_IS_NOTIFIED);
         } else {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('Github notification', '', 'setting.is_notified');
+            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('Github notification', '', $this->setting::SETTING_IS_NOTIFIED);
         }
 
         if ($this->settingConfig['all_events_notify']) {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('✅ Enable All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('✅ Enable All Events Notify', '', $this->setting::SETTING_ALL_EVENTS_NOTIFY);
         } else {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('Enable All Events Notify', '', 'setting.all_events_notify');
+            $eventSetting = $this->telegram->buildInlineKeyBoardButton('Enable All Events Notify', '', $this->setting::SETTING_ALL_EVENTS_NOTIFY);
         }
 
         $keyboard = [
@@ -39,7 +39,7 @@ class SettingService extends AppService
                 $notificationSetting,
             ], [
                 $eventSetting,
-                $this->telegram->buildInlineKeyBoardButton('➡ Custom individual events', '', 'setting.custom_events'),
+                $this->telegram->buildInlineKeyBoardButton('⚙ Custom individual events', '', $this->setting::SETTING_CUSTOM_EVENTS),
             ], [
                 $this->telegram->buildInlineKeyBoardButton('🔙 Back to menu', '', 'back.menu'),
             ]
@@ -54,12 +54,12 @@ class SettingService extends AppService
      */
     public function settingCallbackHandler(string $callback): void
     {
-        if ($callback === 'setting.custom_events') {
+        if ($callback === $this->setting::SETTING_CUSTOM_EVENTS) {
             (new EventService())->eventHandle();
             return;
         }
 
-        $callback = str_replace('setting.', '', $callback);
+        $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
 
         $this->updateSetting($callback, !$this->settingConfig[$callback]);
         $this->settingHandle();
@@ -98,9 +98,9 @@ class SettingService extends AppService
      */
     private function saveSettingsToFile(): bool
     {
-        $json = json_encode($this->settingConfig, JSON_PRETTY_PRINT);
-        if (file_exists(Setting::SETTING_FILE)) {
-            file_put_contents(Setting::SETTING_FILE, $json, LOCK_EX);
+        if (file_exists($this->setting::SETTING_FILE)) {
+            $json = json_encode($this->settingConfig, JSON_PRETTY_PRINT);
+            file_put_contents($this->setting::SETTING_FILE, $json, LOCK_EX);
 
             return true;
         }
