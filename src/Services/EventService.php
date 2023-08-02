@@ -3,15 +3,21 @@
 namespace TelegramGithubNotify\App\Services;
 
 use Symfony\Component\HttpFoundation\Request;
+use TelegramGithubNotify\App\Models\Event;
 use TelegramGithubNotify\App\Models\Setting;
 
-class EventService
+class EventService extends AppService
 {
     protected Setting $setting;
 
+    protected Event $event;
+
     public function __construct()
     {
+        parent::__construct();
+
         $this->setting = new Setting();
+        $this->event = new Event();
     }
 
     /**
@@ -31,7 +37,7 @@ class EventService
             return true;
         }
 
-        $eventConfig = event_config();
+        $eventConfig = $this->event->getEventConfig();
 
         $event = singularity($request->server->get('HTTP_X_GITHUB_EVENT'));
         $eventConfig = $eventConfig[$event] ?? false;

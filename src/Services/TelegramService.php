@@ -61,11 +61,7 @@ class TelegramService extends AppService
         }
 
         if ($callback === 'about') {
-            $this->telegram->answerCallbackQuery([
-                'callback_query_id' => $this->telegram->Callback_ID(),
-                'text' => view('tools.about'),
-                'show_alert' => true
-            ]);
+            $this->answerCallbackQuery(view('tools.about'));
         } elseif (str_contains($callback, Setting::SETTING_PREFIX)) {
             $this->settingService->settingCallbackHandler($callback);
         }

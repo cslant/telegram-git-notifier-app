@@ -22,30 +22,44 @@ class SettingService extends AppService
      */
     public function settingHandle(): void
     {
-        if ($this->settingConfig['is_notified']) {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Github notification', '', $this->setting::SETTING_IS_NOTIFIED);
-        } else {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('Github notification', '', $this->setting::SETTING_IS_NOTIFIED);
-        }
+        $this->sendMessage(view('tools.settings'), $this->settingMarkup());
+    }
 
-        if ($this->settingConfig['all_events_notify']) {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('✅ Enable All Events Notify', '', $this->setting::SETTING_ALL_EVENTS_NOTIFY);
-        } else {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('Enable All Events Notify', '', $this->setting::SETTING_ALL_EVENTS_NOTIFY);
-        }
-
+    public function settingMarkup(): array
+    {
         $keyboard = [
             [
-                $notificationSetting,
-            ], [
-                $eventSetting,
-                $this->telegram->buildInlineKeyBoardButton('⚙ Custom individual events', '', $this->setting::SETTING_CUSTOM_EVENTS),
-            ], [
-                $this->telegram->buildInlineKeyBoardButton('🔙 Back to menu', '', 'back.menu'),
+                $this->telegram->buildInlineKeyBoardButton(
+                    $this->settingConfig['is_notified']
+                        ? '✅ Github notification' : 'Github notification',
+                    '',
+                    $this->setting::SETTING_IS_NOTIFIED
+                ),
+            ],
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    $this->settingConfig['all_events_notify']
+                        ? '✅ Enable All Events Notify'
+                        : 'Enable All Events Notify',
+                    '',
+                    $this->setting::SETTING_ALL_EVENTS_NOTIFY
+                ),
+                $this->telegram->buildInlineKeyBoardButton(
+                    '⚙ Custom individual events',
+                    '',
+                    $this->setting::SETTING_CUSTOM_EVENTS
+                ),
+            ],
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    '🔙 Back to menu',
+                    '',
+                    $this->setting::SETTING_PREFIX . '.back.menu'
+                ),
             ]
         ];
 
-        $this->sendMessage(view('tools.settings'), ['reply_markup' => $keyboard]);
+        return ['reply_markup' => $keyboard];
     }
 
     /**
@@ -61,8 +75,11 @@ class SettingService extends AppService
 
         $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
 
-        $this->updateSetting($callback, !$this->settingConfig[$callback]);
-        $this->settingHandle();
+        if ($this->updateSettingItem($callback, !$this->settingConfig[$callback])) {
+            $this->settingHandle();
+        } else {
+            $this->answerCallbackQuery('Something went wrong!');
+        }
     }
 
     /**
@@ -70,7 +87,7 @@ class SettingService extends AppService
      * @param $settingValue
      * @return bool
      */
-    public function updateSetting(string $settingName, $settingValue = null): bool
+    public function updateSettingItem(string $settingName, $settingValue = null): bool
     {
         $keys = explode('.', $settingName);
         $lastKey = array_pop($keys);

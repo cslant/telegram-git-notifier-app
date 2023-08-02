@@ -47,4 +47,23 @@ class AppService
             error_log($e->getMessage());
         }
     }
+
+    /**
+     * Send callback response to telegram (show alert)
+     *
+     * @param string|null $text
+     * @return void
+     */
+    public function answerCallbackQuery(string $text = null): void
+    {
+        try {
+            $this->telegram->answerCallbackQuery([
+                'callback_query_id' => $this->telegram->Callback_ID(),
+                'text' => $text,
+                'show_alert' => true
+            ]);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
 }
