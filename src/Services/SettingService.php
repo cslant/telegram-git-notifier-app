@@ -6,9 +6,9 @@ use TelegramGithubNotify\App\Models\Setting;
 
 class SettingService extends AppService
 {
-    public Setting $setting;
+    protected Setting $setting;
 
-    public array $settingConfig = [];
+    protected array $settingConfig = [];
 
     public function __construct()
     {

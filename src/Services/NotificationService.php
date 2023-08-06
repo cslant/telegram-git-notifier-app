@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public mixed $payload;
+    protected mixed $payload;
 
-    public string $message = "";
+    protected string $message = "";
 
     /**
      * Notify access denied to other chat ids
@@ -54,7 +54,7 @@ class NotificationService
      * @param string $typeEvent
      * @return void
      */
-    public function setMessage(string $typeEvent): void
+    private function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
             $this->message = view(

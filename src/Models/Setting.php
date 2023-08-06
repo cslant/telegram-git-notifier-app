@@ -25,7 +25,7 @@ class Setting
      *
      * @return void
      */
-    public function setSettingConfig(): void
+    private function setSettingConfig(): void
     {
         $json = file_get_contents(self::SETTING_FILE);
         $this->settings = json_decode($json, true);

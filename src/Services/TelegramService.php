@@ -54,7 +54,7 @@ class TelegramService extends AppService
      * @param string|null $callback
      * @return void
      */
-    protected function sendCallbackResponse(string $callback = null): void
+    private function sendCallbackResponse(string $callback = null): void
     {
         if (empty($callback)) {
             return;
@@ -84,7 +84,7 @@ class TelegramService extends AppService
     /**
      * @return array[]
      */
-    public function menuMarkup(): array
+    private function menuMarkup(): array
     {
         return [
             [

@@ -56,7 +56,7 @@ class SendNotifyAction
      * @param string $chatMessageId
      * @return void
      */
-    public function handleEventInTelegram(string $chatMessageId): void
+    private function handleEventInTelegram(string $chatMessageId): void
     {
         // Send a result to only the bot owner
         if ($chatMessageId == config('telegram-bot.chat_id')) {
@@ -73,7 +73,7 @@ class SendNotifyAction
     /**
      * @return void
      */
-    protected function sendNotification(): void
+    private function sendNotification(): void
     {
         $payload = $this->notificationService->setPayload($this->request);
 

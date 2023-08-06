@@ -22,7 +22,7 @@ class Event
      *
      * @return void
      */
-    public function setEventConfig(): void
+    private function setEventConfig(): void
     {
         $json = file_get_contents(self::EVENT_FILE);
         $this->eventConfig = json_decode($json, true);
