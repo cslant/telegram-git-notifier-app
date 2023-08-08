@@ -22,12 +22,15 @@ class SettingService extends AppService
      */
     public function settingHandle(): void
     {
-        $this->sendMessage(view('tools.settings'), $this->settingMarkup());
+        $this->sendMessage(
+            view('tools.settings'),
+            ['reply_markup' => $this->settingMarkup()]
+        );
     }
 
     public function settingMarkup(): array
     {
-        $keyboard = [
+        return [
             [
                 $this->telegram->buildInlineKeyBoardButton(
                     $this->settingConfig['is_notified']
@@ -58,8 +61,6 @@ class SettingService extends AppService
                 ),
             ]
         ];
-
-        return ['reply_markup' => $keyboard];
     }
 
     /**

@@ -9,9 +9,12 @@ class AppService
 {
     public Telegram $telegram;
 
+    public string $chatId;
+
     public function __construct()
     {
         $this->telegram = new Telegram(config('telegram-bot.token'));
+        $this->chatId = config('telegram-bot.chat_id');
     }
 
     /**
@@ -25,7 +28,7 @@ class AppService
     public function sendMessage(string $message = '', array $options = [], string $sendType = 'Message'): void
     {
         $content = array(
-            'chat_id' => config('telegram-bot.chat_id'),
+            'chat_id' => $this->chatId,
             'disable_web_page_preview' => true,
             'parse_mode' => 'HTML'
         );
@@ -38,11 +41,7 @@ class AppService
                 $content['caption'] = $message;
             }
 
-            if (!empty($options) && isset($options['reply_markup'])) {
-                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-            }
-
-            $this->telegram->{'send' . $sendType}($content);
+            $this->telegram->{'send' . $sendType}(array_merge($content, $options));
         } catch (Exception $e) {
             error_log($e->getMessage());
         }

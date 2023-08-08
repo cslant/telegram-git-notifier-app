@@ -38,8 +38,7 @@ class NotificationService
     public function setPayload(Request $request)
     {
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            echo 'invalid request';
-            exit;
+            return null;
         }
 
         $this->payload = json_decode($request->request->get('payload'));
