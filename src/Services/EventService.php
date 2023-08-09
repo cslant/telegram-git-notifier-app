@@ -8,6 +8,8 @@ use TelegramGithubNotify\App\Models\Setting;
 
 class EventService extends AppService
 {
+    public const LINE_ITEM_COUNT = 2;
+
     protected Setting $setting;
 
     protected Event $event;
@@ -53,7 +55,49 @@ class EventService extends AppService
         return (bool)$eventConfig;
     }
 
-    public function eventHandle()
+    /**
+     * @return array
+     */
+    public function eventMarkup(): array
     {
+        $replyMarkup = $replyMarkupItem = [];
+
+        foreach ($this->event->getEventConfig() as $event => $eventValue) {
+            if (count($replyMarkupItem) === self::LINE_ITEM_COUNT) {
+                $replyMarkup[] = $replyMarkupItem;
+                $replyMarkupItem = [];
+            }
+
+            $callbackData = $this->event::EVENT_PREFIX . $event;
+
+            if (is_array($eventValue)) {
+                $eventName = '⚙ ' . $event;
+                $callbackData .= '.child';
+            } elseif ($eventValue) {
+                $eventName = '✅ ' . $event;
+            } else {
+                $eventName = '❌ ' . $event;
+            }
+
+            $replyMarkupItem[] = $this->telegram->buildInlineKeyBoardButton($eventName, '', $callbackData);
+        }
+
+        // add last item to a reply_markup array
+        if (count($replyMarkupItem) > 0) {
+            $replyMarkup[] = $replyMarkupItem;
+        }
+
+        return $replyMarkup;
+    }
+
+    /**
+     * @return void
+     */
+    public function eventHandle(): void
+    {
+        $this->sendMessage(
+            view('tools.event'),
+            ['reply_markup' => $this->eventMarkup()]
+        );
     }
 }

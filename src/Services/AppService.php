@@ -41,7 +41,11 @@ class AppService
                 $content['caption'] = $message;
             }
 
-            $this->telegram->{'send' . $sendType}(array_merge($content, $options));
+            if (!empty($options) && isset($options['reply_markup'])) {
+                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
+            }
+
+            $this->telegram->{'send' . $sendType}($content);
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
