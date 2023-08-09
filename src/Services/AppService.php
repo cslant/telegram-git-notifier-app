@@ -69,4 +69,35 @@ class AppService
             error_log($e->getMessage());
         }
     }
+
+    /**
+     * Edit message from telegram
+     *
+     * @param string|null $text
+     * @param array $options
+     * @return void
+     */
+    public function editMessageText(?string $text = null, array $options = []): void
+    {
+        try {
+            $content = array(
+                'chat_id' => $this->telegram->Callback_ChatID(),
+                'message_id' => $this->telegram->MessageID(),
+                'disable_web_page_preview' => true,
+                'parse_mode' => 'HTML',
+            );
+
+            if (!empty($text)) {
+                $content['text'] = $text;
+            }
+
+            if (!empty($options) && isset($options['reply_markup'])) {
+                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
+            }
+
+            $this->telegram->editMessageText($content);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
 }

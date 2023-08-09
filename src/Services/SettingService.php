@@ -28,6 +28,9 @@ class SettingService extends AppService
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function settingMarkup(): array
     {
         return [
@@ -77,7 +80,9 @@ class SettingService extends AppService
         $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
 
         if ($this->updateSettingItem($callback, !$this->settingConfig[$callback])) {
-            $this->settingHandle();
+            $this->editMessageText(null, [
+                'reply_markup' => $this->settingMarkup(),
+            ]);
         } else {
             $this->answerCallbackQuery('Something went wrong!');
         }
