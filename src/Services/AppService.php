@@ -9,9 +9,12 @@ class AppService
 {
     public Telegram $telegram;
 
+    public string $chatId;
+
     public function __construct()
     {
         $this->telegram = new Telegram(config('telegram-bot.token'));
+        $this->chatId = config('telegram-bot.chat_id');
     }
 
     /**
@@ -25,7 +28,7 @@ class AppService
     public function sendMessage(string $message = '', array $options = [], string $sendType = 'Message'): void
     {
         $content = array(
-            'chat_id' => config('telegram-bot.chat_id'),
+            'chat_id' => $this->chatId,
             'disable_web_page_preview' => true,
             'parse_mode' => 'HTML'
         );
@@ -46,5 +49,92 @@ class AppService
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
+    }
+
+    /**
+     * Send callback response to telegram (show alert)
+     *
+     * @param string|null $text
+     * @return void
+     */
+    public function answerCallbackQuery(string $text = null): void
+    {
+        try {
+            $this->telegram->answerCallbackQuery([
+                'callback_query_id' => $this->telegram->Callback_ID(),
+                'text' => $text,
+                'show_alert' => true
+            ]);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    /**
+     * Edit message from telegram
+     * (Edit message text and reply markup)
+     *
+     * @param string|null $text
+     * @param array $options
+     * @return void
+     */
+    public function editMessageText(?string $text = null, array $options = []): void
+    {
+        try {
+            $content = [
+                'text' => $text ?? $this->Callback_Message_Text()
+            ];
+            $content = array_merge($content, $this->setContentEditMessage($options));
+
+            $this->telegram->editMessageText($content);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    /**
+     * Edit message reply markup from a telegram
+     * (Edit message reply markup only)
+     *
+     * @param array $options
+     * @return void
+     */
+    public function editMessageReplyMarkup(array $options = []): void
+    {
+        try {
+            $this->telegram->editMessageReplyMarkup($this->setContentEditMessage($options));
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    /**
+     * Get the text from callback message
+     *
+     * @return string
+     */
+    public function Callback_Message_Text(): string
+    {
+        return $this->telegram->Callback_Message()['text'];
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    public function setContentEditMessage(array $options = []): array
+    {
+        $content = array(
+            'chat_id' => $this->telegram->Callback_ChatID(),
+            'message_id' => $this->telegram->MessageID(),
+            'disable_web_page_preview' => true,
+            'parse_mode' => 'HTML',
+        );
+
+        if (!empty($options) && isset($options['reply_markup'])) {
+            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
+        }
+
+        return $content;
     }
 }

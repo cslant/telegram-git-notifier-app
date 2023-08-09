@@ -56,10 +56,10 @@ class SendNotifyAction
      * @param string $chatMessageId
      * @return void
      */
-    public function handleEventInTelegram(string $chatMessageId): void
+    private function handleEventInTelegram(string $chatMessageId): void
     {
         // Send a result to only the bot owner
-        if ($chatMessageId == config('telegram-bot.chat_id')) {
+        if ($chatMessageId == $this->telegramService->chatId) {
             $this->telegramService->telegramToolHandler($this->telegramService->messageData['message']['text']);
             return;
         }
@@ -73,11 +73,11 @@ class SendNotifyAction
     /**
      * @return void
      */
-    protected function sendNotification(): void
+    private function sendNotification(): void
     {
         $payload = $this->notificationService->setPayload($this->request);
 
-        if (!$this->eventSettingService->validateAccessEvent($this->request, $payload)) {
+        if (empty($payload) || !$this->eventSettingService->validateAccessEvent($this->request, $payload)) {
             return;
         }
 

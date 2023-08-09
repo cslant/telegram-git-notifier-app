@@ -6,6 +6,8 @@ class Event
 {
     public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
 
+    public const EVENT_PREFIX = Setting::SETTING_PREFIX . '.event.';
+
     public array $eventConfig = [];
 
     public function __construct()
@@ -20,7 +22,7 @@ class Event
      *
      * @return void
      */
-    public function setEventConfig(): void
+    private function setEventConfig(): void
     {
         $json = file_get_contents(self::EVENT_FILE);
         $this->eventConfig = json_decode($json, true);

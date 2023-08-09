@@ -54,18 +54,14 @@ class TelegramService extends AppService
      * @param string|null $callback
      * @return void
      */
-    protected function sendCallbackResponse(string $callback = null): void
+    private function sendCallbackResponse(string $callback = null): void
     {
         if (empty($callback)) {
             return;
         }
 
         if ($callback === 'about') {
-            $this->telegram->answerCallbackQuery([
-                'callback_query_id' => $this->telegram->Callback_ID(),
-                'text' => view('tools.about'),
-                'show_alert' => true
-            ]);
+            $this->answerCallbackQuery(view('tools.about'));
         } elseif (str_contains($callback, Setting::SETTING_PREFIX)) {
             $this->settingService->settingCallbackHandler($callback);
         }
@@ -88,7 +84,7 @@ class TelegramService extends AppService
     /**
      * @return array[]
      */
-    public function menuMarkup(): array
+    private function menuMarkup(): array
     {
         return [
             [

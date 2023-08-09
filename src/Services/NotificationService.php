@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public mixed $payload;
+    protected mixed $payload;
 
-    public string $message = "";
+    protected string $message = "";
 
     /**
      * Notify access denied to other chat ids
@@ -38,8 +38,7 @@ class NotificationService
     public function setPayload(Request $request)
     {
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            echo 'invalid request';
-            exit;
+            return null;
         }
 
         $this->payload = json_decode($request->request->get('payload'));
@@ -54,7 +53,7 @@ class NotificationService
      * @param string $typeEvent
      * @return void
      */
-    public function setMessage(string $typeEvent): void
+    private function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
             $this->message = view(
