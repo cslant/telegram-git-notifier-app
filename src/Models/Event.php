@@ -6,7 +6,7 @@ class Event
 {
     public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
 
-    public const EVENT_PREFIX = Setting::SETTING_PREFIX . '.event.';
+    public const EVENT_PREFIX = Setting::SETTING_CUSTOM_EVENTS . '.event.';
 
     public array $eventConfig = [];
 

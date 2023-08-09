@@ -72,8 +72,8 @@ class SettingService extends AppService
      */
     public function settingCallbackHandler(string $callback): void
     {
-        if ($callback === $this->setting::SETTING_CUSTOM_EVENTS) {
-            (new EventService())->eventHandle();
+        if (str_contains($callback, $this->setting::SETTING_CUSTOM_EVENTS)) {
+            (new EventService())->eventHandle($callback);
             return;
         }
 

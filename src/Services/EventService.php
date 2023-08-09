@@ -10,6 +10,8 @@ class EventService extends AppService
 {
     public const LINE_ITEM_COUNT = 2;
 
+    public const EVENT_HAS_ACTION_SEPARATOR = 'action.';
+
     protected Setting $setting;
 
     protected Event $event;
@@ -77,7 +79,7 @@ class EventService extends AppService
 
             if (is_array($value)) {
                 $eventName = '⚙ ' . $event;
-                $callbackData .= '.child';
+                $callbackData = $this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR . $event;
             } elseif ($value) {
                 $eventName = '✅ ' . $event;
             } else {
@@ -99,13 +101,27 @@ class EventService extends AppService
     }
 
     /**
+     * Handle event callback settings
+     *
+     * @param string|null $callback
      * @return void
      */
-    public function eventHandle(): void
+    public function eventHandle(?string $callback = null): void
     {
-        $this->editMessageText(
-            view('tools.event'),
-            ['reply_markup' => $this->eventMarkup()]
-        );
+        if ($this->setting::SETTING_CUSTOM_EVENTS === $callback || empty($callback)) {
+            $this->editMessageText(
+                view('tools.custom_event'),
+                ['reply_markup' => $this->eventMarkup()]
+            );
+            return;
+        }
+
+        if (str_contains($callback, self::EVENT_HAS_ACTION_SEPARATOR)) {
+            $event = str_replace($this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR, '', $callback);
+            $this->editMessageText(
+                view('tools.custom_event_action', compact('event')),
+                ['reply_markup' => $this->eventMarkup($event)]
+            );
+        }
     }
 }

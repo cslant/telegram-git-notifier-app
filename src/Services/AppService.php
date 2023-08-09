@@ -81,10 +81,9 @@ class AppService
     public function editMessageText(?string $text = null, array $options = []): void
     {
         try {
-            $content = [
+            $content = array_merge([
                 'text' => $text ?? $this->Callback_Message_Text()
-            ];
-            $content = array_merge($content, $this->setContentEditMessage($options));
+            ], $this->setCallbackContentMessage($options));
 
             $this->telegram->editMessageText($content);
         } catch (Exception $e) {
@@ -102,7 +101,7 @@ class AppService
     public function editMessageReplyMarkup(array $options = []): void
     {
         try {
-            $this->telegram->editMessageReplyMarkup($this->setContentEditMessage($options));
+            $this->telegram->editMessageReplyMarkup($this->setCallbackContentMessage($options));
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
@@ -119,10 +118,11 @@ class AppService
     }
 
     /**
+     * Create content for callback message
      * @param array $options
      * @return array
      */
-    public function setContentEditMessage(array $options = []): array
+    public function setCallbackContentMessage(array $options = []): array
     {
         $content = array(
             'chat_id' => $this->telegram->Callback_ChatID(),
