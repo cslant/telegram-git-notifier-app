@@ -80,7 +80,7 @@ class SettingService extends AppService
         $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
 
         if ($this->updateSettingItem($callback, !$this->settingConfig[$callback])) {
-            $this->editMessageText(null, [
+            $this->editMessageReplyMarkup([
                 'reply_markup' => $this->settingMarkup(),
             ]);
         } else {

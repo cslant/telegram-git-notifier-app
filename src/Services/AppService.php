@@ -72,6 +72,7 @@ class AppService
 
     /**
      * Edit message from telegram
+     * (Edit message text and reply markup)
      *
      * @param string|null $text
      * @param array $options
@@ -80,24 +81,60 @@ class AppService
     public function editMessageText(?string $text = null, array $options = []): void
     {
         try {
-            $content = array(
-                'chat_id' => $this->telegram->Callback_ChatID(),
-                'message_id' => $this->telegram->MessageID(),
-                'disable_web_page_preview' => true,
-                'parse_mode' => 'HTML',
-            );
-
-            if (!empty($text)) {
-                $content['text'] = $text;
-            }
-
-            if (!empty($options) && isset($options['reply_markup'])) {
-                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-            }
+            $content = [
+                'text' => $text ?? $this->Callback_Message_Text()
+            ];
+            $content = array_merge($content, $this->setContentEditMessage($options));
 
             $this->telegram->editMessageText($content);
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
+    }
+
+    /**
+     * Edit message reply markup from a telegram
+     * (Edit message reply markup only)
+     *
+     * @param array $options
+     * @return void
+     */
+    public function editMessageReplyMarkup(array $options = []): void
+    {
+        try {
+            $this->telegram->editMessageReplyMarkup($this->setContentEditMessage($options));
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    /**
+     * Get the text from callback message
+     *
+     * @return string
+     */
+    public function Callback_Message_Text(): string
+    {
+        return $this->telegram->Callback_Message()['text'];
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    public function setContentEditMessage(array $options = []): array
+    {
+        $content = array(
+            'chat_id' => $this->telegram->Callback_ChatID(),
+            'message_id' => $this->telegram->MessageID(),
+            'disable_web_page_preview' => true,
+            'parse_mode' => 'HTML',
+        );
+
+        if (!empty($options) && isset($options['reply_markup'])) {
+            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
+        }
+
+        return $content;
     }
 }

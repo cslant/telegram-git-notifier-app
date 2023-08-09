@@ -103,7 +103,7 @@ class EventService extends AppService
      */
     public function eventHandle(): void
     {
-        $this->sendMessage(
+        $this->editMessageText(
             view('tools.event'),
             ['reply_markup' => $this->eventMarkup()]
         );
