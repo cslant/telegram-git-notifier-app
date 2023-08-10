@@ -36,14 +36,12 @@ class AppService
         try {
             if ($sendType === 'Message') {
                 $content['text'] = $message;
-            } elseif ($sendType === 'Photo' && !empty($options)) {
-                $content['photo'] = $options['photo'];
+            } elseif ($sendType === 'Photo') {
+                $content['photo'] = $options['photo'] ?? null;
                 $content['caption'] = $message;
             }
 
-            if (!empty($options) && isset($options['reply_markup'])) {
-                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-            }
+            $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
 
             $this->telegram->{'send' . $sendType}($content);
         } catch (Exception $e) {
@@ -119,6 +117,7 @@ class AppService
 
     /**
      * Create content for callback message
+     * 
      * @param array $options
      * @return array
      */
@@ -131,9 +130,7 @@ class AppService
             'parse_mode' => 'HTML',
         );
 
-        if (!empty($options) && isset($options['reply_markup'])) {
-            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-        }
+        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
 
         return $content;
     }
