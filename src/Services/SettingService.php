@@ -18,7 +18,7 @@ class SettingService extends AppService
     }
 
     /**
-     * Send setting message
+     * Send a setting message
      *
      * @return void
      */
@@ -147,8 +147,9 @@ class SettingService extends AppService
     }
 
     /**
-     * @param string $callback
+     * Answer the back button
      *
+     * @param string $callback
      * @return void
      */
     public function answerBackButton(string $callback): void

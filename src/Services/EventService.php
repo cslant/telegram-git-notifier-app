@@ -12,6 +12,8 @@ class EventService extends AppService
 
     public const EVENT_HAS_ACTION_SEPARATOR = 'action.';
 
+    public const EVENT_UPDATE_SEPARATOR = '.update';
+
     protected Setting $setting;
 
     protected Event $event;
@@ -75,7 +77,7 @@ class EventService extends AppService
                 $replyMarkupItem = [];
             }
 
-            $callbackData = $this->getCallbackData($key, $value);
+            $callbackData = $this->getCallbackData($key, $value, $event);
             $eventName = $this->getEventName($key, $value);
 
             $replyMarkupItem[] = $this->telegram->buildInlineKeyBoardButton($eventName, '', $callbackData);
@@ -104,25 +106,29 @@ class EventService extends AppService
             return '⚙ ' . $event;
         } elseif ($value) {
             return '✅ ' . $event;
-        } else {
-            return '❌ ' . $event;
         }
+
+        return '❌ ' . $event;
     }
 
     /**
      * Get callback data for markup
      *
      * @param string $event
-     * @param $value
+     * @param array|string $value
+     * @param string|null $parentEvent
+     *
      * @return string
      */
-    private function getCallbackData(string $event, $value): string
+    private function getCallbackData(string $event, array|string $value, ?string $parentEvent = null): string
     {
         if (is_array($value)) {
             return $this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR . $event;
-        } else {
-            return $this->event::EVENT_PREFIX . $event;
+        } elseif ($parentEvent) {
+            return $this->event::EVENT_PREFIX . $parentEvent . '.' . $event . self::EVENT_UPDATE_SEPARATOR;
         }
+
+        return $this->event::EVENT_PREFIX . $event . self::EVENT_UPDATE_SEPARATOR;
     }
 
     /**
@@ -153,6 +159,7 @@ class EventService extends AppService
      */
     public function eventHandle(?string $callback = null): void
     {
+        // first event settings
         if ($this->setting::SETTING_CUSTOM_EVENTS === $callback || empty($callback)) {
             $this->editMessageText(
                 view('tools.custom_events'),
@@ -161,12 +168,36 @@ class EventService extends AppService
             return;
         }
 
+        $event = str_replace($this->event::EVENT_PREFIX, '', $callback);
+
+        // if event has actions
         if (str_contains($callback, self::EVENT_HAS_ACTION_SEPARATOR)) {
-            $event = str_replace($this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR, '', $callback);
+            $event = str_replace(self::EVENT_HAS_ACTION_SEPARATOR, '', $event);
             $this->editMessageText(
                 view('tools.custom_event_actions', compact('event')),
                 ['reply_markup' => $this->eventMarkup($event)]
             );
         }
+
+        if (str_contains($event, self::EVENT_UPDATE_SEPARATOR)) {
+            $event = str_replace(self::EVENT_UPDATE_SEPARATOR, '', $event);
+            $this->eventUpdateHandle($event);
+        }
+    }
+
+    /**
+     * Handle event update
+     *
+     * @param string $event
+     * @return void
+     */
+    public function eventUpdateHandle(string $event): void
+    {
+        $event = explode('.', $event);
+        $action = $event[1] ?? null;
+        $event = $event[0];
+
+        $this->event->updateEvent($event, $action);
+        $this->eventHandle($action ? self::EVENT_HAS_ACTION_SEPARATOR . $event : null);
     }
 }
