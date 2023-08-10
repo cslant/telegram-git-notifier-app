@@ -10,6 +10,7 @@ class Setting
     public const SETTING_IS_NOTIFIED = self::SETTING_PREFIX . 'is_notified';
     public const SETTING_ALL_EVENTS_NOTIFY = self::SETTING_PREFIX . 'all_events_notify';
     public const SETTING_CUSTOM_EVENTS = self::SETTING_PREFIX . 'custom_events';
+    public const SETTING_BACK = self::SETTING_PREFIX . 'back.';
 
     public array $settings = [];
 
