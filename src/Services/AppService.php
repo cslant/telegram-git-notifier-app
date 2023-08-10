@@ -33,20 +33,16 @@ class AppService
             'parse_mode' => 'HTML'
         );
 
-        try {
-            if ($sendType === 'Message') {
-                $content['text'] = $message;
-            } elseif ($sendType === 'Photo') {
-                $content['photo'] = $options['photo'] ?? null;
-                $content['caption'] = $message;
-            }
-
-            $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
-
-            $this->telegram->{'send' . $sendType}($content);
-        } catch (Exception $e) {
-            error_log($e->getMessage());
+        if ($sendType === 'Message') {
+            $content['text'] = $message;
+        } elseif ($sendType === 'Photo') {
+            $content['photo'] = $options['photo'] ?? null;
+            $content['caption'] = $message;
         }
+
+        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
+
+        $this->telegram->{'send' . $sendType}($content);
     }
 
     /**

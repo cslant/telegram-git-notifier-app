@@ -9,4 +9,4 @@
 Hey <b><?= $first_name ?></b>,
 
 I can send you notifications from your GitHub Repository instantly to your Telegram.
-Use /menu for more information about me.
+Use /menu for more options.

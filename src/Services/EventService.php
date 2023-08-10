@@ -75,16 +75,8 @@ class EventService extends AppService
                 $replyMarkupItem = [];
             }
 
-            $callbackData = $this->event::EVENT_PREFIX . $event;
-
-            if (is_array($value)) {
-                $eventName = '⚙ ' . $event;
-                $callbackData = $this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR . $event;
-            } elseif ($value) {
-                $eventName = '✅ ' . $event;
-            } else {
-                $eventName = '❌ ' . $event;
-            }
+            $callbackData = $this->getCallbackData($event, $value);
+            $eventName = $this->getEventName($event, $value);
 
             $replyMarkupItem[] = $this->telegram->buildInlineKeyBoardButton($eventName, '', $callbackData);
         }
@@ -98,6 +90,40 @@ class EventService extends AppService
         $replyMarkup[] = [$this->telegram->buildInlineKeyBoardButton('📚 Menu', '', $this->setting::SETTING_PREFIX . '.back.menu')];
 
         return $replyMarkup;
+    }
+
+    /**
+     * Get event name for markup
+     *
+     * @param string $event
+     * @param $value
+     * @return string
+     */
+    private function getEventName(string $event, $value): string
+    {
+        if (is_array($value)) {
+            return '⚙ ' . $event;
+        } elseif ($value) {
+            return '✅ ' . $event;
+        } else {
+            return '❌ ' . $event;
+        }
+    }
+
+    /**
+     * Get callback data for markup
+     *
+     * @param string $event
+     * @param $value
+     * @return string
+     */
+    private function getCallbackData(string $event, $value): string
+    {
+        if (is_array($value)) {
+            return $this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR . $event;
+        } else {
+            return $this->event::EVENT_PREFIX . $event;
+        }
     }
 
     /**
