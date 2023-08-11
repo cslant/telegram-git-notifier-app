@@ -6,104 +6,127 @@ use TelegramGithubNotify\App\Models\Setting;
 
 class SettingService extends AppService
 {
-    public Setting $setting;
-
-    public array $settingConfig = [];
+    protected Setting $setting;
 
     public function __construct()
     {
         parent::__construct();
         $this->setting = new Setting();
-        $this->settingConfig = $this->setting->getSettingConfig();
     }
+
     /**
+     * Send a setting message
+     *
      * @return void
      */
     public function settingHandle(): void
     {
-        if ($this->settingConfig['is_notified']) {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('❌ Notification', '', 'setting.is_notified');
-        } else {
-            $notificationSetting = $this->telegram->buildInlineKeyBoardButton('✅ Notification', '', 'setting.is_notified');
-        }
-
-        if ($this->settingConfig['all_events_notify']) {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔕 All Events Notify', '', 'setting.all_events_notify');
-        } else {
-            $eventSetting = $this->telegram->buildInlineKeyBoardButton('🔔 All Events Notify', '', 'setting.all_events_notify');
-        }
-
-        $keyboard = [
-            [
-                $notificationSetting,
-            ], [
-                $eventSetting,
-                $this->telegram->buildInlineKeyBoardButton('Custom individual events', '', 'setting.custom_events'),
-            ], [
-                $this->telegram->buildInlineKeyBoardButton('🔙 Back', '', 'back.menu'),
-            ]
-        ];
-
-        $this->sendMessage(view('tools.settings'), ['reply_markup' => $keyboard]);
+        $this->sendMessage(
+            view('tools.settings'),
+            ['reply_markup' => $this->settingMarkup()]
+        );
     }
 
     /**
+     * Generate setting markup
+     *
+     * @return array[]
+     */
+    public function settingMarkup(): array
+    {
+        $allEventKeyboard = [
+            $this->telegram->buildInlineKeyBoardButton(
+                $this->setting->settings['all_events_notify']
+                    ? '✅ Enable All Events Notify' : 'Enable All Events Notify',
+                '',
+                $this->setting::SETTING_ALL_EVENTS_NOTIFY
+            ),
+        ];
+
+        if (!$this->setting->settings['all_events_notify']) {
+            $allEventKeyboard[] = $this->telegram->buildInlineKeyBoardButton(
+                '⚙ Custom individual events',
+                '',
+                $this->setting::SETTING_CUSTOM_EVENTS
+            );
+        }
+
+        return [
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    $this->setting->settings['is_notified']
+                        ? '✅ Github notification' : 'Github notification',
+                    '',
+                    $this->setting::SETTING_IS_NOTIFIED
+                ),
+            ],
+            $allEventKeyboard,
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    '🔙 Back to menu',
+                    '',
+                    $this->setting::SETTING_BACK . 'menu'
+                ),
+            ]
+        ];
+    }
+
+    /**
+     * Setting callback handler
+     *
      * @param string $callback
      * @return void
      */
     public function settingCallbackHandler(string $callback): void
     {
-        if ($callback === 'setting.custom_events') {
-            (new EventService())->eventHandle();
+        if (str_contains($callback, $this->setting::SETTING_CUSTOM_EVENTS)) {
+            (new EventService())->eventHandle($callback);
             return;
         }
 
-        $callback = str_replace('setting.', '', $callback);
+        if (str_contains($callback, $this->setting::SETTING_BACK)) {
+            $this->answerBackButton($callback);
+            return;
+        }
 
-        $this->updateSetting($callback, !$this->settingConfig[$callback]);
-        $this->settingHandle();
+        $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
+
+        if ($this->setting->updateSettingItem($callback, !$this->setting->settings[$callback])) {
+            $this->editMessageReplyMarkup([
+                'reply_markup' => $this->settingMarkup(),
+            ]);
+        } else {
+            $this->answerCallbackQuery('Something went wrong!');
+        }
     }
 
     /**
-     * @param string $settingName
-     * @param $settingValue
-     * @return bool
+     * Answer the back button
+     *
+     * @param string $callback
+     * @return void
      */
-    public function updateSetting(string $settingName, $settingValue = null): bool
+    public function answerBackButton(string $callback): void
     {
-        $keys = explode('.', $settingName);
-        $lastKey = array_pop($keys);
-        $nestedSettings = &$this->settingConfig;
+        $callback = str_replace($this->setting::SETTING_BACK, '', $callback);
 
-        foreach ($keys as $key) {
-            if (!isset($nestedSettings[$key]) || !is_array($nestedSettings[$key])) {
-                return false;
-            }
-            $nestedSettings = &$nestedSettings[$key];
+        switch ($callback) {
+            case 'settings':
+                $view = view('tools.settings');
+                $markup = $this->settingMarkup();
+                break;
+            case 'settings.custom_events':
+                $view = view('tools.custom_events');
+                $markup = (new EventService())->eventMarkup();
+                break;
+            default:
+                $view = view('tools.menu');
+                $markup = $this->menuMarkup();
+                break;
         }
 
-        if (isset($nestedSettings[$lastKey])) {
-            $nestedSettings[$lastKey] = $settingValue ?? !$nestedSettings[$lastKey];
-            if ($this->saveSettingsToFile()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    private function saveSettingsToFile(): bool
-    {
-        $json = json_encode($this->settingConfig, JSON_PRETTY_PRINT);
-        if (file_exists(Setting::SETTING_FILE)) {
-            file_put_contents(Setting::SETTING_FILE, $json, LOCK_EX);
-
-            return true;
-        }
-
-        return false;
+        $this->editMessageText($view, [
+            'reply_markup' => $markup,
+        ]);
     }
 }

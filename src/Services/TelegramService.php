@@ -2,6 +2,8 @@
 
 namespace TelegramGithubNotify\App\Services;
 
+use TelegramGithubNotify\App\Models\Setting;
+
 class TelegramService extends AppService
 {
     public array $messageData;
@@ -52,21 +54,15 @@ class TelegramService extends AppService
      * @param string|null $callback
      * @return void
      */
-    protected function sendCallbackResponse(string $callback = null): void
+    private function sendCallbackResponse(string $callback = null): void
     {
         if (empty($callback)) {
             return;
         }
 
         if ($callback === 'about') {
-            $reply = view('tools.about');
-            $content = array(
-                'callback_query_id' => $this->telegram->Callback_ID(),
-                'text' => $reply,
-                'show_alert' => true
-            );
-            $this->telegram->answerCallbackQuery($content);
-        } elseif (str_contains($callback, 'setting.')) {
+            $this->answerCallbackQuery(view('tools.about'));
+        } elseif (str_contains($callback, Setting::SETTING_PREFIX)) {
             $this->settingService->settingCallbackHandler($callback);
         }
     }
@@ -79,25 +75,9 @@ class TelegramService extends AppService
     public function checkCallback(): bool
     {
         if (!is_null($this->telegram->Callback_ChatID())) {
-            $callback = $this->telegram->Callback_Data();
-            $this->sendCallbackResponse($callback);
+            $this->sendCallbackResponse($this->telegram->Callback_Data());
             return true;
         }
         return false;
-    }
-
-    /**
-     * @return array[]
-     */
-    public function menuMarkup(): array
-    {
-        return [
-            [
-                $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
-                $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
-            ], [
-                $this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))
-            ]
-        ];
     }
 }

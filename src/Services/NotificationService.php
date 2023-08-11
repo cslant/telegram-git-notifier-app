@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NotificationService
 {
-    public mixed $payload;
+    protected mixed $payload;
 
-    public string $message = "";
+    protected string $message = "";
 
     /**
      * Notify access denied to other chat ids
@@ -21,14 +21,12 @@ class NotificationService
      */
     public function accessDenied(TelegramService $telegramService, string $chatId = null): void
     {
-        $reply = view('globals.access_denied', ['chatId' => $chatId]);
-        $content = array(
+        $telegramService->telegram->sendMessage([
             'chat_id' => config('telegram-bot.chat_id'),
-            'text' => $reply,
+            'text' => view('globals.access_denied', ['chatId' => $chatId]),
             'disable_web_page_preview' => true,
             'parse_mode' => 'HTML'
-        );
-        $telegramService->telegram->sendMessage($content);
+        ]);
     }
 
     /**
@@ -39,13 +37,12 @@ class NotificationService
      */
     public function setPayload(Request $request)
     {
-        $this->payload = json_decode($request->request->get('payload'));
         if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            echo 'invalid request';
-            exit;
-        } else {
-            $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
+            return null;
         }
+
+        $this->payload = json_decode($request->request->get('payload'));
+        $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
 
         return $this->payload;
     }
@@ -56,7 +53,7 @@ class NotificationService
      * @param string $typeEvent
      * @return void
      */
-    public function setMessage(string $typeEvent): void
+    private function setMessage(string $typeEvent): void
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
             $this->message = view(
@@ -72,7 +69,7 @@ class NotificationService
     }
 
     /**
-     * Send notify to telegram
+     * Send notification to telegram
      *
      * @param string $chatId
      * @param string|null $message
@@ -96,10 +93,10 @@ class NotificationService
             if ($response->getStatusCode() === 200) {
                 return true;
             }
-
-            return false;
         } catch (GuzzleException $e) {
-            return false;
+            error_log($e->getMessage());
         }
+
+        return false;
     }
 }

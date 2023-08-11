@@ -103,7 +103,7 @@ if (!function_exists('all_events_notify')) {
      */
     function all_events_notify(): bool
     {
-        return (new Setting())->allEventsNotify();
+        return (new Setting())->allEventsNotifyStatus();
     }
 }
 
