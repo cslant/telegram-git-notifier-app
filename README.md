@@ -16,7 +16,6 @@
 - PHP ^8.0
 - Composer
 - Telegram Bot
-- SSL Certificate
 
 ## Installation
 
@@ -70,12 +69,14 @@ APP_URL=https://123456789.ngrok.io
 
 ### Set the webhook
 
-#### Set the webhook from the source code
+We have two ways to set the webhook:
+
+#### 1. Set the webhook from this project
 
 After setting up your domain and SSL certificate, you need to set up the webhook for your bot. Go to:
 
 ```text
-<APP_URL>/setWebhook.php
+<APP_URL>/webhook/set.php
 ```
 
 > **Note:** Replace `<APP_URL>` with your app URL in .env file.
@@ -86,7 +87,7 @@ If you see the following message, it means that the webhook has been sent succes
 {"ok":true,"result":true,"description":"Webhook was set"}
 ```
 
-#### Set the webhook manually
+#### 2. Set the webhook manually
 
 If you want to set the webhook manually, you can use the following URL:
 
@@ -140,4 +141,4 @@ Now you can send a message to your bot, and you will receive a notification.
 
 Here is the first notification you will receive: ♻️ **Connection Successful**
 
-> **You can add multiple webhooks to your repository.**
+> **Note: You can add multiple webhooks to your repository. Please similarly set up the webhook for each repository.**

@@ -33,22 +33,16 @@ class AppService
             'parse_mode' => 'HTML'
         );
 
-        try {
-            if ($sendType === 'Message') {
-                $content['text'] = $message;
-            } elseif ($sendType === 'Photo' && !empty($options)) {
-                $content['photo'] = $options['photo'];
-                $content['caption'] = $message;
-            }
-
-            if (!empty($options) && isset($options['reply_markup'])) {
-                $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-            }
-
-            $this->telegram->{'send' . $sendType}($content);
-        } catch (Exception $e) {
-            error_log($e->getMessage());
+        if ($sendType === 'Message') {
+            $content['text'] = $message;
+        } elseif ($sendType === 'Photo') {
+            $content['photo'] = $options['photo'] ?? null;
+            $content['caption'] = $message;
         }
+
+        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
+
+        $this->telegram->{'send' . $sendType}($content);
     }
 
     /**
@@ -81,10 +75,9 @@ class AppService
     public function editMessageText(?string $text = null, array $options = []): void
     {
         try {
-            $content = [
+            $content = array_merge([
                 'text' => $text ?? $this->Callback_Message_Text()
-            ];
-            $content = array_merge($content, $this->setContentEditMessage($options));
+            ], $this->setCallbackContentMessage($options));
 
             $this->telegram->editMessageText($content);
         } catch (Exception $e) {
@@ -102,7 +95,7 @@ class AppService
     public function editMessageReplyMarkup(array $options = []): void
     {
         try {
-            $this->telegram->editMessageReplyMarkup($this->setContentEditMessage($options));
+            $this->telegram->editMessageReplyMarkup($this->setCallbackContentMessage($options));
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
@@ -119,10 +112,12 @@ class AppService
     }
 
     /**
+     * Create content for a callback message
+     *
      * @param array $options
      * @return array
      */
-    public function setContentEditMessage(array $options = []): array
+    public function setCallbackContentMessage(array $options = []): array
     {
         $content = array(
             'chat_id' => $this->telegram->Callback_ChatID(),
@@ -131,10 +126,25 @@ class AppService
             'parse_mode' => 'HTML',
         );
 
-        if (!empty($options) && isset($options['reply_markup'])) {
-            $content['reply_markup'] = $this->telegram->buildInlineKeyBoard($options['reply_markup']);
-        }
+        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
 
         return $content;
+    }
+
+    /**
+     * Generate menu markup
+     *
+     * @return array[]
+     */
+    public function menuMarkup(): array
+    {
+        return [
+            [
+                $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
+                $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
+            ], [
+                $this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))
+            ]
+        ];
     }
 }

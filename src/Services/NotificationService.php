@@ -69,7 +69,7 @@ class NotificationService
     }
 
     /**
-     * Send notify to telegram
+     * Send notification to telegram
      *
      * @param string $chatId
      * @param string|null $message

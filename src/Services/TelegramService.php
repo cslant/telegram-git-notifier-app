@@ -80,19 +80,4 @@ class TelegramService extends AppService
         }
         return false;
     }
-
-    /**
-     * @return array[]
-     */
-    private function menuMarkup(): array
-    {
-        return [
-            [
-                $this->telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
-                $this->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
-            ], [
-                $this->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))
-            ]
-        ];
-    }
 }
