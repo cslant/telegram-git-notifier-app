@@ -8,13 +8,10 @@ class SettingService extends AppService
 {
     protected Setting $setting;
 
-    protected array $settingConfig = [];
-
     public function __construct()
     {
         parent::__construct();
         $this->setting = new Setting();
-        $this->settingConfig = $this->setting->getSettingConfig();
     }
 
     /**
@@ -37,29 +34,33 @@ class SettingService extends AppService
      */
     public function settingMarkup(): array
     {
+        $allEventKeyboard = [
+            $this->telegram->buildInlineKeyBoardButton(
+                $this->setting->settings['all_events_notify']
+                    ? '✅ Enable All Events Notify' : 'Enable All Events Notify',
+                '',
+                $this->setting::SETTING_ALL_EVENTS_NOTIFY
+            ),
+        ];
+
+        if (!$this->setting->settings['all_events_notify']) {
+            $allEventKeyboard[] = $this->telegram->buildInlineKeyBoardButton(
+                '⚙ Custom individual events',
+                '',
+                $this->setting::SETTING_CUSTOM_EVENTS
+            );
+        }
+
         return [
             [
                 $this->telegram->buildInlineKeyBoardButton(
-                    $this->settingConfig['is_notified']
+                    $this->setting->settings['is_notified']
                         ? '✅ Github notification' : 'Github notification',
                     '',
                     $this->setting::SETTING_IS_NOTIFIED
                 ),
             ],
-            [
-                $this->telegram->buildInlineKeyBoardButton(
-                    $this->settingConfig['all_events_notify']
-                        ? '✅ Enable All Events Notify'
-                        : 'Enable All Events Notify',
-                    '',
-                    $this->setting::SETTING_ALL_EVENTS_NOTIFY
-                ),
-                $this->telegram->buildInlineKeyBoardButton(
-                    '⚙ Custom individual events',
-                    '',
-                    $this->setting::SETTING_CUSTOM_EVENTS
-                ),
-            ],
+            $allEventKeyboard,
             [
                 $this->telegram->buildInlineKeyBoardButton(
                     '🔙 Back to menu',
@@ -90,60 +91,13 @@ class SettingService extends AppService
 
         $callback = str_replace($this->setting::SETTING_PREFIX, '', $callback);
 
-        if ($this->updateSettingItem($callback, !$this->settingConfig[$callback])) {
+        if ($this->setting->updateSettingItem($callback, !$this->setting->settings[$callback])) {
             $this->editMessageReplyMarkup([
                 'reply_markup' => $this->settingMarkup(),
             ]);
         } else {
             $this->answerCallbackQuery('Something went wrong!');
         }
-    }
-
-    /**
-     * Update setting item value and save to file
-     *
-     * @param string $settingName
-     * @param $settingValue
-     * @return bool
-     */
-    public function updateSettingItem(string $settingName, $settingValue = null): bool
-    {
-        $keys = explode('.', $settingName);
-        $lastKey = array_pop($keys);
-        $nestedSettings = &$this->settingConfig;
-
-        foreach ($keys as $key) {
-            if (!isset($nestedSettings[$key]) || !is_array($nestedSettings[$key])) {
-                return false;
-            }
-            $nestedSettings = &$nestedSettings[$key];
-        }
-
-        if (isset($nestedSettings[$lastKey])) {
-            $nestedSettings[$lastKey] = $settingValue ?? !$nestedSettings[$lastKey];
-            if ($this->saveSettingsToFile()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Save settings to json file
-     *
-     * @return bool
-     */
-    private function saveSettingsToFile(): bool
-    {
-        if (file_exists($this->setting::SETTING_FILE)) {
-            $json = json_encode($this->settingConfig, JSON_PRETTY_PRINT);
-            file_put_contents($this->setting::SETTING_FILE, $json, LOCK_EX);
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

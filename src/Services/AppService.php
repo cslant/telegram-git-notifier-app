@@ -112,7 +112,7 @@ class AppService
     }
 
     /**
-     * Create content for callback message
+     * Create content for a callback message
      *
      * @param array $options
      * @return array

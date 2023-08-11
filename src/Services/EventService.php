@@ -10,9 +10,9 @@ class EventService extends AppService
 {
     public const LINE_ITEM_COUNT = 2;
 
-    public const EVENT_HAS_ACTION_SEPARATOR = 'action.';
+    public const EVENT_HAS_ACTION_SEPARATOR = 'atc.';
 
-    public const EVENT_UPDATE_SEPARATOR = '.update';
+    public const EVENT_UPDATE_SEPARATOR = '.upd';
 
     protected Setting $setting;
 
