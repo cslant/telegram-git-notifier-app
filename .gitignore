@@ -1,8 +1,12 @@
 .vscode
 .idea
+
 vendor
 node_modules
-logs
+
 composer.lock
 .env
 storage
+
+.docker/log/nginx/*
+*.log
