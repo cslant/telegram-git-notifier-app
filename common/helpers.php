@@ -1,8 +1,8 @@
 <?php
 
 use TelegramGithubNotify\App\Helpers\ConfigHelper;
-use TelegramGithubNotify\App\Models\Event;
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramGithubNotify\App\Models\Event as EventModel;
+use TelegramGithubNotify\App\Models\Setting as SettingModel;
 
 if (!function_exists('config')) {
     /**
@@ -46,7 +46,7 @@ if (!function_exists('view')) {
 
 if (!function_exists('singularity')) {
     /**
-     * The reverse of pluralize, returns the singular form of a word in a string.
+     * The reverse of pluralizing, returns the singular form of a word in a string.
      *
      * @param $word
      * @return bool|string
@@ -91,7 +91,7 @@ if (!function_exists('event_config')) {
      */
     function event_config(): array
     {
-        return (new Event())->getEventConfig();
+        return (new EventModel())->getEventConfig();
     }
 }
 
@@ -103,7 +103,7 @@ if (!function_exists('all_events_notify')) {
      */
     function all_events_notify(): bool
     {
-        return (new Setting())->allEventsNotifyStatus();
+        return (new SettingModel())->allEventsNotifyStatus();
     }
 }
 
@@ -115,6 +115,6 @@ if (!function_exists('setting_config')) {
      */
     function setting_config(): array
     {
-        return (new Setting())->getSettingConfig();
+        return (new SettingModel())->getSettingConfig();
     }
 }

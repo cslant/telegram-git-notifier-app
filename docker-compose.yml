@@ -1,0 +1,33 @@
+version: '3.9'
+
+networks:
+  telegram-notify:
+
+services:
+  server:
+    build:
+      context: .
+      args:
+        - PHP_VERSION_SELECTED=${PHP_VERSION_SELECTED:-8.2}
+      dockerfile: ./.docker/Dockerfile
+    container_name: '${CONTAINER_NAME:-telegram-notify}-server'
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/config/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
+    user: '${USER_ID:-1000}:${GROUP_ID:-1000}'
+    networks:
+      - telegram-notify
+
+  nginx:
+    image: nginx:alpine
+    container_name: '${CONTAINER_NAME:-telegram-notify}-nginx'
+    ports:
+      - '${APP_PORT:-1080}:80'
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/conf.d/:/etc/nginx/conf.d/
+      - ./.docker/log/nginx:/var/log/nginx/
+    depends_on:
+      - server
+    networks:
+      - telegram-notify
