@@ -18,11 +18,6 @@ COPY --from=composer/composer /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/html
 
-COPY ./.docker/config/docker-entrypoint.sh /docker/docker-entrypoint.sh
-RUN ["chmod", "+x", "/docker/docker-entrypoint.sh"]
-
-ENTRYPOINT [ "/docker/docker-entrypoint.sh" ]
-
 EXPOSE 80
 
 CMD ["php-fpm"]
