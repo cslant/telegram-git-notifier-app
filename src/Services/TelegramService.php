@@ -74,7 +74,7 @@ class TelegramService extends AppService
      */
     public function checkCallback(): bool
     {
-        if (!is_null($this->telegram->Callback_ChatID())) {
+        if (!is_null($this->telegram->getData()) && !is_null($this->telegram->Callback_ChatID())) {
             $this->sendCallbackResponse($this->telegram->Callback_Data());
             return true;
         }
