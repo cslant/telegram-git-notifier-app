@@ -114,13 +114,13 @@ class EventService extends AppService
     /**
      * Get callback data for markup
      *
-     * @param string $event
-     * @param array|string $value
+     * @param string  $event
+     * @param array|bool $value
      * @param string|null $parentEvent
      *
      * @return string
      */
-    private function getCallbackData(string $event, array|string $value, ?string $parentEvent = null): string
+    private function getCallbackData(string $event, array|bool $value = false, ?string $parentEvent = null): string
     {
         if (is_array($value)) {
             return $this->event::EVENT_PREFIX . self::EVENT_HAS_ACTION_SEPARATOR . $event;
