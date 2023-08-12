@@ -21,10 +21,10 @@ class TelegramService extends AppService
     /**
      * Send callback response to telegram
      *
-     * @param string|null $text
+     * @param string $text
      * @return void
      */
-    public function telegramToolHandler(string $text = null): void
+    public function telegramToolHandler(string $text): void
     {
         switch ($text) {
             case '/start':
