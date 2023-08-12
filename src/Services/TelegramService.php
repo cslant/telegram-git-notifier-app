@@ -21,10 +21,10 @@ class TelegramService extends AppService
     /**
      * Send callback response to telegram
      *
-     * @param string|null $text
+     * @param string $text
      * @return void
      */
-    public function telegramToolHandler(string $text = null): void
+    public function telegramToolHandler(string $text): void
     {
         switch ($text) {
             case '/start':
@@ -74,7 +74,7 @@ class TelegramService extends AppService
      */
     public function checkCallback(): bool
     {
-        if (!is_null($this->telegram->Callback_ChatID())) {
+        if (!is_null($this->telegram->getData()) && !is_null($this->telegram->Callback_ChatID())) {
             $this->sendCallbackResponse($this->telegram->Callback_Data());
             return true;
         }
