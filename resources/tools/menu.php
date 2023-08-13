@@ -1,4 +1,4 @@
-<b>Available Commands</b>
+<b>BOT MENU</b>
 
 /server - To get Server Information.
 /id - To get your Chat ID.
