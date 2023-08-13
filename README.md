@@ -111,11 +111,11 @@ If you see the following message, it means that the webhook has been sent succes
 {"ok":true,"result":true,"description":"Webhook was set"}
 ```
 
-#### 2. Set the webhook manually
+#### 2. Set the webhook manually from Telegram
 
 If you want to set the webhook manually, you can use the following URL:
 
-```text
+```url
 https://api.telegram.org/bot<YourBOTToken>/setWebhook?url=<APP_URL>
 ```
 
@@ -123,11 +123,21 @@ https://api.telegram.org/bot<YourBOTToken>/setWebhook?url=<APP_URL>
 
 ### Add chat ids you want to receive notifications to the .env file
 
+You can add multiple chat ids to the `.env` file. 
+
+**These chat ids will be the chat ids of your groups, channels, or users.**
+
+Also, you can add **the chat id of this bot** to receive incoming notifications for itself.
+
 ```shell
 TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 ```
 
-Now your configuration is complete. And it will be like this:
+> **Note:** Please use comma to separate chat ids.
+
+---
+
+Now your configuration is complete. And the `.env` file will be like this:
 
 ```shell
 APP_NAME='Telegram Github Notify Bot'
@@ -142,17 +152,31 @@ TELEGRAM_BOT_CHAT_ID=6872320129
 TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 
 TIMEZONE=Asia/Ho_Chi_Minh
+
+PHP_VERSION_SELECTED=8.2
+CONTAINER_NAME=telegram-notify-bot
+APP_PORT=3180
 ```
 
 ## Usage
 
-Now you can send a message to your bot, and you will receive a notification.
+Now you can send a message to your bot, and you will receive a welcome message from the bot.
 
 ```text
 /start
 ```
 
-## Set webhook on your GitHub repository
+If you want to check the menu, you can send the following message to your bot.
+
+```text
+/menu
+```
+
+At this point, the configuration process for your telegram bot is completed. You can use all the features of this bot.
+
+Now you will need to add the Webhook for your GitHub repository to receive notifications.
+
+## Add webhook on your GitHub repository to receive notifications
 
 1. Go to your repository settings
 2. Go to the `Webhooks` section
@@ -163,6 +187,10 @@ Now you can send a message to your bot, and you will receive a notification.
 7. Click on the `Active` checkbox and Add webhook button.
 8. Done. You will receive a notification when your repository has a new event.
 
-Here is the first notification you will receive: ♻️ **Connection Successful**
+Here is the first notification you will receive: 
 
-> **Note: You can add multiple webhooks to your repository. Please similarly set up the webhook for each repository.**
+![image](https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/66b7fffa-d2fa-41f6-8caa-3c1ab96b63be)
+
+> **Note: You can set up this webhook for different repositories. Please similarly set up the webhook for each repository.**
+
+Then every time one of those repositories appears an event, this telegram bot will immediately send you a notification. 
