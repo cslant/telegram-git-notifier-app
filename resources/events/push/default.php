@@ -6,7 +6,10 @@
 $count = count($payload->commits);
 $noun = ($count > 1) ? "commits" : "commit";
 
-$message = "⚙️ <b>{$count}</b> new {$noun} to <b>{$payload->repository->full_name}:{$payload->repository->default_branch}</b>\n\n";
+$ref = explode('/', $payload->ref);
+$branch = end($ref);
+
+$message = "⚙️ <b>{$count}</b> new {$noun} to <b>{$payload->repository->full_name}:<code>{$branch}</code></b>\n\n";
 
 foreach ($payload->commits as $commit) {
     $commitId = substr($commit->id, -7);
