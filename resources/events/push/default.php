@@ -7,7 +7,7 @@ $count = count($payload->commits);
 $noun = ($count > 1) ? "commits" : "commit";
 
 $ref = explode('/', $payload->ref);
-$branch = end($ref);
+$branch = implode('/', array_slice($ref, 2));
 
 $message = "⚙️ <b>{$count}</b> new {$noun} to <b>{$payload->repository->full_name}:<code>{$branch}</code></b>\n\n";
 
