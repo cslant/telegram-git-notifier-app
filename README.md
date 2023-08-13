@@ -1,5 +1,12 @@
 # Welcome to Telegram Bot GitHub Notify 👋
 
+The "**telegram-bot-github-notify**"
+package provides the ability to integrate the Telegram messaging service and GitHub.
+With this package,
+you can create a Telegram bot to receive notifications from GitHub events
+and manage customization through messages and buttons on Telegram.
+
+![License](https://img.shields.io/github/license/lbiltech/telegram-bot-github-notify.svg?style=flat-square)
 [![Latest Version](https://img.shields.io/github/release/lbiltech/telegram-bot-github-notify.svg?style=flat-square)](https://github.com/lbiltech/telegram-bot-github-notify/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/lbiltech/telegram-bot-github-notify.svg?style=flat-square)](https://packagist.org/packages/lbiltech/telegram-bot-github-notify)
 [![StyleCI](https://styleci.io/repos/656960426/shield)](https://styleci.io/repos/656960426)
@@ -11,7 +18,20 @@
 - Send GitHub notifications of your repositories to Telegram Bots, Groups, and Channels.
 - The bot must be created using the [BotFather](https://core.telegram.org/bots#6-botfather)
 
-## Requirement
+## Features
+
+1. **GitHub Notifications to Telegram**: The package allows you to configure a Telegram bot to receive notifications from various GitHub events, including events like **commits, pull requests, issues, releases, and many more**.
+
+2. **Customize Notifications**: You can customize the types of notifications you want to receive through options on Telegram.
+
+3. **Interactive Buttons**: The package supports creating interactive buttons on Telegram to perform actions such as enabling or disabling notifications.
+
+4. **Event Management**: You can manage specific events that you want to receive notifications for, allowing you to focus on what's most important for your projects.
+
+5. **Easy Integration**:
+   The package provides an API and user-friendly functions to create a Telegram bot and link it to your GitHub account.
+
+## Requirements
 
 - PHP ^8.0
 - Composer
@@ -25,8 +45,12 @@ First, please clone and install this project via [Composer](https://getcomposer.
 composer create-project lbiltech/telegram-bot-github-notify
 ```
 
-After running the command above, you will have the project installed under `telegram-bot-github-notify` directory,
+After running the command above, you will have the project installed under the `telegram-bot-github-notify` directory,
 and the environment file `.env` will be created automatically.
+
+Some the json files will be created automatically in the `storage` directory.
+These files are used to store the data and serve for features in this bot.
+(You can change the storage directory in the `.env` file)
 
 ### Create a New Bot
 
@@ -57,7 +81,7 @@ TELEGRAM_BOT_CHAT_ID=123456789
 
 **You need to set up your domain and SSL certificate to use the webhook**. You can build your own server or use a service like [Heroku](https://www.heroku.com/).
 
-In this example, we will use localhost and ngrok to set up domain and webhook:
+In this example, we will use localhost and ngrok to set up the domain and webhook:
 1. Download and install [ngrok](https://ngrok.com/download).
 2. Run command in terminal: `php -S localhost:8000`
 3. Run command in terminal: `ngrok http 8000`
