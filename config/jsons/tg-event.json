@@ -4,6 +4,58 @@
     "edited": false,
     "deleted": false
   },
+  "check_run": {
+    "created": false,
+    "rerequested": false,
+    "completed": true
+  },
+  "check_suite": {
+    "completed": true,
+    "requested": false,
+    "rerequested": false
+  },
+  "code_scanning_alert": {
+    "created": false,
+    "fixed": false,
+    "reopened": false,
+    "closed_by_user": false,
+    "appeared_in_branch": false
+  },
+  "create": false,
+  "deploy_key": {
+    "created": true,
+    "deleted": false
+  },
+  "fork": true,
+  "gollum": true,
+  "issue_comment": {
+    "created": true,
+    "edited": false,
+    "deleted": false
+  },
+  "issue": {
+    "closed": true,
+    "opened": true,
+    "reopened": true,
+    "edited": false,
+    "assigned": true,
+    "unassigned": false,
+    "labeled": false,
+    "unlabeled": false,
+    "milestoned": false,
+    "demilestoned": false,
+    "locked": false,
+    "unlocked": false,
+    "transferred": false,
+    "pinned": false,
+    "unpinned": false,
+    "deleted": true
+  },
+  "member": {
+    "added": true,
+    "edited": false,
+    "removed": false
+  },
   "package": {
     "published": true,
     "updated": false
@@ -16,60 +68,34 @@
     "edited": false,
     "deleted": false
   },
-  "push": true,
-  "fork": true,
-  "gollum": true,
   "pull_request": {
     "closed": true,
     "opened": true,
     "reopened": false,
     "review_request_removed": false,
-    "review_requested": false,
+    "review_requested": true,
     "synchronize": false,
     "unlabeled": false,
     "labeled": false,
     "edited": false,
     "assigned": false,
-    "unassigned": false,
-    "review_request": true
-  },
-  "pull_request_review": {
-    "submitted": true,
-    "edited": false,
-    "dismissed": false
+    "unassigned": false
   },
   "pull_request_review_comment": {
     "created": true,
     "edited": false,
     "deleted": false
   },
+  "pull_request_review": {
+    "submitted": true,
+    "edited": false,
+    "dismissed": false
+  },
   "pull_request_review_thread": {
     "resolved": false,
     "unresolved": false
   },
-  "issue": {
-    "closed": true,
-    "opened": true,
-    "reopened": false,
-    "edited": false,
-    "assigned": true,
-    "unassigned": false,
-    "labeled": false,
-    "unlabeled": false,
-    "milestoned": false,
-    "demilestoned": false,
-    "locked": false,
-    "unlocked": false,
-    "transferred": false,
-    "pinned": true,
-    "unpinned": false,
-    "deleted": true
-  },
-  "issue_comment": {
-    "created": true,
-    "edited": false,
-    "deleted": false
-  },
+  "push": true,
   "release": {
     "published": true,
     "unpublished": false,
@@ -82,7 +108,8 @@
   "secret_scanning_alert": {
     "created": true,
     "reopened": false,
-    "resolved": false
+    "resolved": false,
+    "revoked": false
   },
   "star": {
     "created": true,
@@ -91,24 +118,15 @@
   "watch": {
     "started": true
   },
-  "member": {
-    "added": true,
-    "edited": false,
-    "removed": false
-  },
-  "check_run": {
-    "created": false,
-    "rerequested": false,
-    "completed": true
-  },
-  "workflow_dispatch": false,
   "workflow_job": {
     "queued": false,
     "in_progress": false,
-    "completed": false
+    "completed": false,
+    "waiting": false
   },
   "workflow_run": {
-    "completed": true,
-    "requested": true
+    "requested": false,
+    "in_progress": true,
+    "completed": true
   }
 }
