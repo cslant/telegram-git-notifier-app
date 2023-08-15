@@ -51,7 +51,23 @@ and manage customization through messages and buttons on Telegram.
 - Composer
 - Telegram Bot
 
-## ⚙ Installation
+## 🔧 Installation
+
+As for the installation and configuration,
+this project provides two different installation ways depending on your preference or suitable for your system.
+
+> **Way 1:** Install by composer directly on the system (Requires the system to install composer, previous PHP version)
+> 
+> **Way 2:** Install by Docker (Requires the system to install Docker, Docker Compose)
+
+### I. Installation and configuration 🛠
+
+Please choose only one of the following two ways to set up the project.
+
+<details open>
+
+<summary><b>Way 1: Install by composer directly on the system ⚙</b></summary>
+<br/>
 
 First, please clone and install this project via [Composer](https://getcomposer.org/):
 
@@ -64,7 +80,6 @@ and the environment file `.env` will be created automatically.
 
 Some the json files will be created automatically in the `storage` directory.
 These files are used to store the data and serve for features in this bot.
-(You can change the storage directory in the `.env` file)
 
 ### Create a New Bot
 
@@ -106,7 +121,115 @@ In this example, we will use localhost and [ngrok](https://ngrok.com/) to set up
 APP_URL=https://123456789.ngrok.io
 ```
 
-### Set the webhook
+At this time, the source launch process is done, please skip way 2 and go to step [II. Set the webhook](#ii-set-the-webhook) to continue.
+
+</details>
+
+---
+
+<details>
+
+<summary><b>Way 2: Install by Docker :whale:</b></summary>
+<br/>
+
+> **Note:** This way requires the system to install Docker and Docker Compose. 
+> 
+> ⚠ **If you set up the project by way one, please can skip this way.** 🚸
+> 
+>And go to step [II. Set the webhook](#ii-set-the-webhook) to continue.
+
+First, please clone this project and copy the environment file `.env.example` to `.env`:
+
+```bash
+git clone git@github.com:lbiltech/telegram-bot-github-notify.git
+cd telegram-bot-github-notify
+cp .env.example .env
+```
+
+### Update the environment variables
+
+Open the `.env` file and update the following variables:
+
+```shell
+PHP_VERSION_SELECTED=8.2
+CONTAINER_NAME=telegram-notify-bot
+APP_PORT=3180
+```
+
+> **Note:** 
+> 
+> - The `PHP_VERSION_SELECTED` variable is the PHP version you want to use in the container.
+> - The `CONTAINER_NAME` variable is the name of the container you want to create.
+> - The `APP_PORT` variable is the port of the container. (Please don't set the same port as the host)
+
+### Install and run the container
+
+Run the following command to install and run the container:
+
+```bash
+bash ./docker.sh
+```
+
+Some the json files will be created automatically in the `storage` directory.
+These files are used to store the data and serve for features in this bot.
+
+### Create a New Bot
+
+To create a new bot,
+you need to talk to [BotFather](https://core.telegram.org/bots#6-botfather) and follow a few simple steps.
+
+1. Open a chat with [BotFather](https://telegram.me/botfather) and send `/newbot` command.
+2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
+3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
+4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
+
+```shell
+TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+### Get your Chat ID and add it to the .env file
+
+1. Open a chat with your bot.
+2. Send any message to your bot. (This handle needs to get your chat id)
+3. Go to the following URL: `https://api.telegram.org/bot<YourTelegramBotToken>/getUpdates`
+4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
+5. Paste the Chat ID in your `.env` file.
+
+```shell
+TELEGRAM_BOT_CHAT_ID=123456789
+```
+
+### Set up your domain and SSL certificate
+
+In this way, we use the proxy in container and [ngrok](https://ngrok.com/) to set up the domain and webhook:
+1. Check the proxy of the container: `docker inspect <CONTAINER_NAME>-nginx | grep IPAddress`
+
+> **Note:** Replace `<CONTAINER_NAME>` with the name of the container in .env file.
+
+Example:
+
+![image](https://github.com/lbiltech/lemp-docker/assets/35853002/8dc8ba3f-b1e9-4bff-901d-6bb7747acda4)
+
+2. Download and install [ngrok](https://ngrok.com/download).
+2. Continue to run command in terminal: `ngrok http <CONTAINER_IP>`
+
+> **Note:** Replace `<CONTAINER_IP>` is the IP address of the container in step 1.
+
+Example:
+
+```bash
+ngrok http 172.28.0.3
+```
+
+3. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
+
+```shell
+APP_URL=https://123456789.ngrok-free.app
+```
+
+</details>
+
+### II. Set the webhook
 
 We have two ways to set the webhook:
 
@@ -140,7 +263,7 @@ https://api.telegram.org/bot<YourTelegramBotToken>/setWebhook?url=<APP_URL>
 
 > **Note:** Replace `<YourTelegramBotToken>` with your bot token and `<APP_URL>` with your app URL in .env file.
 
-### Add chat ids you want to receive notifications to the .env file
+### III. Add chat ids you want to receive notifications to the .env file
 
 You can add multiple chat ids to the `.env` file. 
 
