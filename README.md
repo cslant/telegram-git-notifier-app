@@ -134,7 +134,7 @@ At this time, the source launch process is done, please skip way 2 and go to ste
 
 > **Note:** This way requires the system to install Docker and Docker Compose. 
 > 
-> ⚠ **If you set up the project by way one, please can skip this way.** ⚠
+> ⚠ **If you set up the project by way one, please can skip this way.** 🚸
 > 
 >And go to step [II. Set the webhook](#ii-set-the-webhook) to continue.
 
@@ -167,7 +167,7 @@ APP_PORT=3180
 Run the following command to install and run the container:
 
 ```bash
-docker-compose up -d
+bash ./docker.sh
 ```
 
 Some the json files will be created automatically in the `storage` directory.
