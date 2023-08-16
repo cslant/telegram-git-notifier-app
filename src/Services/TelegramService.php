@@ -51,6 +51,7 @@ class TelegramService extends AppService
      */
     public function telegramToolHandler(string $text = '/start'): void
     {
+        set_time_limit(60);
         switch ($text) {
             case '/start':
                 $reply = view('tools.start', ['first_name' => $this->telegram->FirstName()]);
@@ -119,5 +120,6 @@ class TelegramService extends AppService
         $this->telegram->setMyCommands([
             'commands' => json_encode(self::MENU_COMMANDS)
         ]);
+        $this->sendMessage(view('tools.set_menu'));
     }
 }
