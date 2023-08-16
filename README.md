@@ -316,10 +316,24 @@ If you want to check the menu, you can send the following message to your bot.
 /menu
 ```
 
-🎊 **At this point, the configuration process for your telegram bot is completed. You can use all the features of this bot.** 🎉🎉
+🎊 At this point, the configuration process for your telegram bot is completed.
+You can use all the features of this bot.
+🎉🎉
 
 <p align="center">
-  <img alt="Menu features of this bot" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/5aa42173-9443-4978-a59a-82f2ed016790" />
+  <img alt="Menu features of this bot" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/1a725130-c7c4-4594-9669-abc6d2dc1fba" />
+</p>
+
+**To increase ease of use. Let's create a menu with a list of commands listed for you.**
+
+Please send the following message to your bot to create a menu button.
+
+```text
+/set_menu
+```
+
+<p align="center">
+  <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/70f79e8f-b075-455d-b928-f721ca5b11cc" /> <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/53af5d51-7aa8-4dd8-99f6-3b55a9971cbe" />
 </p>
 
 Now you will need to add the Webhook for your GitHub repository to receive notifications.
