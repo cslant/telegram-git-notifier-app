@@ -1,10 +1,15 @@
+<?php
+
+use TelegramGithubNotify\App\Services\TelegramService;
+
+$menuCommands = TelegramService::MENU_COMMANDS ?? [];
+?>
+
 <b>BOT MENU</b> 🤖
 
-/server - To get Server Information.
-/id - To get your Chat ID.
-/token - To get this bot token.
-/usage - How to use me.
-/settings - Settings GitHub notify.
-/menu - To get this menu.
+<?php foreach ($menuCommands as $menuCommand) : ?>
+<b><?= $menuCommand['command'] ?></b> - <?= $menuCommand['description'] ?>
+
+<?php endforeach; ?>
 
 Select a button:
