@@ -1,10 +1,9 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
-use Symfony\Component\HttpFoundation\Request;
-use TelegramGithubNotify\App\Models\Event;
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramNotificationBot\App\Models\Event;
+use TelegramNotificationBot\App\Models\Setting;
 
 class EventService extends AppService
 {
@@ -29,11 +28,12 @@ class EventService extends AppService
     /**
      * Validate access event before send notify
      *
-     * @param Request $request
+     * @param string $event
      * @param $payload
+     *
      * @return bool
      */
-    public function validateAccessEvent(Request $request, $payload): bool
+    public function validateAccessEvent(string $event, $payload): bool
     {
         if (!$this->setting->isNotified()) {
             return false;
@@ -44,8 +44,6 @@ class EventService extends AppService
         }
 
         $eventConfig = $this->event->getEventConfig();
-
-        $event = singularity($request->server->get('HTTP_X_GITHUB_EVENT'));
         $eventConfig = $eventConfig[$event] ?? false;
 
         if (isset($payload->action) && isset($eventConfig[$payload->action])) {

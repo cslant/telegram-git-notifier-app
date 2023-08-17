@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramNotificationBot\App\Models\Setting;
 
 class TelegramService extends AppService
 {
@@ -27,7 +27,7 @@ class TelegramService extends AppService
             'description' => 'To get Server Information'
         ], [
             'command' => '/settings',
-            'description' => 'Show settings GitHub notify'
+            'description' => 'Show settings of the bot'
         ],
     ];
 

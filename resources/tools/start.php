@@ -8,5 +8,5 @@
 
 Hey <b><?= $first_name ?></b>,
 
-I can send you notifications from your GitHub Repository instantly to your Telegram.
+I can send you notifications from your GitHub or GitLab Repository instantly to your Telegram.
 Use /menu for more options.

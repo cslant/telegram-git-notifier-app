@@ -1,10 +1,10 @@
 <?php
 
-namespace TelegramGithubNotify\App\Models;
+namespace TelegramNotificationBot\App\Models;
 
 class Event
 {
-    public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
+    public const GITHUB_EVENT_FILE = __DIR__ . '/../../storage/json/github-event.json';
 
     public const EVENT_PREFIX = Setting::SETTING_CUSTOM_EVENTS . '.evt.';
 
@@ -12,7 +12,7 @@ class Event
 
     public function __construct()
     {
-        if (file_exists(self::EVENT_FILE)) {
+        if (file_exists(self::GITHUB_EVENT_FILE)) {
             $this->setEventConfig();
         }
     }
@@ -24,7 +24,7 @@ class Event
      */
     private function setEventConfig(): void
     {
-        $json = file_get_contents(self::EVENT_FILE);
+        $json = file_get_contents(self::GITHUB_EVENT_FILE);
         $this->eventConfig = json_decode($json, true);
     }
 
@@ -63,9 +63,9 @@ class Event
      */
     private function saveEventConfig(): void
     {
-        if (file_exists(self::EVENT_FILE)) {
+        if (file_exists(self::GITHUB_EVENT_FILE)) {
             $json = json_encode($this->eventConfig, JSON_PRETTY_PRINT);
-            file_put_contents(self::EVENT_FILE, $json, LOCK_EX);
+            file_put_contents(self::GITHUB_EVENT_FILE, $json, LOCK_EX);
         }
     }
 }

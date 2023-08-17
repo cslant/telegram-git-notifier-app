@@ -1,6 +1,6 @@
 <?php
 
-use TelegramGithubNotify\App\Services\TelegramService;
+use TelegramNotificationBot\App\Services\TelegramService;
 
 $menuCommands = TelegramService::MENU_COMMANDS ?? [];
 ?>
