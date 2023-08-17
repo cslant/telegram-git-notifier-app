@@ -10,13 +10,13 @@ class NotificationService
 {
     protected mixed $payload;
 
-    protected string $message = "";
+    protected string $message = '';
 
-    protected string $webhookEvent = "github";
+    public string $platform = 'github';
 
     public const WEBHOOK_EVENT_HEADER = [
         'github' => 'HTTP_X_GITHUB_EVENT',
-        'gitlab' => 'HTTP_X_GITLAB_EVENT'
+        'gitlab' => 'HTTP_X_GITLAB_EVENT',
     ];
 
     /**
@@ -44,7 +44,7 @@ class NotificationService
      */
     public function setPayload(Request $request)
     {
-        $event = $request->server->get(self::WEBHOOK_EVENT_HEADER[$this->webhookEvent]);
+        $event = $request->server->get(self::WEBHOOK_EVENT_HEADER[$this->platform]);
         if (is_null($event)) {
             return null;
         }
@@ -65,14 +65,14 @@ class NotificationService
     {
         if (isset($this->payload->action) && !empty($this->payload->action)) {
             $this->message = view(
-                'events.' . $typeEvent . '.' . $this->payload->action,
+                "events.{$this->platform}.{$typeEvent}.{$this->payload->action}",
                 [
                     'payload' => $this->payload,
                     'event' => singularity($typeEvent),
                 ]
             );
         } else {
-            $this->message = view("events.{$this->webhookEvent}.{$typeEvent}.default", ['payload' => $this->payload]);
+            $this->message = view("events.{$this->platform}.{$typeEvent}.default", ['payload' => $this->payload]);
         }
     }
 

@@ -37,10 +37,13 @@ class SendNotifyAction
     public function __invoke(): void
     {
         // Send an event result to all chat ids in env
-
-        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            $this->sendNotification();
-            return;
+        foreach ($this->notificationService::WEBHOOK_EVENT_HEADER as $platform => $header) {
+            $event = $this->request->server->get($header);
+            if (!is_null($event)) {
+                $this->notificationService->platform = $platform;
+                $this->sendNotification($event);
+                return;
+            }
         }
 
         // Telegram bot handler
@@ -72,13 +75,13 @@ class SendNotifyAction
     }
 
     /**
+     * @param string $event
      * @return void
      */
-    private function sendNotification(): void
+    private function sendNotification(string $event): void
     {
         $payload = $this->notificationService->setPayload($this->request);
-
-        if (empty($payload) || !$this->eventSettingService->validateAccessEvent($this->request, $payload)) {
+        if (empty($payload) || !$this->eventSettingService->validateAccessEvent($event, $payload)) {
             return;
         }
 
