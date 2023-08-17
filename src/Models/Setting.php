@@ -4,7 +4,7 @@ namespace TelegramGithubNotify\App\Models;
 
 class Setting
 {
-    public const SETTING_FILE = __DIR__ . '/../../storage/tg-setting.json';
+    public const SETTING_FILE = __DIR__ . '/../../storage/json/tg-setting.json';
     public const SETTING_PREFIX = 'stg.';
 
     public const SETTING_IS_NOTIFIED = self::SETTING_PREFIX . 'is_notified';
