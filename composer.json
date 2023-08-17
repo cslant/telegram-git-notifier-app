@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TelegramGithubNotify\\App\\": "src/"
+      "TelegramNotificationBot\\App\\": "src/"
     },
     "files": [
       "common/helpers.php"

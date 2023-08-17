@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramGithubNotify\App\Models;
+namespace TelegramNotificationBot\App\Models;
 
 class Event
 {

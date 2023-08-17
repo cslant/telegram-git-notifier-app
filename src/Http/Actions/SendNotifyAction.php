@@ -1,11 +1,11 @@
 <?php
 
-namespace TelegramGithubNotify\App\Http\Actions;
+namespace TelegramNotificationBot\App\Http\Actions;
 
 use Symfony\Component\HttpFoundation\Request;
-use TelegramGithubNotify\App\Services\EventService;
-use TelegramGithubNotify\App\Services\NotificationService;
-use TelegramGithubNotify\App\Services\TelegramService;
+use TelegramNotificationBot\App\Services\EventService;
+use TelegramNotificationBot\App\Services\NotificationService;
+use TelegramNotificationBot\App\Services\TelegramService;
 
 class SendNotifyAction
 {
@@ -36,7 +36,8 @@ class SendNotifyAction
      */
     public function __invoke(): void
     {
-        // Send a GitHub event result to all chat ids in env
+        // Send an event result to all chat ids in env
+
         if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
             $this->sendNotification();
             return;

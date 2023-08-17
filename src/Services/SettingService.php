@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramNotificationBot\App\Models\Setting;
 
 class SettingService extends AppService
 {
@@ -55,7 +55,7 @@ class SettingService extends AppService
             [
                 $this->telegram->buildInlineKeyBoardButton(
                     $this->setting->settings['is_notified']
-                        ? '✅ Github notification' : 'Github notification',
+                        ? '✅ Allow notifications' : 'Allow notifications',
                     '',
                     $this->setting::SETTING_IS_NOTIFIED
                 ),

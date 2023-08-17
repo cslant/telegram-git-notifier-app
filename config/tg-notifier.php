@@ -2,7 +2,7 @@
 
 return [
     'app' => [
-        'name' => $_ENV['APP_NAME'] ?? 'Telegram Github Notify',
+        'name' => $_ENV['APP_NAME'] ?? 'Telegram Bot Notify',
         'url' => $_ENV['APP_URL'] ?? 'http://localhost:3000',
         'timezone' => $_ENV['TIMEZONE'] ?? 'Asia/Ho_Chi_Minh',
         'image' => $_ENV['APP_IMAGE'] ?? 'public/images/github.jpeg',

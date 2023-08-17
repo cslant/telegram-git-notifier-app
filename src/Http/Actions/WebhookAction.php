@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramGithubNotify\App\Http\Actions;
+namespace TelegramNotificationBot\App\Http\Actions;
 
 class WebhookAction
 {

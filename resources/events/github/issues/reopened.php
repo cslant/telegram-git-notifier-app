@@ -7,8 +7,8 @@ $message = "⚠️ <b>Issue has been reopened</b> ⚠️ to <a href=\"{$payload-
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../shared/partials/_assignee.php';
+$message .= require __DIR__ . '/../../../shared/partials/_assignee.php';
 
-$message .= require __DIR__ . '/../../shared/partials/_body.php';
+$message .= require __DIR__ . '/../../../shared/partials/_body.php';
 
 echo $message;

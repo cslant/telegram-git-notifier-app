@@ -1,8 +1,8 @@
 <?php
 
-use TelegramGithubNotify\App\Helpers\ConfigHelper;
-use TelegramGithubNotify\App\Models\Event as EventModel;
-use TelegramGithubNotify\App\Models\Setting as SettingModel;
+use TelegramNotificationBot\App\Helpers\ConfigHelper;
+use TelegramNotificationBot\App\Models\Event as EventModel;
+use TelegramNotificationBot\App\Models\Setting as SettingModel;
 
 if (!function_exists('config')) {
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -11,6 +11,13 @@ class NotificationService
     protected mixed $payload;
 
     protected string $message = "";
+
+    protected string $webhookEvent = "github";
+
+    public const WEBHOOK_EVENT_HEADER = [
+        'github' => 'HTTP_X_GITHUB_EVENT',
+        'gitlab' => 'HTTP_X_GITLAB_EVENT'
+    ];
 
     /**
      * Notify access denied to other chat ids
@@ -37,12 +44,13 @@ class NotificationService
      */
     public function setPayload(Request $request)
     {
-        if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
+        $event = $request->server->get(self::WEBHOOK_EVENT_HEADER[$this->webhookEvent]);
+        if (is_null($event)) {
             return null;
         }
 
         $this->payload = json_decode($request->request->get('payload'));
-        $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
+        $this->setMessage($event);
 
         return $this->payload;
     }
@@ -64,7 +72,7 @@ class NotificationService
                 ]
             );
         } else {
-            $this->message = view('events.' . $typeEvent . '.default', ['payload' => $this->payload]);
+            $this->message = view("events.{$this->webhookEvent}.{$typeEvent}.default", ['payload' => $this->payload]);
         }
     }
 

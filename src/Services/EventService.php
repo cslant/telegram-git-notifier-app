@@ -1,10 +1,10 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
 use Symfony\Component\HttpFoundation\Request;
-use TelegramGithubNotify\App\Models\Event;
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramNotificationBot\App\Models\Event;
+use TelegramNotificationBot\App\Models\Setting;
 
 class EventService extends AppService
 {

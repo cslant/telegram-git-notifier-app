@@ -1,6 +1,6 @@
 <?php
 
-use TelegramGithubNotify\App\Http\Actions\SendNotifyAction;
+use TelegramNotificationBot\App\Http\Actions\SendNotifyAction;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';

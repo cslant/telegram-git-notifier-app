@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
 use Exception;
 use Telegram;
