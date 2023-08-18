@@ -82,39 +82,3 @@ if (!function_exists('singularity')) {
         return preg_replace(array_keys($singular_rules), array_values($singular_rules), $word);
     }
 }
-
-if (!function_exists('event_config')) {
-    /**
-     * Return event config
-     *
-     * @return array
-     */
-    function event_config(): array
-    {
-        return (new EventModel())->getEventConfig();
-    }
-}
-
-if (!function_exists('all_events_notify')) {
-    /**
-     * Return all events notify status
-     *
-     * @return bool
-     */
-    function all_events_notify(): bool
-    {
-        return (new SettingModel())->allEventsNotifyStatus();
-    }
-}
-
-if (!function_exists('setting_config')) {
-    /**
-     * Return setting config
-     *
-     * @return array
-     */
-    function setting_config(): array
-    {
-        return (new SettingModel())->getSettingConfig();
-    }
-}

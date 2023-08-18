@@ -28,12 +28,13 @@ class EventService extends AppService
     /**
      * Validate access event before send notify
      *
-     * @param string $event
+     * @param string $platform Source code platform (GitHub, GitLab)
+     * @param string $event Event name (push, pull_request)
      * @param $payload
      *
      * @return bool
      */
-    public function validateAccessEvent(string $event, $payload): bool
+    public function validateAccessEvent(string $platform, string $event, $payload): bool
     {
         if (!$this->setting->isNotified()) {
             return false;
@@ -43,8 +44,9 @@ class EventService extends AppService
             return true;
         }
 
+        $this->event->setEventConfig($platform);
         $eventConfig = $this->event->getEventConfig();
-        $eventConfig = $eventConfig[$event] ?? false;
+        $eventConfig = $eventConfig[singularity($event)] ?? false;
 
         if (isset($payload->action) && isset($eventConfig[$payload->action])) {
             $eventConfig = $eventConfig[$payload->action];
