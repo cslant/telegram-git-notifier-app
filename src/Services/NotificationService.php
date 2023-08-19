@@ -68,7 +68,7 @@ class NotificationService
                 "events.{$this->platform}.{$typeEvent}.{$this->payload->action}",
                 [
                     'payload' => $this->payload,
-                    'event' => singularity($typeEvent),
+                    'event' => convert_event_name($typeEvent),
                 ]
             );
         } else {

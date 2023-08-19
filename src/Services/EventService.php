@@ -46,7 +46,7 @@ class EventService extends AppService
 
         $this->event->setEventConfig($platform);
         $eventConfig = $this->event->getEventConfig();
-        $eventConfig = $eventConfig[singularity($event)] ?? false;
+        $eventConfig = $eventConfig[convert_event_name($event)] ?? false;
 
         if (isset($payload->action) && isset($eventConfig[$payload->action])) {
             $eventConfig = $eventConfig[$payload->action];

@@ -82,3 +82,32 @@ if (!function_exists('singularity')) {
         return preg_replace(array_keys($singular_rules), array_values($singular_rules), $word);
     }
 }
+
+if (!function_exists('snake_case')) {
+    /**
+     * Convert a string to a snack case
+     *
+     * @param $string
+     * @return string
+     */
+    function snake_case($string): string
+    {
+        return strtolower(
+            preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1_', $string)
+        );
+    }
+}
+
+if (!function_exists('convert_event_name')) {
+    /**
+     * Convert event name
+     *
+     * @param string $event
+     * @return string
+     */
+    function convert_event_name(string $event): string
+    {
+        $event = snake_case(str_replace(' Hook', '', $event));
+        return singularity($event);
+    }
+}
