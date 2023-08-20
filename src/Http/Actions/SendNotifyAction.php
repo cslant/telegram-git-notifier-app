@@ -80,7 +80,7 @@ class SendNotifyAction
      */
     private function sendNotification(string $event): void
     {
-        $payload = $this->notificationService->setPayload($this->request);
+        $payload = $this->notificationService->setPayload($this->request, $event);
         if (empty($payload) || !$this->eventService->validateAccessEvent($this->notificationService->platform, $event, $payload)) {
             return;
         }
