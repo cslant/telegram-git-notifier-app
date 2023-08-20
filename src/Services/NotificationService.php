@@ -61,11 +61,16 @@ class NotificationService
      * @param string $typeEvent
      * @return void
      */
-    private function setMessage(string $typeEvent): void
+    private function setMessage(string $typeEvent): void // need to add condition to gitlab
     {
-        if (isset($this->payload->action) && !empty($this->payload->action)) {
+        if ($this->platform === 'gitlab') {
+            $action = $this->payload->object_attributes->action ?? '';
+        } else {
+            $action = $this->payload->action ?? '';
+        }
+        if (!empty($action)) {
             $this->message = view(
-                "events.{$this->platform}.{$typeEvent}.{$this->payload->action}",
+                "events.{$this->platform}." . get_event_name($typeEvent) . ".{$action}",
                 [
                     'payload' => $this->payload,
                     'event' => convert_event_name($typeEvent),

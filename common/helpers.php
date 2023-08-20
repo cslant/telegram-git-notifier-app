@@ -98,6 +98,19 @@ if (!function_exists('snake_case')) {
     }
 }
 
+if (!function_exists('get_event_name')) {
+    /**
+     * Get event name
+     *
+     * @param string $event
+     * @return string
+     */
+    function get_event_name(string $event): string
+    {
+        return snake_case(str_replace(' Hook', '', $event));
+    }
+}
+
 if (!function_exists('convert_event_name')) {
     /**
      * Convert event name
@@ -107,7 +120,6 @@ if (!function_exists('convert_event_name')) {
      */
     function convert_event_name(string $event): string
     {
-        $event = snake_case(str_replace(' Hook', '', $event));
-        return singularity($event);
+        return singularity(get_event_name($event));
     }
 }

@@ -13,7 +13,7 @@ class SendNotifyAction
 
     protected NotificationService $notificationService;
 
-    protected EventService $eventSettingService;
+    protected EventService $eventService;
 
     protected Request $request;
 
@@ -24,7 +24,7 @@ class SendNotifyAction
         $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
-        $this->eventSettingService = new EventService();
+        $this->eventService = new EventService();
 
         $this->chatIds = config('telegram-bot.notify_chat_ids');
     }
@@ -81,7 +81,7 @@ class SendNotifyAction
     private function sendNotification(string $event): void
     {
         $payload = $this->notificationService->setPayload($this->request);
-        if (empty($payload) || !$this->eventSettingService->validateAccessEvent($this->notificationService->platform, $event, $payload)) {
+        if (empty($payload) || !$this->eventService->validateAccessEvent($this->notificationService->platform, $event, $payload)) {
             return;
         }
 
