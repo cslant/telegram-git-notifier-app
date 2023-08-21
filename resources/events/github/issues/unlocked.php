@@ -7,7 +7,7 @@ $message = "🔐 <b>Issue Unlocked</b> form 🦑<a href=\"{$payload->repository-
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/_assignee.php';
+$message .= require __DIR__ . '/../../../shared/partials/_assignees.php';
 
 $message .= require __DIR__ . '/../../../shared/partials/_body.php';
 

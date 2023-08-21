@@ -9,7 +9,7 @@ $message = "️🗑 <b>Issue Comment Deleted</b> 💬 from 🦑<a href=\"{$paylo
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/_assignee.php';
+$message .= require __DIR__ . '/../../../shared/partials/_assignees.php';
 
 $message .= require __DIR__ . '/../../../shared/partials/_body.php';
 
