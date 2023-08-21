@@ -83,38 +83,43 @@ if (!function_exists('singularity')) {
     }
 }
 
-if (!function_exists('event_config')) {
+if (!function_exists('snake_case')) {
     /**
-     * Return event config
+     * Convert a string to a snack case
      *
-     * @return array
+     * @param $string
+     * @return string
      */
-    function event_config(): array
+    function snake_case($string): string
     {
-        return (new EventModel())->getEventConfig();
+        return strtolower(
+            preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1_', $string)
+        );
     }
 }
 
-if (!function_exists('all_events_notify')) {
+if (!function_exists('get_event_name')) {
     /**
-     * Return all events notify status
+     * Get event name
      *
-     * @return bool
+     * @param string $event
+     * @return string
      */
-    function all_events_notify(): bool
+    function get_event_name(string $event): string
     {
-        return (new SettingModel())->allEventsNotifyStatus();
+        return snake_case(str_replace(' Hook', '', $event));
     }
 }
 
-if (!function_exists('setting_config')) {
+if (!function_exists('convert_event_name')) {
     /**
-     * Return setting config
+     * Convert event name
      *
-     * @return array
+     * @param string $event
+     * @return string
      */
-    function setting_config(): array
+    function convert_event_name(string $event): string
     {
-        return (new SettingModel())->getSettingConfig();
+        return singularity(get_event_name($event));
     }
 }

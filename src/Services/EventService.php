@@ -28,12 +28,13 @@ class EventService extends AppService
     /**
      * Validate access event before send notify
      *
-     * @param string $event
+     * @param string $platform Source code platform (GitHub, GitLab)
+     * @param string $event Event name (push, pull_request)
      * @param $payload
      *
      * @return bool
      */
-    public function validateAccessEvent(string $event, $payload): bool
+    public function validateAccessEvent(string $platform, string $event, $payload): bool
     {
         if (!$this->setting->isNotified()) {
             return false;
@@ -43,11 +44,12 @@ class EventService extends AppService
             return true;
         }
 
+        $this->event->setEventConfig($platform);
         $eventConfig = $this->event->getEventConfig();
-        $eventConfig = $eventConfig[$event] ?? false;
-
-        if (isset($payload->action) && isset($eventConfig[$payload->action])) {
-            $eventConfig = $eventConfig[$payload->action];
+        $eventConfig = $eventConfig[convert_event_name($event)] ?? false;
+        $action = $this->getActionOfEvent($platform, $payload);
+        if (!empty($action) && isset($eventConfig[$action])) {
+            $eventConfig = $eventConfig[$action];
         }
 
         if (!$eventConfig) {
@@ -55,6 +57,25 @@ class EventService extends AppService
         }
 
         return (bool)$eventConfig;
+    }
+
+    /**
+     * Get action name of event from payload data
+     *
+     * @param string $platform
+     * @param $payload
+     *
+     * @return string
+     */
+    private function getActionOfEvent(string $platform, $payload): string
+    {
+        if ($platform === 'github') {
+            return $payload->action ?? '';
+        } elseif ($platform === 'gitlab') {
+            return $payload->object_attributes->action ?? '';
+        }
+
+        return '';
     }
 
     /**
@@ -135,7 +156,7 @@ class EventService extends AppService
      * @param string|null $event
      * @return array
      */
-    public function getEndKeyboard(?string $event = null): array
+    private function getEndKeyboard(?string $event = null): array
     {
         $back = $this->setting::SETTING_BACK . 'settings';
 
@@ -189,7 +210,7 @@ class EventService extends AppService
      * @param string $event
      * @return void
      */
-    public function eventUpdateHandle(string $event): void
+    private function eventUpdateHandle(string $event): void
     {
         $event = explode('.', $event);
         $action = $event[1] ?? null;

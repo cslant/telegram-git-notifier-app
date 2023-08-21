@@ -40,16 +40,17 @@ class NotificationService
      * Set payload from request
      *
      * @param Request $request
+     * @param string $event
+     *
      * @return mixed|void
      */
-    public function setPayload(Request $request)
+    public function setPayload(Request $request, string $event)
     {
-        $event = $request->server->get(self::WEBHOOK_EVENT_HEADER[$this->platform]);
-        if (is_null($event)) {
-            return null;
+        if ($this->platform === 'gitlab') {
+            $this->payload = json_decode($request->getContent());
+        } elseif ($this->platform === 'github') {
+            $this->payload = json_decode($request->request->get('payload'));
         }
-
-        $this->payload = json_decode($request->request->get('payload'));
         $this->setMessage($event);
 
         return $this->payload;
@@ -63,16 +64,25 @@ class NotificationService
      */
     private function setMessage(string $typeEvent): void
     {
-        if (isset($this->payload->action) && !empty($this->payload->action)) {
+        $event = get_event_name($typeEvent);
+        $action = '';
+
+        if ($this->platform === 'gitlab') {
+            $action = $this->payload?->object_attributes?->action ?? '';
+        } elseif ($this->platform === 'github') {
+            $action = $this->payload?->action ?? '';
+        }
+
+        if (!empty($action)) {
             $this->message = view(
-                "events.{$this->platform}.{$typeEvent}.{$this->payload->action}",
+                "events.{$this->platform}." . $event . ".{$action}",
                 [
                     'payload' => $this->payload,
-                    'event' => singularity($typeEvent),
+                    'event' => convert_event_name($typeEvent),
                 ]
             );
         } else {
-            $this->message = view("events.{$this->platform}.{$typeEvent}.default", ['payload' => $this->payload]);
+            $this->message = view("events.{$this->platform}.{$event}.default", ['payload' => $this->payload]);
         }
     }
 

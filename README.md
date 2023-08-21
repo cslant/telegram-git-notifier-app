@@ -1,4 +1,4 @@
-# Welcome to Telegram Bot GitHub Notify 👋
+# Welcome to Telegram Bot GitHub/GitLab Notify 👋
 
 This package provides the ability to integrate the Telegram messaging service and GitHub/GitLab.
 With this package,

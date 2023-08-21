@@ -40,7 +40,11 @@ class AppService
             $content['caption'] = $message;
         }
 
-        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
+        if (!empty($options)) {
+            $content['reply_markup'] = $options['reply_markup']
+                ? $this->telegram->buildInlineKeyBoard($options['reply_markup'])
+                : null;
+        }
 
         $this->telegram->{'send' . $sendType}($content);
     }
@@ -126,7 +130,9 @@ class AppService
             'parse_mode' => 'HTML',
         );
 
-        $content['reply_markup'] = $options['reply_markup'] ? $this->telegram->buildInlineKeyBoard($options['reply_markup']) : null;
+        $content['reply_markup'] = $options['reply_markup']
+            ? $this->telegram->buildInlineKeyBoard($options['reply_markup'])
+            : null;
 
         return $content;
     }
