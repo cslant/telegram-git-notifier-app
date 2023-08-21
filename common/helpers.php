@@ -92,9 +92,8 @@ if (!function_exists('snake_case')) {
      */
     function snake_case($string): string
     {
-        return strtolower(
-            preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1_', $string)
-        );
+        $string = preg_replace('/\s+/', '_', $string);
+        return strtolower($string);
     }
 }
 

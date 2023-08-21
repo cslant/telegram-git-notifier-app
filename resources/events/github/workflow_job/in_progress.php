@@ -3,7 +3,7 @@
  * @var $payload mixed
  */
 
-$message = "🔧 <b>Action in progress</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name} </a>\n\n";
+$message = "🔧 <b>Action in progress</b> form 🦑<a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name} </a>\n\n";
 
 $message .= "Running action: 💥 <b>{$payload->workflow_job->runner_name}</b> ⏳\n\n";
 

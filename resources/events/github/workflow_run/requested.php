@@ -3,7 +3,7 @@
  * @var $payload mixed
  */
 
-$message = "🔧 <b>Workflow Requested</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+$message = "🔧 <b>Workflow Requested</b> form 🦑<a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
 $message .= "Running workflow: 💥 <b>{$payload->workflow_run->name}</b> ⏳\n\n";
 

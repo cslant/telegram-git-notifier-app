@@ -4,11 +4,11 @@
  */
 
 if ($payload->workflow_job->conclusion === 'success') {
-    $message = "🎉 <b>Action Completed</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+    $message = "🎉 <b>Action Completed</b> form 🦑<a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
     $message .= "Done action: 🎉 <b>{$payload->workflow_job->runner_name}</b> ✨ \n\n";
 } else {
-    $message = "🚫 <b>Canceled Action</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+    $message = "🚫 <b>Canceled Action</b> form 🦑<a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
     $message .= "Failed action: 🚫 <b>{$payload->workflow_job->runner_name}</b> ❌ \n\n";
 }

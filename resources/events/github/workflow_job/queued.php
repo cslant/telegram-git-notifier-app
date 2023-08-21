@@ -3,7 +3,7 @@
  * @var $payload mixed
  */
 
-$message = "🎉 <b>Action Queued</b> from <a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
+$message = "🎉 <b>Action Queued</b> form 🦑<a href=\"{$payload->repository->html_url}\">{$payload->repository->full_name}</a>\n\n";
 
 $message .= "Queued action: 💥 <b>{$payload->workflow_job->runner_name}</b> ⏰\n\n";
 
