@@ -10,7 +10,7 @@ if (isset($payload->organization)) {
 }
 
 if (isset($payload->repository)) {
-    $message .= "📦 Repository: <b>{$payload->repository->full_name}</b>\n";
+    $message .= "📦 Repository: 🦑<b>{$payload->repository->full_name}</b>\n";
 }
 
 if (isset($payload->sender)) {

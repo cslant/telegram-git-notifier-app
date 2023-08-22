@@ -5,11 +5,11 @@
 
 $event = 'comment';
 
-$message = "⚠️ <b>New Issue Comment</b> 💬 to <a href=\"{$payload->issue->html_url}\">{$payload->repository->full_name}#{$payload->issue->number}</a> by <a href=\"{$payload->comment->user->html_url}\">@{$payload->comment->user->login}</a>\n\n";
+$message = "⚠️ <b>New Issue Comment</b> 💬 to 🦑<a href=\"{$payload->issue->html_url}\">{$payload->repository->full_name}#{$payload->issue->number}</a> by <a href=\"{$payload->comment->user->html_url}\">@{$payload->comment->user->login}</a>\n\n";
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/_assignee.php';
+$message .= require __DIR__ . '/../../../shared/partials/_assignees.php';
 
 $message .= require __DIR__ . '/../../../shared/partials/_body.php';
 
