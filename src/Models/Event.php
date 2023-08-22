@@ -1,18 +1,27 @@
 <?php
 
-namespace TelegramGithubNotify\App\Models;
+namespace TelegramNotificationBot\App\Models;
 
 class Event
 {
-    public const EVENT_FILE = __DIR__ . '/../../storage/tg-event.json';
+    public const GITHUB_EVENT_FILE = __DIR__ . '/../../storage/json/github-event.json';
+
+    public const GITLAB_EVENT_FILE = __DIR__ . '/../../storage/json/gitlab-event.json';
+
+    public const PLATFORM_FILES = [
+        'github' => self::GITHUB_EVENT_FILE,
+        'gitlab' => self::GITLAB_EVENT_FILE,
+    ];
 
     public const EVENT_PREFIX = Setting::SETTING_CUSTOM_EVENTS . '.evt.';
 
     public array $eventConfig = [];
 
+    private string $platform = 'github';
+
     public function __construct()
     {
-        if (file_exists(self::EVENT_FILE)) {
+        if (file_exists(self::PLATFORM_FILES[$this->platform])) {
             $this->setEventConfig();
         }
     }
@@ -20,11 +29,14 @@ class Event
     /**
      * Set event config
      *
+     * @param string $platform
      * @return void
      */
-    private function setEventConfig(): void
+    public function setEventConfig(string $platform = 'github'): void
     {
-        $json = file_get_contents(self::EVENT_FILE);
+        $this->platform = $platform;
+
+        $json = file_get_contents(self::PLATFORM_FILES[$this->platform]);
         $this->eventConfig = json_decode($json, true);
     }
 
@@ -63,9 +75,10 @@ class Event
      */
     private function saveEventConfig(): void
     {
-        if (file_exists(self::EVENT_FILE)) {
+        $jsonFile = self::PLATFORM_FILES[$this->platform];
+        if (file_exists($jsonFile)) {
             $json = json_encode($this->eventConfig, JSON_PRETTY_PRINT);
-            file_put_contents(self::EVENT_FILE, $json, LOCK_EX);
+            file_put_contents($jsonFile, $json, LOCK_EX);
         }
     }
 }

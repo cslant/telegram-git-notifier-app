@@ -1,11 +1,11 @@
 <?php
 
-namespace TelegramGithubNotify\App\Http\Actions;
+namespace TelegramNotificationBot\App\Http\Actions;
 
 use Symfony\Component\HttpFoundation\Request;
-use TelegramGithubNotify\App\Services\EventService;
-use TelegramGithubNotify\App\Services\NotificationService;
-use TelegramGithubNotify\App\Services\TelegramService;
+use TelegramNotificationBot\App\Services\EventService;
+use TelegramNotificationBot\App\Services\NotificationService;
+use TelegramNotificationBot\App\Services\TelegramService;
 
 class SendNotifyAction
 {
@@ -13,7 +13,7 @@ class SendNotifyAction
 
     protected NotificationService $notificationService;
 
-    protected EventService $eventSettingService;
+    protected EventService $eventService;
 
     protected Request $request;
 
@@ -24,7 +24,7 @@ class SendNotifyAction
         $this->request = Request::createFromGlobals();
         $this->telegramService = new TelegramService();
         $this->notificationService = new NotificationService();
-        $this->eventSettingService = new EventService();
+        $this->eventService = new EventService();
 
         $this->chatIds = config('telegram-bot.notify_chat_ids');
     }
@@ -36,10 +36,14 @@ class SendNotifyAction
      */
     public function __invoke(): void
     {
-        // Send a GitHub event result to all chat ids in env
-        if (!is_null($this->request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            $this->sendNotification();
-            return;
+        // Send an event result to all chat ids in env
+        foreach ($this->notificationService::WEBHOOK_EVENT_HEADER as $platform => $header) {
+            $event = $this->request->server->get($header);
+            if (!is_null($event)) {
+                $this->notificationService->platform = $platform;
+                $this->sendNotification($event);
+                return;
+            }
         }
 
         // Telegram bot handler
@@ -71,13 +75,13 @@ class SendNotifyAction
     }
 
     /**
+     * @param string $event
      * @return void
      */
-    private function sendNotification(): void
+    private function sendNotification(string $event): void
     {
-        $payload = $this->notificationService->setPayload($this->request);
-
-        if (empty($payload) || !$this->eventSettingService->validateAccessEvent($this->request, $payload)) {
+        $payload = $this->notificationService->setPayload($this->request, $event);
+        if (empty($payload) || !$this->eventService->validateAccessEvent($this->notificationService->platform, $event, $payload)) {
             return;
         }
 

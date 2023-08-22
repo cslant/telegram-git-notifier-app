@@ -1,0 +1,41 @@
+{
+  "push": true,
+  "tag_push": false,
+  "issue": {
+    "open": true,
+    "close": true,
+    "reopen": false,
+    "update": false
+  },
+  "note": {
+    "issue": true,
+    "merge_request": true,
+    "commit": false,
+    "snippet": false
+  },
+  "merge_request": {
+    "open": true,
+    "close": true,
+    "reopen": false,
+    "update": false,
+    "approval": true,
+    "unapproval": false,
+    "approved": true,
+    "unapproved": false,
+    "merge": true
+  },
+  "wiki_page": {
+    "create": true,
+    "edit": false,
+    "delete": false
+  },
+  "feature_flag": false,
+  "release": {
+    "create": true,
+    "update": false
+  },
+  "emoji": {
+    "award": true,
+    "revoke": false
+  }
+}

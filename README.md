@@ -1,9 +1,8 @@
-# Welcome to Telegram Bot GitHub Notify 👋
+# Welcome to Telegram Bot GitHub/GitLab Notify 👋
 
-The "**telegram-bot-github-notify**"
-package provides the ability to integrate the Telegram messaging service and GitHub.
+This package provides the ability to integrate the Telegram messaging service and GitHub/GitLab.
 With this package,
-you can create a Telegram bot to receive notifications from GitHub events
+you can create a Telegram bot to receive notifications from GitHub or GitLab events
 and manage customization through messages and buttons on Telegram.
 
 ![License](https://img.shields.io/github/license/lbiltech/telegram-bot-github-notify.svg?style=flat-square)
@@ -15,15 +14,15 @@ and manage customization through messages and buttons on Telegram.
 
 ## 📝 Information
 
-- Send GitHub notifications of your repositories to Telegram Bots, Groups, and Channels.
+- Send GitHub/GitLab notifications of your repositories to Telegram Bots, Groups, and Channels.
 - The bot must be created using the [BotFather](https://core.telegram.org/bots#6-botfather)
 
 ## 🎉 Features
 
-1. **GitHub Notifications to Telegram**: The package allows you to configure a Telegram bot to receive notifications from various GitHub events, including events like **commits, pull requests, issues, releases, and many more**.
+1. **GitHub/GitLab Notifications to Telegram**: The package allows you to configure a Telegram bot to receive notifications from various GitHub/GitLab events, including events like **commits, pull requests, issues, releases, and many more**.
 
 <p align="center">
-  <img alt="GitHub Notifications to Telegram" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/462f330f-11d3-43ef-89cf-c70ade57b654" />
+  <img alt="GitHub/GitLab Notifications to Telegram" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/462f330f-11d3-43ef-89cf-c70ade57b654" />
 </p>
 
 2. **Customize Notifications**: You can customize the types of notifications you want to receive through options on Telegram.
@@ -41,7 +40,8 @@ and manage customization through messages and buttons on Telegram.
 </p>
 
 5. **Easy Integration**:
-   The package provides an API and user-friendly functions to create a Telegram bot and link it to your GitHub account.
+   The package provides an API and user-friendly functions
+   to create a Telegram bot and link it to your GitHub/GitLab account.
 
 [//]: # (features image)
 
@@ -90,7 +90,7 @@ To create a new bot, you need to talk to [BotFather](https://core.telegram.org/b
 3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
 4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
 
-```shell
+```dotenv
 TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 
@@ -102,7 +102,7 @@ TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
 5. Paste the Chat ID in your `.env` file.
 
-```shell
+```dotenv
 TELEGRAM_BOT_CHAT_ID=123456789
 ```
 
@@ -117,7 +117,7 @@ In this example, we will use localhost and [ngrok](https://ngrok.com/) to set up
 3. Continue to run command in terminal: `ngrok http 8000`
 4. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
 
-```shell
+```dotenv
 APP_URL=https://123456789.ngrok.io
 ```
 
@@ -150,23 +150,25 @@ cp .env.example .env
 
 Open the `.env` file and update the following variables:
 
-```shell
+```dotenv
 PHP_VERSION_SELECTED=8.2
-CONTAINER_NAME=telegram-notify-bot
 APP_PORT=3180
+
+# You can customize the container name to suit your needs using GitHub and GitLab
+CONTAINER_NAME=telegram-notify-bot
 ```
 
 > **Note:** 
 > 
 > - The `PHP_VERSION_SELECTED` variable is the PHP version you want to use in the container.
-> - The `CONTAINER_NAME` variable is the name of the container you want to create.
 > - The `APP_PORT` variable is the port of the container. (Please don't set the same port as the host)
+> - The `CONTAINER_NAME` variable is the name of the container you want to create.
 
 ### Install and run the container
 
 Run the following command to install and run the container:
 
-```bash
+```shell
 bash ./docker.sh
 ```
 
@@ -183,7 +185,7 @@ you need to talk to [BotFather](https://core.telegram.org/bots#6-botfather) and 
 3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
 4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
 
-```shell
+```dotenv
 TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 
@@ -195,7 +197,7 @@ TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
 5. Paste the Chat ID in your `.env` file.
 
-```shell
+```dotenv
 TELEGRAM_BOT_CHAT_ID=123456789
 ```
 
@@ -223,7 +225,7 @@ ngrok http 172.28.0.3
 
 3. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
 
-```shell
+```dotenv
 APP_URL=https://123456789.ngrok-free.app
 ```
 
@@ -261,7 +263,7 @@ If you want to set the webhook manually, you can use the following URL:
 https://api.telegram.org/bot<YourTelegramBotToken>/setWebhook?url=<APP_URL>
 ```
 
-> **Note:** Replace `<YourTelegramBotToken>` with your bot token and `<APP_URL>` with your app URL in .env file.
+> **Note:** Replace `<YourTelegramBotToken>` with your bot token and `<APP_URL>` with your app URL in `.env` file.
 
 ### III. Add chat ids you want to receive notifications to the .env file
 
@@ -271,7 +273,7 @@ You can add multiple chat ids to the `.env` file.
 
 Also, you can add **the chat id of this bot** to receive incoming notifications for itself.
 
-```shell
+```dotenv
 TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 ```
 
@@ -281,8 +283,8 @@ TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 
 Now your configuration is complete. And the `.env` file will be like this:
 
-```shell
-APP_NAME='Telegram Github Notify Bot'
+```dotenv
+APP_NAME='Telegram GitHub/GitLab Notify Bot'
 
 # Set your app URL here
 APP_URL=https://123456789.ngrok.io
@@ -336,24 +338,33 @@ Please send the following message to your bot to create a menu button.
   <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/70f79e8f-b075-455d-b928-f721ca5b11cc" /> <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/53af5d51-7aa8-4dd8-99f6-3b55a9971cbe" />
 </p>
 
-Now you will need to add the Webhook for your GitHub repository to receive notifications.
+Now you will need to add the Webhook for your GitHub and GitLab repository to receive notifications.
 
 ## 📌 Add webhook on your GitHub repository to receive notifications
 
-1. Go to your repository settings
-2. Go to the `Webhooks` section
-3. Click on `Add webhook`
-4. Set `Payload URL` to `<APP_URL>`
-5. Set `Content type` to `application/x-www-form-urlencoded`
-6. Which events would you like to trigger this webhook? Select `Let me select individual events.`
+1. Go to your repository settings.
+2. Go to the `Webhooks` section.
+3. Click on `Add webhook`.
+4. Set `Payload URL` to `<APP_URL>`.
+5. Set `Content type` to `application/x-www-form-urlencoded`.
+6. Which events would you like to trigger this webhook? Select `Let me select individual events.`.
 7. Click on the `Active` checkbox and Add webhook button.
 8. Done. You will receive a notification when your repository has a new event.
 
-Here is the first notification you will receive: 
+Here is the first notification you will receive:
 
 <p align="center">
   <img alt="Github ping event notification" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/66b7fffa-d2fa-41f6-8caa-3c1ab96b63be" />
 </p>
+
+## 📌 Add webhook on your GitLab repository to receive notifications
+
+1. Go to your repository settings.
+2. Go to the `Webhooks` section.
+3. Click on `Add new webhook`.
+4. Set `URL` to `<APP_URL>`.
+5. Choose any `Trigger` you want.
+6. Click on the `Enable SSL verification` checkbox and Add webhook button.
 
 > **Note: You can set up this webhook for different repositories. Please similarly set up the webhook for each repository.**
 

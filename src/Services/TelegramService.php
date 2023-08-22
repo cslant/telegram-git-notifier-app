@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
-use TelegramGithubNotify\App\Models\Setting;
+use TelegramNotificationBot\App\Models\Setting;
 
 class TelegramService extends AppService
 {
@@ -27,7 +27,7 @@ class TelegramService extends AppService
             'description' => 'To get Server Information'
         ], [
             'command' => '/settings',
-            'description' => 'Show settings GitHub notify'
+            'description' => 'Show settings of the bot'
         ],
     ];
 
@@ -54,8 +54,7 @@ class TelegramService extends AppService
         set_time_limit(60);
         switch ($text) {
             case '/start':
-                $reply = view('tools.start', ['first_name' => $this->telegram->FirstName()]);
-                $this->sendMessage($reply, ['photo' => curl_file_create(config('app.image'), 'image/png')], 'Photo');
+                $this->sendStartMessage();
                 break;
             case '/menu':
                 $this->sendMessage(view('tools.menu'), ['reply_markup' => $this->menuMarkup()]);
@@ -75,6 +74,37 @@ class TelegramService extends AppService
             default:
                 $this->sendMessage('🤨 Invalid Request!');
         }
+    }
+
+    /**
+     * Send the welcome message to a telegram
+     *
+     * @return void
+     */
+    public function sendStartMessage(): void
+    {
+        $reply = view(
+            'tools.start',
+            ['first_name' => $this->telegram->FirstName()]
+        );
+        $this->sendMessage(
+            $reply,
+            ['photo' => curl_file_create(config('app.image'), 'image/png')],
+            'Photo'
+        );
+    }
+
+    /**
+     * Set the menu button for a telegram
+     *
+     * @return void
+     */
+    public function setMyCommands(): void
+    {
+        $this->telegram->setMyCommands([
+            'commands' => json_encode(self::MENU_COMMANDS)
+        ]);
+        $this->sendMessage(view('tools.set_menu'));
     }
 
     /**
@@ -108,18 +138,5 @@ class TelegramService extends AppService
             return true;
         }
         return false;
-    }
-
-    /**
-     * Set the menu button for a telegram
-     *
-     * @return void
-     */
-    public function setMyCommands(): void
-    {
-        $this->telegram->setMyCommands([
-            'commands' => json_encode(self::MENU_COMMANDS)
-        ]);
-        $this->sendMessage(view('tools.set_menu'));
     }
 }

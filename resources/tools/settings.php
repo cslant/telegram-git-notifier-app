@@ -1,1 +1,1 @@
-<b>Settings for GitHub notify.</b>
+<b>Settings for your bot</b> 🤖

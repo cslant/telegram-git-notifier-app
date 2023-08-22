@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramGithubNotify\App\Services;
+namespace TelegramNotificationBot\App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -10,7 +10,14 @@ class NotificationService
 {
     protected mixed $payload;
 
-    protected string $message = "";
+    protected string $message = '';
+
+    public string $platform = 'github';
+
+    public const WEBHOOK_EVENT_HEADER = [
+        'github' => 'HTTP_X_GITHUB_EVENT',
+        'gitlab' => 'HTTP_X_GITLAB_EVENT',
+    ];
 
     /**
      * Notify access denied to other chat ids
@@ -33,16 +40,18 @@ class NotificationService
      * Set payload from request
      *
      * @param Request $request
+     * @param string $event
+     *
      * @return mixed|void
      */
-    public function setPayload(Request $request)
+    public function setPayload(Request $request, string $event)
     {
-        if (is_null($request->server->get('HTTP_X_GITHUB_EVENT'))) {
-            return null;
+        if ($this->platform === 'gitlab') {
+            $this->payload = json_decode($request->getContent());
+        } elseif ($this->platform === 'github') {
+            $this->payload = json_decode($request->request->get('payload'));
         }
-
-        $this->payload = json_decode($request->request->get('payload'));
-        $this->setMessage($request->server->get('HTTP_X_GITHUB_EVENT'));
+        $this->setMessage($event);
 
         return $this->payload;
     }
@@ -55,16 +64,25 @@ class NotificationService
      */
     private function setMessage(string $typeEvent): void
     {
-        if (isset($this->payload->action) && !empty($this->payload->action)) {
+        $event = get_event_name($typeEvent);
+        $action = '';
+
+        if ($this->platform === 'gitlab') {
+            $action = $this->payload?->object_attributes?->action ?? '';
+        } elseif ($this->platform === 'github') {
+            $action = $this->payload?->action ?? '';
+        }
+
+        if (!empty($action)) {
             $this->message = view(
-                'events.' . $typeEvent . '.' . $this->payload->action,
+                "events.{$this->platform}." . $event . ".{$action}",
                 [
                     'payload' => $this->payload,
-                    'event' => singularity($typeEvent),
+                    'event' => convert_event_name($typeEvent),
                 ]
             );
         } else {
-            $this->message = view('events.' . $typeEvent . '.default', ['payload' => $this->payload]);
+            $this->message = view("events.{$this->platform}.{$event}.default", ['payload' => $this->payload]);
         }
     }
 

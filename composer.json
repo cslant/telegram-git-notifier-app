@@ -1,16 +1,21 @@
 {
   "name": "lbiltech/telegram-bot-github-notify",
-  "description": "A Telegram bot send notify Github events to Telegram channels",
+  "description": "A Telegram bot send notify Gitlab and Github events to Telegram channels",
   "keywords": [
     "telegram",
     "bot",
     "github",
+    "gitlab",
     "notify",
     "events",
     "webhook",
     "telegram-notifier",
     "github-notifier",
-    "github-telegram-bot"
+    "gitlab-notifier",
+    "github-telegram-bot",
+    "gitlab-telegram-bot",
+    "telegram-bot-github-notify",
+    "telegram-bot-gitlab-notify"
   ],
   "type": "project",
   "homepage": "https://github.com/lbiltech/telegram-bot-github-notify",
@@ -25,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TelegramGithubNotify\\App\\": "src/"
+      "TelegramNotificationBot\\App\\": "src/"
     },
     "files": [
       "common/helpers.php"
@@ -49,15 +54,17 @@
   "scripts": {
     "post-install-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "php -r \"file_exists('storage/tg-event.json') || copy('config/jsons/tg-event.json', 'storage/tg-event.json');\"",
-      "php -r \"file_exists('storage/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/tg-setting.json');\"",
-      "chmod -R 777 storage/*.json"
+      "php -r \"file_exists('storage/json/github-event.json') || copy('config/jsons/github-event.json', 'storage/json/github-event.json');\"",
+      "php -r \"file_exists('storage/json/gitlab-event.json') || copy('config/jsons/gitlab-event.json', 'storage/json/gitlab-event.json');\"",
+      "php -r \"file_exists('storage/json/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/json/tg-setting.json');\"",
+      "chmod -R 777 storage/json/*.json"
     ],
     "post-update-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "php -r \"file_exists('storage/tg-event.json') || copy('config/jsons/tg-event.json', 'storage/tg-event.json');\"",
-      "php -r \"file_exists('storage/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/tg-setting.json');\"",
-      "chmod -R 777 storage/*.json"
+      "php -r \"file_exists('storage/json/github-event.json') || copy('config/jsons/github-event.json', 'storage/json/github-event.json');\"",
+      "php -r \"file_exists('storage/json/gitlab-event.json') || copy('config/jsons/gitlab-event.json', 'storage/json/gitlab-event.json');\"",
+      "php -r \"file_exists('storage/json/tg-setting.json') || copy('config/jsons/tg-setting.json', 'storage/json/tg-setting.json');\"",
+      "chmod -R 777 storage/json/*.json"
     ]
   }
 }
