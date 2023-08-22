@@ -4,7 +4,7 @@
  * @var $event string
  */
 
-if (isset($payload) && !empty($payload->assignees)) {
+if (isset($event) && isset($payload) && !empty($payload->assignees)) {
     $assigneeText = "🙋 Assignee: ";
     $assigneeArray = [];
     foreach ($payload->assignees as $assignee) {

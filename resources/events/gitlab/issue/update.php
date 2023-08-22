@@ -12,4 +12,3 @@ $message .= require __DIR__ . '/../../../shared/partials/gitlab/_assignees.php';
 $message .= require __DIR__ . '/../../../shared/partials/gitlab/_body.php';
 
 echo $message;
-
