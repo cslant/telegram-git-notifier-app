@@ -1,6 +1,6 @@
 {
   "push": true,
-  "tag_push": false,
+  "tag_push": true,
   "issue": {
     "open": true,
     "close": true,
