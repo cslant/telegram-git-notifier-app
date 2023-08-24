@@ -34,41 +34,51 @@ class SettingService extends AppService
      */
     public function settingMarkup(): array
     {
-        $allEventKeyboard = [
-            $this->telegram->buildInlineKeyBoardButton(
-                $this->setting->settings['all_events_notify']
-                    ? '✅ Enable All Events Notify' : 'Enable All Events Notify',
-                '',
-                $this->setting::SETTING_ALL_EVENTS_NOTIFY
-            ),
-        ];
-
-        if (!$this->setting->settings['all_events_notify']) {
-            $allEventKeyboard[] = $this->telegram->buildInlineKeyBoardButton(
-                '⚙ Custom individual events',
-                '',
-                $this->setting::SETTING_CUSTOM_EVENTS
-            );
-        }
-
-        return [
+        $markup = [
             [
                 $this->telegram->buildInlineKeyBoardButton(
-                    $this->setting->settings['is_notified']
-                        ? '✅ Allow notifications' : 'Allow notifications',
+                    $this->setting->settings['is_notified'] ? '✅ Allow notifications' : 'Allow notifications',
                     '',
                     $this->setting::SETTING_IS_NOTIFIED
                 ),
-            ],
-            $allEventKeyboard,
-            [
+            ], [
                 $this->telegram->buildInlineKeyBoardButton(
-                    '🔙 Back to menu',
+                    $this->setting->settings['all_events_notify'] ? '✅ Enable All Events Notify' : 'Enable All Events Notify',
                     '',
-                    $this->setting::SETTING_BACK . 'menu'
+                    $this->setting::SETTING_ALL_EVENTS_NOTIFY
                 ),
             ]
         ];
+
+        $markup = $this->customEventMarkup($markup);
+
+        $markup[] = [$this->telegram->buildInlineKeyBoardButton('🔙 Back to menu', '', $this->setting::SETTING_BACK . 'menu'),];
+
+        return $markup;
+    }
+
+    /**
+     * @param array $markup
+     * @return array
+     */
+    public function customEventMarkup(array $markup): array
+    {
+        if (!$this->setting->settings['all_events_notify']) {
+            $markup[] = [
+                $this->telegram->buildInlineKeyBoardButton(
+                    '🦑 Custom github events',
+                    '',
+                    $this->setting::SETTING_GITHUB_EVENTS
+                ),
+                $this->telegram->buildInlineKeyBoardButton(
+                    '🦊 Custom gitlab events',
+                    '',
+                    $this->setting::SETTING_GITLAB_EVENTS
+                ),
+            ];
+        }
+
+        return $markup;
     }
 
     /**
@@ -115,9 +125,13 @@ class SettingService extends AppService
                 $view = view('tools.settings');
                 $markup = $this->settingMarkup();
                 break;
-            case 'settings.custom_events':
-                $view = view('tools.custom_events');
+            case 'settings.custom_events.github':
+                $view = view('tools.custom_events', ['platform' => 'github']);
                 $markup = (new EventService())->eventMarkup();
+                break;
+            case 'settings.custom_events.gitlab':
+                $view = view('tools.custom_events', ['platform' => 'gitlab']);
+                $markup = (new EventService())->eventMarkup(null, 'gitlab');
                 break;
             default:
                 $view = view('tools.menu');
