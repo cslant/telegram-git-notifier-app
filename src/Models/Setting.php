@@ -83,22 +83,22 @@ class Setting
      */
     public function updateSettingItem(string $settingName, $settingValue = null): bool
     {
-        $keys = explode('.', $settingName);
-        $lastKey = array_pop($keys);
+        $settingKeys = explode('.', $settingName);
         $nestedSettings = &$this->settings;
 
-        foreach ($keys as $key) {
+        foreach ($settingKeys as $key) {
             if (!isset($nestedSettings[$key]) || !is_array($nestedSettings[$key])) {
                 return false;
             }
             $nestedSettings = &$nestedSettings[$key];
         }
 
+        $lastKey = end($settingKeys);
         if (isset($nestedSettings[$lastKey])) {
-            $nestedSettings[$lastKey] = $settingValue ?? !$nestedSettings[$lastKey];
-            if ($this->saveSettingsToFile()) {
-                return true;
-            }
+            $newValue = $settingValue ?? !$nestedSettings[$lastKey]; // if value is null, then toggle value
+            $nestedSettings[$lastKey] = $newValue;
+
+            return $this->saveSettingsToFile();
         }
 
         return false;

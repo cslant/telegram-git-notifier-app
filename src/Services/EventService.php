@@ -311,7 +311,7 @@ class EventService extends AppService
         $this->eventHandle(
             $action
                 ? $this->event::PLATFORM_EVENT_SEPARATOR[$platform]
-                .$this->event::EVENT_HAS_ACTION_SEPARATOR.$event
+                . $this->event::EVENT_HAS_ACTION_SEPARATOR . $event
                 : null,
             $platform
         );
