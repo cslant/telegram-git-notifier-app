@@ -13,11 +13,17 @@ class Event
         'gitlab' => self::GITLAB_EVENT_FILE,
     ];
 
+    public const DEFAULT_PLATFORM = 'github';
+
     public const EVENT_PREFIX = Setting::SETTING_CUSTOM_EVENTS . '.evt.';
 
     public const GITHUB_EVENT_SEPARATOR = 'gh.';
 
     public const GITLAB_EVENT_SEPARATOR = 'gl.';
+
+    public const EVENT_HAS_ACTION_SEPARATOR = 'atc.';
+
+    public const EVENT_UPDATE_SEPARATOR = '.upd';
 
     public const PLATFORM_EVENT_SEPARATOR = [
         'github' => self::GITHUB_EVENT_SEPARATOR,
@@ -26,7 +32,7 @@ class Event
 
     public array $eventConfig = [];
 
-    private string $platform = 'github';
+    private string $platform = self::DEFAULT_PLATFORM;
 
     public function __construct()
     {
@@ -41,7 +47,7 @@ class Event
      * @param string $platform
      * @return void
      */
-    public function setEventConfig(string $platform = 'github'): void
+    public function setEventConfig(string $platform = self::DEFAULT_PLATFORM): void
     {
         $this->platform = $platform;
 

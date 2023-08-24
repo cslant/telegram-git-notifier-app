@@ -9,10 +9,6 @@ class EventService extends AppService
 {
     public const LINE_ITEM_COUNT = 2;
 
-    public const EVENT_HAS_ACTION_SEPARATOR = 'atc.';
-
-    public const EVENT_UPDATE_SEPARATOR = '.upd';
-
     protected Setting $setting;
 
     protected Event $event;
@@ -31,7 +27,6 @@ class EventService extends AppService
      * @param string $platform Source code platform (GitHub, GitLab)
      * @param string $event Event name (push, pull_request)
      * @param $payload
-     *
      * @return bool
      */
     public function validateAccessEvent(string $platform, string $event, $payload): bool
@@ -46,8 +41,10 @@ class EventService extends AppService
 
         $this->event->setEventConfig($platform);
         $eventConfig = $this->event->getEventConfig();
+
         $eventConfig = $eventConfig[convert_event_name($event)] ?? false;
         $action = $this->getActionOfEvent($platform, $payload);
+
         if (!empty($action) && isset($eventConfig[$action])) {
             $eventConfig = $eventConfig[$action];
         }
@@ -64,12 +61,11 @@ class EventService extends AppService
      *
      * @param string $platform
      * @param $payload
-     *
      * @return string
      */
     private function getActionOfEvent(string $platform, $payload): string
     {
-        if ($platform === 'github') {
+        if ($platform === Event::DEFAULT_PLATFORM) {
             return $payload->action ?? '';
         } elseif ($platform === 'gitlab') {
             return $payload->object_attributes->action ?? '';
@@ -82,10 +78,10 @@ class EventService extends AppService
      * Create markup for select event
      *
      * @param string|null $parentEvent
-     * @param string|null $platform
+     * @param string $platform
      * @return array
      */
-    public function eventMarkup(?string $parentEvent = null, ?string $platform = 'github'): array
+    public function eventMarkup(?string $parentEvent = null, string $platform = Event::DEFAULT_PLATFORM): array
     {
         $replyMarkup = $replyMarkupItem = [];
 
@@ -117,7 +113,7 @@ class EventService extends AppService
     /**
      * Get callback data for markup
      *
-     * @param string  $event
+     * @param string $event
      * @param string $platform
      * @param array|bool $value
      * @param string|null $parentEvent
@@ -126,16 +122,18 @@ class EventService extends AppService
      */
     private function getCallbackData(string $event, string $platform, array|bool $value = false, ?string $parentEvent = null): string
     {
-        $platform = $platform === 'github' ? $this->event::GITHUB_EVENT_SEPARATOR : $this->event::GITLAB_EVENT_SEPARATOR;
+        $platformSeparator = $platform === $this->event::DEFAULT_PLATFORM
+            ? $this->event::GITHUB_EVENT_SEPARATOR
+            : $this->event::GITLAB_EVENT_SEPARATOR;
+        $prefix = $this->event::EVENT_PREFIX . $platformSeparator;
 
-        $prefix = $this->event::EVENT_PREFIX . $platform;
         if (is_array($value)) {
-            return $prefix . self::EVENT_HAS_ACTION_SEPARATOR . $event;
+            return $prefix . $this->event::EVENT_HAS_ACTION_SEPARATOR . $event;
         } elseif ($parentEvent) {
-            return $prefix . $parentEvent . '.' . $event . self::EVENT_UPDATE_SEPARATOR;
+            return $prefix . $parentEvent . '.' . $event . $this->event::EVENT_UPDATE_SEPARATOR;
         }
 
-        return $prefix . $event . self::EVENT_UPDATE_SEPARATOR;
+        return $prefix . $event . $this->event::EVENT_UPDATE_SEPARATOR;
     }
 
     /**
@@ -187,29 +185,89 @@ class EventService extends AppService
      */
     public function eventHandle(?string $callback = null, ?string $platform = null): void
     {
-        if (str_contains($callback, $this->event::GITHUB_EVENT_SEPARATOR)) {
-            $platform = 'github';
-        } elseif (str_contains($callback, $this->event::GITLAB_EVENT_SEPARATOR)) {
-            $platform = 'gitlab';
-        }
+        $platform = $this->getPlatformFromCallback($callback, $platform);
 
         if ($this->settingEventMessageHandle($platform, $callback)) {
             return;
         }
 
-        $event = str_replace([$this->event::EVENT_PREFIX, $this->event::GITHUB_EVENT_SEPARATOR, $this->event::GITLAB_EVENT_SEPARATOR], '', $callback);
+        $event = $this->getEventFromCallback($callback);
 
-        // if event has actions
-        if (str_contains($callback, self::EVENT_HAS_ACTION_SEPARATOR)) {
-            $event = str_replace(self::EVENT_HAS_ACTION_SEPARATOR, '', $event);
+        if ($this->handleEventWithActions($event, $platform)) {
+            return;
+        }
+
+        $this->handleEventUpdate($event, $platform);
+    }
+
+    /**
+     * Get the platform from callback
+     *
+     * @param string|null $callback
+     * @param string|null $platform
+     * @return string
+     */
+    private function getPlatformFromCallback(?string $callback, ?string $platform): string
+    {
+        if ($platform) {
+            return $platform;
+        }
+
+        if (str_contains($callback, $this->event::GITHUB_EVENT_SEPARATOR)) {
+            return 'github';
+        } elseif (str_contains($callback, $this->event::GITLAB_EVENT_SEPARATOR)) {
+            return 'gitlab';
+        }
+
+        return $this->event::DEFAULT_PLATFORM;
+    }
+
+    /**
+     * Get event name from callback
+     *
+     * @param string|null $callback
+     * @return string
+     */
+    private function getEventFromCallback(?string $callback): string
+    {
+        return str_replace([
+            $this->event::EVENT_PREFIX, $this->event::GITHUB_EVENT_SEPARATOR,
+            $this->event::GITLAB_EVENT_SEPARATOR
+        ], '', $callback);
+    }
+
+    /**
+     * Handle event with actions
+     *
+     * @param string $event
+     * @param string $platform
+     * @return bool
+     */
+    private function handleEventWithActions(string $event, string $platform): bool
+    {
+        if (str_contains($event, $this->event::EVENT_HAS_ACTION_SEPARATOR)) {
+            $event = str_replace($this->event::EVENT_HAS_ACTION_SEPARATOR, '', $event);
             $this->editMessageText(
                 view('tools.custom_event_actions', compact('event')),
                 ['reply_markup' => $this->eventMarkup($event, $platform)]
             );
+            return true;
         }
 
-        if (str_contains($event, self::EVENT_UPDATE_SEPARATOR)) {
-            $event = str_replace(self::EVENT_UPDATE_SEPARATOR, '', $event);
+        return false;
+    }
+
+    /**
+     * Handle event update
+     *
+     * @param string $event
+     * @param string $platform
+     * @return void
+     */
+    private function handleEventUpdate(string $event, string $platform): void
+    {
+        if (str_contains($event, $this->event::EVENT_UPDATE_SEPARATOR)) {
+            $event = str_replace($this->event::EVENT_UPDATE_SEPARATOR, '', $event);
             $this->eventUpdateHandle($event, $platform);
         }
     }
@@ -242,20 +300,17 @@ class EventService extends AppService
      *
      * @param string $event
      * @param string $platform
-     *
      * @return void
      */
     private function eventUpdateHandle(string $event, string $platform): void
     {
-        $event = explode('.', $event);
-        $action = $event[1] ?? null;
-        $event = $event[0];
+        [$event, $action] = explode('.', $event);
 
         $this->event->setEventConfig($platform);
         $this->event->updateEvent($event, $action);
         $this->eventHandle(
             $action
-                ? $this->event::PLATFORM_EVENT_SEPARATOR[$platform] . self::EVENT_HAS_ACTION_SEPARATOR . $event
+                ? $this->event::PLATFORM_EVENT_SEPARATOR[$platform] . $this->event::EVENT_HAS_ACTION_SEPARATOR . $event
                 : null,
             $platform
         );
