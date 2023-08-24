@@ -36,6 +36,8 @@ class SendNotifyAction
      */
     public function __invoke(): void
     {
+        set_time_limit(20);
+
         // Send an event result to all chat ids in env
         foreach ($this->notificationService::WEBHOOK_EVENT_HEADER as $platform => $header) {
             $event = $this->request->server->get($header);
@@ -80,8 +82,7 @@ class SendNotifyAction
      */
     private function sendNotification(string $event): void
     {
-        $payload = $this->notificationService->setPayload($this->request, $event);
-        if (empty($payload) || !$this->eventService->validateAccessEvent($this->notificationService->platform, $event, $payload)) {
+        if (!$this->validateAccessEvent($event)) {
             return;
         }
 
@@ -92,5 +93,23 @@ class SendNotifyAction
 
             $this->notificationService->sendNotify($chatId);
         }
+    }
+
+    /**
+     * Validate access event
+     *
+     * @param string $event
+     * @return bool
+     */
+    private function validateAccessEvent(string $event): bool
+    {
+        $payload = $this->notificationService->setPayload($this->request, $event);
+        if (empty($payload)
+            || !$this->eventService->validateAccessEvent($this->notificationService->platform, $event, $payload)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

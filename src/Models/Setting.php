@@ -5,11 +5,19 @@ namespace TelegramNotificationBot\App\Models;
 class Setting
 {
     public const SETTING_FILE = __DIR__ . '/../../storage/json/tg-setting.json';
+
     public const SETTING_PREFIX = 'stg.';
 
     public const SETTING_IS_NOTIFIED = self::SETTING_PREFIX . 'is_notified';
+
     public const SETTING_ALL_EVENTS_NOTIFY = self::SETTING_PREFIX . 'all_events_notify';
+
     public const SETTING_CUSTOM_EVENTS = self::SETTING_PREFIX . 'cus';
+
+    public const SETTING_GITHUB_EVENTS = self::SETTING_CUSTOM_EVENTS . Event::GITHUB_EVENT_SEPARATOR;
+
+    public const SETTING_GITLAB_EVENTS = self::SETTING_CUSTOM_EVENTS . Event::GITLAB_EVENT_SEPARATOR;
+
     public const SETTING_BACK = self::SETTING_PREFIX . 'back.';
 
     public array $settings = [];
@@ -75,22 +83,22 @@ class Setting
      */
     public function updateSettingItem(string $settingName, $settingValue = null): bool
     {
-        $keys = explode('.', $settingName);
-        $lastKey = array_pop($keys);
+        $settingKeys = explode('.', $settingName);
         $nestedSettings = &$this->settings;
 
-        foreach ($keys as $key) {
+        foreach ($settingKeys as $key) {
             if (!isset($nestedSettings[$key]) || !is_array($nestedSettings[$key])) {
                 return false;
             }
             $nestedSettings = &$nestedSettings[$key];
         }
 
+        $lastKey = end($settingKeys);
         if (isset($nestedSettings[$lastKey])) {
-            $nestedSettings[$lastKey] = $settingValue ?? !$nestedSettings[$lastKey];
-            if ($this->saveSettingsToFile()) {
-                return true;
-            }
+            $newValue = $settingValue ?? !$nestedSettings[$lastKey]; // if value is null, then toggle value
+            $nestedSettings[$lastKey] = $newValue;
+
+            return $this->saveSettingsToFile();
         }
 
         return false;

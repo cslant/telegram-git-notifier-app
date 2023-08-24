@@ -1,8 +1,6 @@
 <?php
 
 use TelegramNotificationBot\App\Helpers\ConfigHelper;
-use TelegramNotificationBot\App\Models\Event as EventModel;
-use TelegramNotificationBot\App\Models\Setting as SettingModel;
 
 if (!function_exists('config')) {
     /**
