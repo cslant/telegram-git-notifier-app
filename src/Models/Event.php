@@ -15,6 +15,15 @@ class Event
 
     public const EVENT_PREFIX = Setting::SETTING_CUSTOM_EVENTS . '.evt.';
 
+    public const GITHUB_EVENT_SEPARATOR = 'gh.';
+
+    public const GITLAB_EVENT_SEPARATOR = 'gl.';
+
+    public const PLATFORM_EVENT_SEPARATOR = [
+        'github' => self::GITHUB_EVENT_SEPARATOR,
+        'gitlab' => self::GITLAB_EVENT_SEPARATOR,
+    ];
+
     public array $eventConfig = [];
 
     private string $platform = 'github';
