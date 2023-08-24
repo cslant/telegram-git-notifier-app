@@ -1,4 +1,4 @@
-<b>Adding webhook (Website Address) to your GitHub repository</b>
+<b>Adding webhook (Web Address) to GitHub repositories</b> 🦑
 
 1) Redirect to <i>Repository Settings->Webhooks->Add Webhook</i>.
 2) Set your Payload URL.
@@ -8,7 +8,7 @@
 5) Check <code>Active</code> checkbox. And click <code>Add Webhook</code>.
 
 ----------
-<b>Adding webhook (Website Address) to your GitLab repository</b>
+<b>Adding webhook (Web Address) to GitLab repositories</b> 🦊
 
 1) Redirect to <i>Repository Settings->Webhooks->Add new webhook</i>.
 2) Set your Payload URL.
