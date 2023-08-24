@@ -68,12 +68,12 @@ class SettingService extends AppService
                 $this->telegram->buildInlineKeyBoardButton(
                     '🦑 Custom github events',
                     '',
-                    $this->setting::SETTING_CUSTOM_EVENTS
+                    $this->setting::SETTING_GITHUB_EVENTS
                 ),
                 $this->telegram->buildInlineKeyBoardButton(
                     '🦊 Custom gitlab events',
                     '',
-                    $this->setting::SETTING_CUSTOM_EVENTS
+                    $this->setting::SETTING_GITLAB_EVENTS
                 ),
             ];
         }
@@ -125,9 +125,13 @@ class SettingService extends AppService
                 $view = view('tools.settings');
                 $markup = $this->settingMarkup();
                 break;
-            case 'settings.custom_events':
-                $view = view('tools.custom_events');
+            case 'settings.custom_events.github':
+                $view = view('tools.custom_events', ['platform' => 'github']);
                 $markup = (new EventService())->eventMarkup();
+                break;
+            case 'settings.custom_events.gitlab':
+                $view = view('tools.custom_events', ['platform' => 'gitlab']);
+                $markup = (new EventService())->eventMarkup(null, 'gitlab');
                 break;
             default:
                 $view = view('tools.menu');

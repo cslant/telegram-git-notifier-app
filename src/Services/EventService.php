@@ -82,12 +82,14 @@ class EventService extends AppService
      * Create markup for select event
      *
      * @param string|null $event
+     * @param string $platform
      * @return array
      */
-    public function eventMarkup(?string $event = null): array
+    public function eventMarkup(?string $event = null, string $platform = 'github'): array
     {
         $replyMarkup = $replyMarkupItem = [];
 
+        $this->event->setEventConfig($platform);
         $events = $event === null ? $this->event->eventConfig : $this->event->eventConfig[$event];
 
         foreach ($events as $key => $value) {
@@ -107,7 +109,7 @@ class EventService extends AppService
             $replyMarkup[] = $replyMarkupItem;
         }
 
-        $replyMarkup[] = $this->getEndKeyboard($event);
+        $replyMarkup[] = $this->getEndKeyboard($event, $platform);
 
         return $replyMarkup;
     }
@@ -154,14 +156,16 @@ class EventService extends AppService
      * Get end keyboard buttons
      *
      * @param string|null $event
+     * @param string $platform
+     *
      * @return array
      */
-    private function getEndKeyboard(?string $event = null): array
+    private function getEndKeyboard(?string $event = null, string $platform = 'github'): array
     {
         $back = $this->setting::SETTING_BACK . 'settings';
 
         if ($event) {
-            $back = $this->setting::SETTING_BACK . 'settings.custom_events';
+            $back = $this->setting::SETTING_BACK . 'settings.custom_events.' . $platform;
         }
 
         return [
@@ -178,12 +182,7 @@ class EventService extends AppService
      */
     public function eventHandle(?string $callback = null): void
     {
-        // first event settings
-        if ($this->setting::SETTING_CUSTOM_EVENTS === $callback || empty($callback)) {
-            $this->editMessageText(
-                view('tools.custom_events'),
-                ['reply_markup' => $this->eventMarkup()]
-            );
+        if ($this->settingEventMessageHandle($callback)) {
             return;
         }
 
@@ -202,6 +201,31 @@ class EventService extends AppService
             $event = str_replace(self::EVENT_UPDATE_SEPARATOR, '', $event);
             $this->eventUpdateHandle($event);
         }
+    }
+
+    /**
+     * First event settings
+     *
+     * @param string|null $callback
+     * @return bool
+     */
+    private function settingEventMessageHandle(?string $callback = null): bool
+    {
+        if ($this->setting::SETTING_GITHUB_EVENTS === $callback) {
+            $this->editMessageText(
+                view('tools.custom_events', ['platform' => 'github']),
+                ['reply_markup' => $this->eventMarkup()]
+            );
+            return true;
+        } elseif ($this->setting::SETTING_GITLAB_EVENTS === $callback) {
+            $this->editMessageText(
+                view('tools.custom_events', ['platform' => 'gitlab']),
+                ['reply_markup' => $this->eventMarkup(null, 'gitlab')]
+            );
+            return true;
+        }
+
+        return false;
     }
 
     /**
