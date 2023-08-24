@@ -5,6 +5,7 @@ namespace TelegramNotificationBot\App\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Request;
+use TelegramNotificationBot\App\Models\Event;
 
 class NotificationService
 {
@@ -12,7 +13,7 @@ class NotificationService
 
     protected string $message = '';
 
-    public string $platform = 'github';
+    public string $platform = Event::DEFAULT_PLATFORM;
 
     public const WEBHOOK_EVENT_HEADER = [
         'github' => 'HTTP_X_GITHUB_EVENT',
@@ -48,7 +49,7 @@ class NotificationService
     {
         if ($this->platform === 'gitlab') {
             $this->payload = json_decode($request->getContent());
-        } elseif ($this->platform === 'github') {
+        } elseif ($this->platform === Event::DEFAULT_PLATFORM) {
             $this->payload = json_decode($request->request->get('payload'));
         }
         $this->setMessage($event);
@@ -69,7 +70,7 @@ class NotificationService
 
         if ($this->platform === 'gitlab') {
             $action = $this->payload?->object_attributes?->action ?? '';
-        } elseif ($this->platform === 'github') {
+        } elseif ($this->platform === Event::DEFAULT_PLATFORM) {
             $action = $this->payload?->action ?? '';
         }
 

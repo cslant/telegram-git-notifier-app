@@ -51,7 +51,6 @@ class TelegramService extends AppService
      */
     public function telegramToolHandler(string $text = '/start'): void
     {
-        set_time_limit(60);
         switch ($text) {
             case '/start':
                 $this->sendStartMessage();
