@@ -41,16 +41,6 @@ class Setting
     }
 
     /**
-     * Get settings
-     *
-     * @return array
-     */
-    public function getSettingConfig(): array
-    {
-        return $this->settings;
-    }
-
-    /**
      * @return bool
      */
     public function allEventsNotifyStatus(): bool

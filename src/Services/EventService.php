@@ -40,7 +40,7 @@ class EventService extends AppService
         }
 
         $this->event->setEventConfig($platform);
-        $eventConfig = $this->event->getEventConfig();
+        $eventConfig = $this->event->eventConfig;
 
         $eventConfig = $eventConfig[convert_event_name($event)] ?? false;
         $action = $this->getActionOfEvent($platform, $payload);
@@ -65,7 +65,7 @@ class EventService extends AppService
      */
     private function getActionOfEvent(string $platform, $payload): string
     {
-        if ($platform === Event::DEFAULT_PLATFORM) {
+        if ($platform === $this->event::DEFAULT_PLATFORM) {
             return $payload->action ?? '';
         } elseif ($platform === 'gitlab') {
             return $payload->object_attributes->action ?? '';
@@ -223,6 +223,29 @@ class EventService extends AppService
     }
 
     /**
+     * First event settings
+     *
+     * @param string $platform
+     * @param string|null $callback
+     * @return bool
+     */
+    private function settingEventMessageHandle(string $platform, ?string $callback = null): bool
+    {
+        if ($this->setting::SETTING_GITHUB_EVENTS === $callback
+            || $this->setting::SETTING_GITLAB_EVENTS === $callback
+            || !$callback
+        ) {
+            $this->editMessageText(
+                view('tools.custom_events', ['platform' => $platform]),
+                ['reply_markup' => $this->eventMarkup(null, $platform)]
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get event name from callback
      *
      * @param string|null $callback
@@ -248,7 +271,7 @@ class EventService extends AppService
         if (str_contains($event, $this->event::EVENT_HAS_ACTION_SEPARATOR)) {
             $event = str_replace($this->event::EVENT_HAS_ACTION_SEPARATOR, '', $event);
             $this->editMessageText(
-                view('tools.custom_event_actions', compact('event')),
+                view('tools.custom_event_actions', compact('event', 'platform')),
                 ['reply_markup' => $this->eventMarkup($event, $platform)]
             );
             return true;
@@ -270,29 +293,6 @@ class EventService extends AppService
             $event = str_replace($this->event::EVENT_UPDATE_SEPARATOR, '', $event);
             $this->eventUpdateHandle($event, $platform);
         }
-    }
-
-    /**
-     * First event settings
-     *
-     * @param string $platform
-     * @param string|null $callback
-     * @return bool
-     */
-    private function settingEventMessageHandle(string $platform, ?string $callback = null): bool
-    {
-        if ($this->setting::SETTING_GITHUB_EVENTS === $callback
-            || $this->setting::SETTING_GITLAB_EVENTS === $callback
-            || !$callback
-        ) {
-            $this->editMessageText(
-                view('tools.custom_events', ['platform' => $platform]),
-                ['reply_markup' => $this->eventMarkup(null, $platform)]
-            );
-            return true;
-        }
-
-        return false;
     }
 
     /**

@@ -56,16 +56,6 @@ class Event
     }
 
     /**
-     * Get event config
-     *
-     * @return array
-     */
-    public function getEventConfig(): array
-    {
-        return $this->eventConfig;
-    }
-
-    /**
      * Update event config by event and action
      *
      * @param string $event
