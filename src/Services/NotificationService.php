@@ -66,13 +66,10 @@ class NotificationService
     private function setMessage(string $typeEvent): void
     {
         $event = get_event_name($typeEvent);
-        $action = '';
 
-        if ($this->platform === 'gitlab') {
-            $action = $this->payload?->object_attributes?->action ?? '';
-        } elseif ($this->platform === Event::DEFAULT_PLATFORM) {
-            $action = $this->payload?->action ?? '';
-        }
+        $action = $this->payload?->action
+            ?? $this->payload?->object_attributes?->action
+            ?? '';
 
         if (!empty($action)) {
             $this->message = view(
