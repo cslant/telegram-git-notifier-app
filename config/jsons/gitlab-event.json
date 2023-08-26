@@ -10,8 +10,8 @@
   "note": {
     "issue": true,
     "merge_request": true,
-    "snippet": false,
-    "commit": false
+    "commit": false,
+    "snippet": false
   },
   "merge_request": {
     "open": true,
@@ -33,9 +33,5 @@
   "release": {
     "create": true,
     "update": false
-  },
-  "emoji": {
-    "award": true,
-    "revoke": false
   }
 }
