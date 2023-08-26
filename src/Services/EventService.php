@@ -70,7 +70,7 @@ class EventService extends AppService
             ?? '';
 
         if (!empty($action)) {
-            return ($action);
+            return convert_action_name($action);
         }
 
         return '';
