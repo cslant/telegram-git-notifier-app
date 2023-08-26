@@ -7,8 +7,8 @@ $message = "⚠️ <b>Issue has been reopened</b> ⚠️ to 🦊<a href=\"{$payl
 
 $message .= "📢 <b>{$payload->object_attributes->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/gitlab/_assignees.php';
+$message .= require __DIR__ . '/../../shared/partials/gitlab/_assignees.php';
 
-$message .= require __DIR__ . '/../../../shared/partials/gitlab/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/gitlab/_body.php';
 
 echo $message;

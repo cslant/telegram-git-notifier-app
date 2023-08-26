@@ -7,6 +7,6 @@ $message = "📝 <b>Wiki Page Updated</b> - 🦊<a href=\"{$payload->object_attr
 
 $message .= "🏷 Title: <b>{$payload->object_attributes->title}</b> \n\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/gitlab/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/gitlab/_body.php';
 
 echo $message;

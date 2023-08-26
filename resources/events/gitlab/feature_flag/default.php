@@ -17,6 +17,6 @@ $message = "{$icon} <b>Feature Flag {$active}</b> - 🦊<a href=\"{$flagUrl}\">{
 
 $message .= "{$icon} Name: <b>{$payload->object_attributes->name}</b> \n\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/gitlab/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/gitlab/_body.php';
 
 echo $message;

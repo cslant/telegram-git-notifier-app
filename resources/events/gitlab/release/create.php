@@ -9,7 +9,7 @@ $message .= "🔖 <b>{$payload->tag}</b> \n";
 
 $message .= "🗞 <b>{$payload->name}</b> \n";
 
-$message .= require __DIR__ . '/../../../shared/partials/gitlab/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/gitlab/_body.php';
 
 echo $message;
 

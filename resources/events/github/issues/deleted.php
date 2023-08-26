@@ -7,6 +7,6 @@ $message = "️🗑 <b>Issue Deleted</b> form 🦑<a href=\"{$payload->repositor
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/github/_assignees.php';
+$message .= require __DIR__ . '/../../shared/partials/github/_assignees.php';
 
 echo $message;

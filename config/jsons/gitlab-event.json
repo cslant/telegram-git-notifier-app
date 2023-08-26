@@ -7,7 +7,12 @@
     "reopen": false,
     "update": false
   },
-  "note": true,
+  "note": {
+    "issue": true,
+    "merge_request": true,
+    "snippet": false,
+    "commit": false
+  },
   "merge_request": {
     "open": true,
     "close": true,
