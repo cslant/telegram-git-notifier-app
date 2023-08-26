@@ -7,8 +7,8 @@ $message = "⚠️ <b>New Issue</b> to 🦑<a href=\"{$payload->issue->html_url}
 
 $message .= "📢 <b>{$payload->issue->title}</b>\n";
 
-$message .= require __DIR__ . '/../../../shared/partials/github/_assignees.php';
+$message .= require __DIR__ . '/../../shared/partials/github/_assignees.php';
 
-$message .= require __DIR__ . '/../../../shared/partials/github/_body.php';
+$message .= require __DIR__ . '/../../shared/partials/github/_body.php';
 
 echo $message;
