@@ -74,6 +74,7 @@ class Setting
     public function updateSettingItem(string $settingName, $settingValue = null): bool
     {
         $settingKeys = explode('.', $settingName);
+        $lastKey = array_pop($settingKeys);
         $nestedSettings = &$this->settings;
 
         foreach ($settingKeys as $key) {
@@ -83,7 +84,6 @@ class Setting
             $nestedSettings = &$nestedSettings[$key];
         }
 
-        $lastKey = end($settingKeys);
         if (isset($nestedSettings[$lastKey])) {
             $newValue = $settingValue ?? !$nestedSettings[$lastKey]; // if value is null, then toggle value
             $nestedSettings[$lastKey] = $newValue;

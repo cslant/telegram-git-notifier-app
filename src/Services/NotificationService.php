@@ -69,6 +69,7 @@ class NotificationService
 
         $action = $this->payload?->action
             ?? $this->payload?->object_attributes?->action
+            ?? $this->payload?->object_attributes?->noteable_type
             ?? '';
 
         if (!empty($action)) {

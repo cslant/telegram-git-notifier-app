@@ -12,4 +12,3 @@ $message .= "🗞 <b>{$payload->name}</b> \n";
 $message .= require __DIR__ . '/../../shared/partials/gitlab/_body.php';
 
 echo $message;
-
