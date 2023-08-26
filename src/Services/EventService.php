@@ -43,7 +43,7 @@ class EventService extends AppService
         $eventConfig = $this->event->eventConfig;
 
         $eventConfig = $eventConfig[convert_event_name($event)] ?? false;
-        $action = $this->getActionOfEvent($platform, $payload);
+        $action = $this->getActionOfEvent($payload);
 
         if (!empty($action) && isset($eventConfig[$action])) {
             $eventConfig = $eventConfig[$action];
@@ -59,16 +59,18 @@ class EventService extends AppService
     /**
      * Get action name of event from payload data
      *
-     * @param string $platform
      * @param $payload
      * @return string
      */
-    private function getActionOfEvent(string $platform, $payload): string
+    public function getActionOfEvent($payload): string
     {
-        if ($platform === $this->event::DEFAULT_PLATFORM) {
-            return $payload->action ?? '';
-        } elseif ($platform === 'gitlab') {
-            return $payload->object_attributes->action ?? '';
+        $action = $payload?->action
+            ?? $payload?->object_attributes?->action
+            ?? $payload?->object_attributes?->noteable_type
+            ?? '';
+
+        if (!empty($action)) {
+            return ($action);
         }
 
         return '';

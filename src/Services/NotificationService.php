@@ -67,14 +67,11 @@ class NotificationService
     {
         $event = get_event_name($typeEvent);
 
-        $action = $this->payload?->action
-            ?? $this->payload?->object_attributes?->action
-            ?? $this->payload?->object_attributes?->noteable_type
-            ?? '';
+        $action = (new EventService())->getActionOfEvent($this->payload);
 
         if (!empty($action)) {
             $this->message = view(
-                "events.{$this->platform}." . $event . ".{$action}",
+                "events.{$this->platform}.{$event}.{$action}",
                 [
                     'payload' => $this->payload,
                     'event' => convert_event_name($typeEvent),

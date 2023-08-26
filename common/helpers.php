@@ -120,3 +120,16 @@ if (!function_exists('convert_event_name')) {
         return singularity(get_event_name($event));
     }
 }
+
+if (!function_exists('convert_action_name')) {
+    /**
+     * Convert action name
+     *
+     * @param string $action
+     * @return string
+     */
+    function convert_action_name(string $action): string
+    {
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $action));
+    }
+}
