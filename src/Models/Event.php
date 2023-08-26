@@ -23,7 +23,7 @@ class Event
 
     public const EVENT_HAS_ACTION_SEPARATOR = 'atc.';
 
-    public const EVENT_UPDATE_SEPARATOR = '.upd';
+    public const EVENT_UPDATE_SEPARATOR = '.eus';
 
     public const PLATFORM_EVENT_SEPARATOR = [
         'github' => self::GITHUB_EVENT_SEPARATOR,
@@ -53,16 +53,6 @@ class Event
 
         $json = file_get_contents(self::PLATFORM_FILES[$this->platform]);
         $this->eventConfig = json_decode($json, true);
-    }
-
-    /**
-     * Get event config
-     *
-     * @return array
-     */
-    public function getEventConfig(): array
-    {
-        return $this->eventConfig;
     }
 
     /**
