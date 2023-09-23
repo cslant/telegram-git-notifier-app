@@ -1,14 +1,20 @@
 <?php
 
-namespace TelegramNotificationBot\App\Http\Actions;
+namespace LbilTech\PureTelegramGitNotifier\Http\Actions;
+
+use LbilTech\TelegramGitNotifier\Services\WebhookService;
 
 class WebhookAction
 {
     protected string $token;
 
+    protected WebhookService $webhookService;
+
     public function __construct()
     {
-        $this->token = config('telegram-bot.token');
+        $this->webhookService = new WebhookService();
+        $this->webhookService->setToken(config('telegram-bot.token'));
+        $this->webhookService->setUrl(config('app.url'));
     }
 
     /**
@@ -18,10 +24,7 @@ class WebhookAction
      */
     public function set(): false|string
     {
-        $appUrl = config('app.url');
-        $url = "https://api.telegram.org/bot{$this->token}/setWebhook?url={$appUrl}";
-
-        return file_get_contents($url);
+        return $this->webhookService->setWebhook();
     }
 
     /**
@@ -31,8 +34,6 @@ class WebhookAction
      */
     public function delete(): false|string
     {
-        $url = "https://api.telegram.org/bot{$this->token}/deleteWebhook";
-
-        return file_get_contents($url);
+        return $this->webhookService->deleteWebHook();
     }
 }
