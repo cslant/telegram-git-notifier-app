@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TelegramNotificationBot\\App\\": "src/",
+      "LbilTech\\PureTelegramGitNotifier\\": "src/",
       "LbilTech\\TelegramGitNotifier\\": "telegram-git-notifier/src/"
     },
     "files": [
