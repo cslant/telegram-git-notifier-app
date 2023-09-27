@@ -1,6 +1,6 @@
 <?php
 
-namespace LbilTech\PureTelegramGitNotifier\Helpers;
+namespace LbilTech\TelegramGitNotifierApp\Helpers;
 
 use Exception;
 

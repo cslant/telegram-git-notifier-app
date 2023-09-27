@@ -1,6 +1,6 @@
 <?php
 
-namespace LbilTech\PureTelegramGitNotifier\Http\Actions;
+namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
 use LbilTech\TelegramGitNotifier\Services\WebhookService;
 

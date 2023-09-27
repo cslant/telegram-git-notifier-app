@@ -1,5 +1,5 @@
 {
-  "name": "lbiltech/php-telegram-git-notifier",
+  "name": "lbiltech/telegram-git-notifier-app",
   "description": "Send notification from Gitlab and Github events to Telegram",
   "keywords": [
     "lbiltech",
@@ -16,7 +16,7 @@
     "telegram-bot-gitlab-notify"
   ],
   "type": "project",
-  "homepage": "https://github.com/lbiltech/php-telegram-git-notifier",
+  "homepage": "https://github.com/lbiltech/telegram-git-notifier-app",
   "license": "MIT",
   "require": {
     "php": "^8.0",
@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "LbilTech\\PureTelegramGitNotifier\\": "src/",
+      "LbilTech\\TelegramGitNotifierApp\\": "src/",
       "LbilTech\\TelegramGitNotifier\\": "telegram-git-notifier/src/"
     },
     "files": [
@@ -44,7 +44,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/lbiltech/php-telegram-git-notifier/issues"
+    "issues": "https://github.com/lbiltech/telegram-git-notifier-app/issues"
   },
   "config": {
     "sort-packages": true,

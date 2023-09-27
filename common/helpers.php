@@ -1,6 +1,6 @@
 <?php
 
-use LbilTech\PureTelegramGitNotifier\Helpers\ConfigHelper;
+use LbilTech\TelegramGitNotifierApp\Helpers\ConfigHelper;
 
 if (!function_exists('config')) {
     /**

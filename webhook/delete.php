@@ -1,6 +1,6 @@
 <?php
 
-use LbilTech\PureTelegramGitNotifier\Http\Actions\WebhookAction;
+use LbilTech\TelegramGitNotifierApp\Http\Actions\WebhookAction;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
