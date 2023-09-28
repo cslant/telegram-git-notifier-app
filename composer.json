@@ -30,10 +30,7 @@
     "psr-4": {
       "LbilTech\\TelegramGitNotifierApp\\": "src/",
       "LbilTech\\TelegramGitNotifier\\": "telegram-git-notifier/src/"
-    },
-    "files": [
-      "common/helpers.php"
-    ]
+    }
   },
   "authors": [
     {
