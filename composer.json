@@ -21,7 +21,7 @@
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "lbiltech/telegram-git-notifier": "^1.0"
+    "lbiltech/telegram-git-notifier": "dev-main"
   },
   "autoload": {
     "psr-4": {
