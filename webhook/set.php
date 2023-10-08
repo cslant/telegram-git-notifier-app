@@ -1,12 +1,8 @@
 <?php
 
 use LbilTech\TelegramGitNotifierApp\Http\Actions\WebhookAction;
-use Dotenv\Dotenv;
 
-require __DIR__ . '/../vendor/autoload.php';
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
+require __DIR__ . '/../init.php';
 
 $webhookAction = new WebhookAction();
 echo $webhookAction->set();
