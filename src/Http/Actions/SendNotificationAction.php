@@ -12,6 +12,7 @@ use LbilTech\TelegramGitNotifier\Services\AppService;
 use LbilTech\TelegramGitNotifier\Services\EventService;
 use LbilTech\TelegramGitNotifier\Services\NotificationService;
 use LbilTech\TelegramGitNotifier\Services\TelegramService;
+use LbilTech\TelegramGitNotifierApp\Services\SendNotificationService;
 use Symfony\Component\HttpFoundation\Request;
 
 class SendNotificationAction
@@ -21,6 +22,8 @@ class SendNotificationAction
     protected TelegramService $telegramService;
 
     protected NotificationService $notificationService;
+
+    protected SendNotificationService $sendNotificationService;
 
     protected EventService $eventService;
 
@@ -38,8 +41,13 @@ class SendNotificationAction
     {
         $this->request = Request::createFromGlobals();
         $this->client = new Client();
-        $this->setting = new Setting();
         $this->event = new Event();
+        $this->sendNotificationService = new SendNotificationService();
+
+        $this->setting = new Setting();
+        $this->setting = $this->sendNotificationService->setSettingFile($this->setting);
+        $this->setting-> setSettingConfig();
+
         $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
 
         $this->appService = new AppService();
@@ -47,7 +55,6 @@ class SendNotificationAction
 
         $this->telegramService = new TelegramService($this->appService->telegram);
         $this->notificationService = new NotificationService($this->client);
-        $this->eventService = new EventService($this->setting, $this->event);
     }
 
     /**
@@ -64,6 +71,7 @@ class SendNotificationAction
             $event = $this->request->server->get($header);
             if (!is_null($event)) {
                 $this->notificationService->platform = $platform;
+                $this->event = $this->sendNotificationService->setEventByFlatForm($this->event, $platform);
                 $this->sendNotification($event);
                 return;
             }
@@ -102,10 +110,9 @@ class SendNotificationAction
      */
     private function validateAccessEvent(string $event): bool
     {
-        $payload = $this->notificationService->setPayload(
-            $this->request,
-            $event
-        );
+        $payload = $this->notificationService->setPayload($this->request, $event);
+        $this->eventService = new EventService($this->setting, $this->event);
+
         if (empty($payload)
             || !$this->eventService->validateAccessEvent(
                 $this->notificationService->platform,
