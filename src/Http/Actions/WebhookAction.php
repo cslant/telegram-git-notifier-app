@@ -13,8 +13,8 @@ class WebhookAction
     public function __construct()
     {
         $this->webhookService = new WebhookService();
-        $this->webhookService->setToken(config('telegram-bot.token'));
-        $this->webhookService->setUrl(config('app.url'));
+        $this->webhookService->setToken(config('telegram-git-notifier.bot.token'));
+        $this->webhookService->setUrl(config('telegram-git-notifier.app.url'));
     }
 
     /**
