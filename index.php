@@ -1,14 +1,15 @@
 <?php
 
-use TelegramNotificationBot\App\Http\Actions\SendNotifyAction;
-use Dotenv\Dotenv;
+use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
+use LbilTech\TelegramGitNotifierApp\Http\Actions\SendNotificationAction;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/init.php';
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$sendNotifyAction = new SendNotificationAction();
 
-date_default_timezone_set(config('app.timezone'));
-
-$sendNotifyAction = new SendNotifyAction();
-$sendNotifyAction();
+try {
+    $sendNotifyAction();
+} catch (InvalidViewTemplateException|SendNotificationException $e) {
+    echo $e->getMessage();
+}

@@ -12,7 +12,7 @@ json_files=(
 
 for file in "${json_files[@]}"; do
     if [ ! -f "storage/json/$file" ]; then
-        cp "config/jsons/$file" "storage/json/$file"
+        cp "vendor/lbiltech/telegram-git-notifier/config/jsons/$file" "storage/json/$file"
     fi
 done
 

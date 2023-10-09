@@ -1,15 +1,13 @@
 {
-  "name": "lbiltech/telegram-bot-github-notify",
-  "description": "A Telegram bot send notify Gitlab and Github events to Telegram channels",
+  "name": "lbiltech/telegram-git-notifier-app",
+  "description": "Send notification from Gitlab and Github events to Telegram",
   "keywords": [
-    "telegram",
-    "bot",
-    "github",
-    "gitlab",
+    "lbiltech",
+    "telegram-bot",
     "notify",
-    "events",
-    "webhook",
+    "git-webhook",
     "telegram-notifier",
+    "telegram-git-notifier",
     "github-notifier",
     "gitlab-notifier",
     "github-telegram-bot",
@@ -18,23 +16,17 @@
     "telegram-bot-gitlab-notify"
   ],
   "type": "project",
-  "homepage": "https://github.com/lbiltech/telegram-bot-github-notify",
+  "homepage": "https://github.com/lbiltech/telegram-git-notifier-app",
   "license": "MIT",
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "eleirbag89/telegrambotphp": "^1.4",
-    "guzzlehttp/guzzle": "^7.7",
-    "symfony/http-foundation": "^6.3",
-    "vlucas/phpdotenv": "^5.5"
+    "lbiltech/telegram-git-notifier": "dev-main"
   },
   "autoload": {
     "psr-4": {
-      "TelegramNotificationBot\\App\\": "src/"
-    },
-    "files": [
-      "common/helpers.php"
-    ]
+      "LbilTech\\TelegramGitNotifierApp\\": "src/"
+    }
   },
   "authors": [
     {
@@ -45,7 +37,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/lbiltech/telegram-bot-github-notify/issues"
+    "issues": "https://github.com/lbiltech/telegram-git-notifier-app/issues"
   },
   "config": {
     "sort-packages": true,
