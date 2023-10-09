@@ -1,8 +1,15 @@
 <?php
 
-use LbilTech\TelegramGitNotifierApp\Http\Actions\SendNotifyAction;
+use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
+use LbilTech\TelegramGitNotifierApp\Http\Actions\SendNotificationAction;
 
 require __DIR__ . '/init.php';
 
-$sendNotifyAction = new SendNotifyAction();
-$sendNotifyAction();
+$sendNotifyAction = new SendNotificationAction();
+
+try {
+    $sendNotifyAction();
+} catch (InvalidViewTemplateException|SendNotificationException $e) {
+    echo $e->getMessage();
+}

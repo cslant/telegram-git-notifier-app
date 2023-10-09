@@ -14,7 +14,7 @@ use LbilTech\TelegramGitNotifier\Services\NotificationService;
 use LbilTech\TelegramGitNotifier\Services\TelegramService;
 use Symfony\Component\HttpFoundation\Request;
 
-class SendNotifyAction
+class SendNotificationAction
 {
     protected AppService $appService;
 
@@ -34,25 +34,18 @@ class SendNotifyAction
 
     public Event $event;
 
-    public function __construct(
-        AppService $appService,
-        Request $request,
-        Client $client,
-        Setting $setting,
-        Event $event,
-    ) {
-        $this->request = $request->createFromGlobals();
-        $this->client = $client;
-        $this->setting = $setting;
-        $this->event = $event;
-        $this->chatIds = config('bot.notify_chat_ids');
+    public function __construct()
+    {
+        $this->request = Request::createFromGlobals();
+        $this->client = new Client();
+        $this->setting = new Setting();
+        $this->event = new Event();
+        $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
 
-        $this->appService = $appService;
-        $this->appService->setCurrentChatId(config('bot.chat_id'));
+        $this->appService = new AppService();
+        $this->appService->setCurrentChatId();
 
-        $this->telegramService = new TelegramService(
-            $this->appService->telegram
-        );
+        $this->telegramService = new TelegramService($this->appService->telegram);
         $this->notificationService = new NotificationService($this->client);
         $this->eventService = new EventService($this->setting, $this->event);
     }
