@@ -46,7 +46,7 @@ class SendNotificationAction
 
         $this->setting = new Setting();
         $this->setting = $this->sendNotificationService->setSettingFile($this->setting);
-        $this->setting-> setSettingConfig();
+        $this->setting->setSettingConfig();
 
         $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
 

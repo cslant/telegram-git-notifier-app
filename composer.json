@@ -13,7 +13,8 @@
     "github-telegram-bot",
     "gitlab-telegram-bot",
     "telegram-bot-github-notify",
-    "telegram-bot-gitlab-notify"
+    "telegram-bot-gitlab-notify",
+    "telegram-git-notifier-app"
   ],
   "type": "project",
   "homepage": "https://github.com/lbiltech/telegram-git-notifier-app",
