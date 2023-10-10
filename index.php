@@ -11,5 +11,5 @@ $sendNotifyAction = new SendNotificationAction();
 try {
     $sendNotifyAction();
 } catch (InvalidViewTemplateException|SendNotificationException $e) {
-    echo $e->getMessage();
+    error_log($e->getMessage());
 }
