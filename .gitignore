@@ -8,5 +8,5 @@ composer.lock
 .env
 storage
 
-.docker/log/nginx/*
+.docker
 *.log
