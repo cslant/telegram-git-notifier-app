@@ -10,3 +10,4 @@ storage
 
 .docker
 *.log
+logs

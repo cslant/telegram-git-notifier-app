@@ -8,22 +8,16 @@ use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
 use LbilTech\TelegramGitNotifier\Models\Event;
 use LbilTech\TelegramGitNotifier\Models\Setting;
-use LbilTech\TelegramGitNotifier\Services\AppService;
 use LbilTech\TelegramGitNotifier\Services\EventService;
 use LbilTech\TelegramGitNotifier\Services\NotificationService;
-use LbilTech\TelegramGitNotifier\Services\TelegramService;
-use LbilTech\TelegramGitNotifierApp\Services\SendNotificationService;
+use LbilTech\TelegramGitNotifierApp\Services\AppService;
 use Symfony\Component\HttpFoundation\Request;
 
 class SendNotificationAction
 {
     protected AppService $appService;
 
-    protected TelegramService $telegramService;
-
     protected NotificationService $notificationService;
-
-    protected SendNotificationService $sendNotificationService;
 
     protected EventService $eventService;
 
@@ -37,28 +31,24 @@ class SendNotificationAction
 
     public Event $event;
 
-    public function __construct()
-    {
+    public function __construct(
+        Client $client,
+        Event $event,
+        Setting $setting,
+        AppService $appService
+    ) {
         $this->request = Request::createFromGlobals();
-        $this->client = new Client();
-        $this->event = new Event();
-        $this->sendNotificationService = new SendNotificationService();
-
-        $this->setting = new Setting();
-        $this->setting = $this->sendNotificationService->setSettingFile($this->setting);
-        $this->setting->setSettingConfig();
-
+        $this->client = $client;
+        $this->event = $event;
         $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
+        $this->appService = $appService;
+        $this->setting = $setting;
 
-        $this->appService = new AppService();
-        $this->appService->setCurrentChatId();
-
-        $this->telegramService = new TelegramService($this->appService->telegram);
         $this->notificationService = new NotificationService($this->client);
     }
 
     /**
-     * Handle send notify to telegram action
+     * Handle to send notification from webhook event to telegram
      *
      * @return void
      * @throws InvalidViewTemplateException
@@ -66,12 +56,11 @@ class SendNotificationAction
      */
     public function __invoke(): void
     {
-        // Send an event result to all chat ids in env
         foreach (EventConstant::WEBHOOK_EVENT_HEADER as $platform => $header) {
             $event = $this->request->server->get($header);
             if (!is_null($event)) {
                 $this->notificationService->platform = $platform;
-                $this->event = $this->sendNotificationService->setEventByFlatForm($this->event, $platform);
+                $this->event = $this->appService->setEventByFlatForm($this->event, $platform);
                 $this->sendNotification($event);
                 return;
             }
