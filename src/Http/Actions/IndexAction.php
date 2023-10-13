@@ -32,7 +32,7 @@ class IndexAction
         $this->appService = new AppService();
         $this->appService->setCurrentChatId();
 
-        $this->telegramService = new TelegramService($this->appService->telegram);
+        $this->telegramService = new TelegramService($this->appService->telegram, $this->appService->chatId);
 
         $this->client = new Client();
         $this->event = new Event();
@@ -59,7 +59,7 @@ class IndexAction
             return;
         }
 
-        if ($this->telegramService->isMessage()) {
+        if ($this->telegramService->isMessage() && $this->telegramService->isOwner()) {
             $commandAction = new CommandAction($this->appService, $this->telegramService, $this->setting);
             $commandAction();
             return;

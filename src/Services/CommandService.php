@@ -41,7 +41,6 @@ class CommandService
     {
         return [
             [
-                $telegram->buildInlineKeyBoardButton("📰 About", "", "about", ""),
                 $telegram->buildInlineKeyBoardButton("🗨 Discussion", config('telegram-git-notifier.author.discussion'))
             ], [
                 $telegram->buildInlineKeyBoardButton("💠 Source Code", config('telegram-git-notifier.author.source_code'))
@@ -61,6 +60,9 @@ class CommandService
             'tools.start',
             ['first_name' => $appService->telegram->FirstName()]
         );
-        $appService->sendMessage($reply);
+        $appService->sendPhoto(
+            __DIR__ . '/../../resources/images/start.png',
+            $reply
+        );
     }
 }
