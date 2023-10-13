@@ -3,7 +3,9 @@
 namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
 use GuzzleHttp\Client;
+use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
 use LbilTech\TelegramGitNotifier\Models\Event;
 use LbilTech\TelegramGitNotifier\Models\Setting;
@@ -46,6 +48,8 @@ class IndexAction
      * @return void
      * @throws InvalidViewTemplateException
      * @throws SendNotificationException
+     * @throws EntryNotFoundException
+     * @throws MessageIsEmptyException
      */
     public function __invoke(): void
     {
@@ -55,8 +59,8 @@ class IndexAction
             return;
         }
 
-        if ($this->telegramService->isCommand()) {
-            $commandAction = new CommandAction();
+        if ($this->telegramService->isMessage()) {
+            $commandAction = new CommandAction($this->appService, $this->setting);
             $commandAction();
             return;
         }

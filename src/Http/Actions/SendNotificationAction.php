@@ -27,9 +27,9 @@ class SendNotificationAction
 
     protected Client $client;
 
-    public Setting $setting;
+    protected Setting $setting;
 
-    public Event $event;
+    protected Event $event;
 
     public function __construct(
         Client $client,
