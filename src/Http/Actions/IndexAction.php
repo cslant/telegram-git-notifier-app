@@ -11,6 +11,7 @@ use LbilTech\TelegramGitNotifier\Models\Event;
 use LbilTech\TelegramGitNotifier\Models\Setting;
 use LbilTech\TelegramGitNotifier\Services\TelegramService;
 use LbilTech\TelegramGitNotifierApp\Services\AppService;
+use LbilTech\TelegramGitNotifierApp\Services\SettingService;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexAction
@@ -18,6 +19,8 @@ class IndexAction
     protected AppService $appService;
 
     protected TelegramService $telegramService;
+
+    protected SettingService $settingService;
 
     protected Request $request;
 
@@ -40,6 +43,8 @@ class IndexAction
         $this->setting = new Setting();
         $this->setting = $this->appService->setSettingFile($this->setting);
         $this->setting->setSettingConfig();
+
+        $this->settingService = new SettingService($this->appService->telegram, $this->setting, $this->event);
     }
 
     /**
@@ -54,13 +59,13 @@ class IndexAction
     public function __invoke(): void
     {
         if ($this->telegramService->isCallback()) {
-            $settingAction = new SettingAction();
-            $settingAction();
+            $callbackAction = new CallbackAction();
+            $callbackAction();
             return;
         }
 
         if ($this->telegramService->isMessage() && $this->telegramService->isOwner()) {
-            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->setting);
+            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->settingService);
             $commandAction();
             return;
         }

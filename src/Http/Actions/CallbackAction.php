@@ -2,7 +2,7 @@
 
 namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
-class SettingAction
+class CallbackAction
 {
     public function __invoke()
     {

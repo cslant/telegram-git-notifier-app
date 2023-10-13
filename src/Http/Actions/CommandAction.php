@@ -4,10 +4,10 @@ namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
 use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
-use LbilTech\TelegramGitNotifier\Models\Setting;
 use LbilTech\TelegramGitNotifier\Services\TelegramService;
 use LbilTech\TelegramGitNotifierApp\Services\AppService;
 use LbilTech\TelegramGitNotifierApp\Services\CommandService;
+use LbilTech\TelegramGitNotifierApp\Services\SettingService;
 
 class CommandAction
 {
@@ -17,17 +17,17 @@ class CommandAction
 
     protected TelegramService $telegramService;
 
-    protected Setting $setting;
+    public SettingService $settingService;
 
     public function __construct(
         AppService $appService,
         TelegramService $telegramService,
-        Setting $setting
+        SettingService $settingService
     ) {
         $this->appService = $appService;
-        $this->setting = $setting;
         $this->telegramService = $telegramService;
         $this->commandService = new CommandService();
+        $this->settingService = $settingService;
     }
 
     /**
@@ -55,9 +55,9 @@ class CommandAction
             case '/server':
                 $this->appService->sendMessage(view('tools.' . trim($text, '/')));
                 break;
-//            case '/settings':
-//                $this->settingService->settingHandle();
-//                break;
+            case '/settings':
+                $this->settingService->settingHandle();
+                break;
             case '/set_menu':
                 $this->telegramService->setMyCommands(CommandService::MENU_COMMANDS);
                 break;
