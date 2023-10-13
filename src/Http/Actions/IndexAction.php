@@ -60,7 +60,7 @@ class IndexAction
         }
 
         if ($this->telegramService->isMessage()) {
-            $commandAction = new CommandAction($this->appService, $this->setting);
+            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->setting);
             $commandAction();
             return;
         }

@@ -1,8 +1,8 @@
 <?php
 
-use TelegramNotificationBot\App\Services\TelegramService;
+use LbilTech\TelegramGitNotifierApp\Services\CommandService;
 
-$menuCommands = TelegramService::MENU_COMMANDS ?? [];
+$menuCommands = CommandService::MENU_COMMANDS ?? [];
 ?>
 
 <b>BOT MENU</b> 🤖
@@ -11,5 +11,3 @@ $menuCommands = TelegramService::MENU_COMMANDS ?? [];
 <b><?= $menuCommand['command'] ?></b> - <?= $menuCommand['description'] ?>
 
 <?php endforeach; ?>
-
-Select a button:
