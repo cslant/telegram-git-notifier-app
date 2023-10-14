@@ -37,7 +37,7 @@ class CommandAction
      */
     public function __invoke(): void
     {
-        $text = $this->appService->telegram->Text();
+        $text = $this->appService->getCommandMessage();
 
         switch ($text) {
             case '/start':

@@ -15,8 +15,9 @@ class SettingService extends BaseSettingService
     public function __construct(
         Telegram $telegram,
         Setting $setting,
-        Event $event
+        Event $event,
+        ?string $chatId = null
     ) {
-        parent::__construct($telegram, $setting, $event);
+        parent::__construct($telegram, $setting, $event, $chatId);
     }
 }
