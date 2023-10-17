@@ -2,8 +2,6 @@
 
 namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
-use GuzzleHttp\Client;
-use LbilTech\TelegramGitNotifier\Constants\EventConstant;
 use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
 use LbilTech\TelegramGitNotifier\Models\Setting;
@@ -65,7 +63,9 @@ class SendNotificationAction
                 continue;
             }
 
-            $this->notifier->sendNotify($chatId);
+            $this->notifier->sendNotify(null, [
+                'chat_id' => $chatId,
+            ]);
         }
     }
 
@@ -83,7 +83,7 @@ class SendNotificationAction
         $validator = new Validator($this->setting, $this->notifier->event);
 
         if (empty($payload)
-            || !$validator->accessEvent(
+            || !$validator->isAccessEvent(
                 $this->notifier->event->platform,
                 $event,
                 $payload
