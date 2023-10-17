@@ -3,13 +3,12 @@
 namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
 use GuzzleHttp\Client;
+use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
-use LbilTech\TelegramGitNotifier\Models\Event;
-use LbilTech\TelegramGitNotifier\Models\Setting;
-use LbilTech\TelegramGitNotifier\Services\TelegramService;
+use LbilTech\TelegramGitNotifier\Notifier;
 use LbilTech\TelegramGitNotifierApp\Services\AppService;
 use LbilTech\TelegramGitNotifierApp\Services\SettingService;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,36 +16,21 @@ use Telegram;
 
 class IndexAction
 {
-    protected AppService $appService;
+    protected Client $client;
 
-    protected TelegramService $telegramService;
+    protected Bot $bot;
 
-    protected SettingService $settingService;
+    protected Notifier $notifier;
 
     protected Request $request;
 
-    protected Client $client;
-
-    public Setting $setting;
-
-    public Event $event;
-
     public function __construct()
     {
-        $telegram = new Telegram(config('telegram-git-notifier.bot.token'));
-        $this->appService = new AppService($telegram);
-        $this->appService->setCurrentChatId();
-
-        $this->telegramService = new TelegramService($this->appService->telegram, $this->appService->chatId);
-
         $this->client = new Client();
-        $this->event = new Event();
 
-        $this->setting = new Setting();
-        $this->setting = $this->appService->setSettingFile($this->setting);
-        $this->setting->setSettingConfig();
-
-        $this->settingService = new SettingService($this->appService->telegram, $this->setting, $this->event, $this->appService->chatId);
+        $telegram = new Telegram(config('telegram-git-notifier.bot.token'));
+        $this->bot = new Bot($telegram);
+        $this->notifier = new Notifier();
     }
 
     /**
@@ -60,24 +44,19 @@ class IndexAction
      */
     public function __invoke(): void
     {
-        if ($this->telegramService->isCallback()) {
-            $callbackAction = new CallbackAction($this->appService, $this->telegramService, $this->settingService);
-            $callbackAction();
-            return;
-        }
+//        if ($this->bot->isCallback()) {
+//            $callbackAction = new CallbackAction($this->appService, $this->settingService);
+//            $callbackAction();
+//            return;
+//        }
+//
+//        if ($this->telegramService->isMessage()) {
+//            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->settingService);
+//            $commandAction();
+//            return;
+//        }
 
-        if ($this->telegramService->isMessage()) {
-            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->settingService);
-            $commandAction();
-            return;
-        }
-
-        $sendNotificationAction = new SendNotificationAction(
-            $this->client,
-            $this->event,
-            $this->setting,
-            $this->appService
-        );
+        $sendNotificationAction = new SendNotificationAction($this->notifier, $this->bot->setting);
         $sendNotificationAction();
     }
 }
