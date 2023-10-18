@@ -2,6 +2,7 @@
 
 namespace LbilTech\TelegramGitNotifierApp\Services;
 
+use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use Telegram;
 
@@ -49,18 +50,18 @@ class CommandService
     }
 
     /**
-     * @param AppService $appService
+     * @param Bot $bot
      *
      * @return void
      * @throws EntryNotFoundException
      */
-    public function sendStartMessage(AppService $appService): void
+    public function sendStartMessage(Bot $bot): void
     {
         $reply = view(
             'tools.start',
-            ['first_name' => $appService->telegram->FirstName()]
+            ['first_name' => $bot->telegram->FirstName()]
         );
-        $appService->sendPhoto(
+        $bot->sendPhoto(
             __DIR__ . '/../../resources/images/start.png',
             $reply
         );

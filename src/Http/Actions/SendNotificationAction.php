@@ -25,7 +25,7 @@ class SendNotificationAction
     ) {
         $this->request = Request::createFromGlobals();
         $this->notifier = $notifier;
-        $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
+        $this->chatIds = $this->notifier->parseNotifyChatIds();
 
         $this->setting = $setting;
     }
@@ -58,14 +58,21 @@ class SendNotificationAction
             return;
         }
 
-        foreach ($this->chatIds as $chatId) {
+        foreach ($this->chatIds as $chatId => $thread) {
             if (empty($chatId)) {
                 continue;
             }
 
-            $this->notifier->sendNotify(null, [
-                'chat_id' => $chatId,
-            ]);
+            if (empty($thread)) {
+                $this->notifier->sendNotify(null, ['chat_id' => $chatId]);
+                continue;
+            }
+
+            foreach ($thread as $threadId) {
+                $this->notifier->sendNotify(null, [
+                    'chat_id' => $chatId, 'message_thread_id' => $threadId
+                ]);
+            }
         }
     }
 

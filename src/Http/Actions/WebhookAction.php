@@ -36,4 +36,14 @@ class WebhookAction
     {
         return $this->webhook->deleteWebHook();
     }
+
+    /**
+     * Get webhook update
+     *
+     * @return false|string
+     */
+    public function getUpdates(): false|string
+    {
+        return $this->webhook->getUpdates();
+    }
 }

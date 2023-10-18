@@ -9,8 +9,6 @@ use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
 use LbilTech\TelegramGitNotifier\Notifier;
-use LbilTech\TelegramGitNotifierApp\Services\AppService;
-use LbilTech\TelegramGitNotifierApp\Services\SettingService;
 use Symfony\Component\HttpFoundation\Request;
 use Telegram;
 
@@ -50,11 +48,11 @@ class IndexAction
 //            return;
 //        }
 //
-//        if ($this->telegramService->isMessage()) {
-//            $commandAction = new CommandAction($this->appService, $this->telegramService, $this->settingService);
-//            $commandAction();
-//            return;
-//        }
+        if ($this->bot->isMessage()) {
+            $commandAction = new CommandAction($this->bot);
+            $commandAction();
+            return;
+        }
 
         $sendNotificationAction = new SendNotificationAction($this->notifier, $this->bot->setting);
         $sendNotificationAction();
