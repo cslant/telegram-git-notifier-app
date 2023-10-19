@@ -5,15 +5,17 @@ if [ ! -f .env ]; then
 fi
 
 json_files=(
-    "github-event.json"
-    "gitlab-event.json"
-    "tg-setting.json"
+    "github-events.json"
+    "gitlab-events.json"
+    "tgn-settings.json"
 )
 
 for file in "${json_files[@]}"; do
-    if [ ! -f "storage/json/$file" ]; then
-        cp "vendor/lbiltech/telegram-git-notifier/config/jsons/$file" "storage/json/$file"
+    if [ ! -f "storage/json/tgn/$file" ]; then
+        cp "vendor/lbiltech/telegram-git-notifier/config/jsons/$file" "storage/json/tgn/$file"
     fi
 done
 
-chmod -R 777 storage/json/*.json
+if [[ "$(uname -s -r)" == *"Linux"* && "$(cat /etc/os-release)" == *"Ubuntu"* ]]; then
+    chmod 777 storage/json/tgn/*.json
+fi

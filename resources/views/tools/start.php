@@ -4,7 +4,7 @@
  */
 
 ?>
-<b>🙋🏻 <?= config('app.name') ?> 🤓</b>
+<b>🙋🏻 <?= config('telegram-git-notifier.app.name') ?> 🤓</b>
 
 Hey <b><?= $first_name ?></b>,
 

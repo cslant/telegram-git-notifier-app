@@ -5,12 +5,12 @@ With this package,
 you can create a Telegram bot to receive notifications from GitHub or GitLab events
 and manage customization through messages and buttons on Telegram.
 
-![License](https://img.shields.io/github/license/lbiltech/telegram-bot-github-notify.svg?style=flat-square)
-[![Latest Version](https://img.shields.io/github/release/lbiltech/telegram-bot-github-notify.svg?style=flat-square)](https://github.com/lbiltech/telegram-bot-github-notify/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/lbiltech/telegram-bot-github-notify.svg?style=flat-square)](https://packagist.org/packages/lbiltech/telegram-bot-github-notify)
+![License](https://img.shields.io/github/license/lbiltech/telegram-git-notifier-app.svg?style=flat-square)
+[![Latest Version](https://img.shields.io/github/release/lbiltech/telegram-git-notifier-app.svg?style=flat-square)](https://github.com/lbiltech/telegram-git-notifier-app/releases)
+[![Total Downloads](https://img.shields.io/packagist/dt/lbiltech/telegram-git-notifier-app.svg?style=flat-square)](https://packagist.org/packages/lbiltech/telegram-git-notifier-app)
 [![StyleCI](https://styleci.io/repos/656960426/shield)](https://styleci.io/repos/656960426)
-[![Quality Score](https://img.shields.io/scrutinizer/g/lbiltech/telegram-bot-github-notify.svg?style=flat-square)](https://scrutinizer-ci.com/g/lbiltech/telegram-bot-github-notify)
-[![Maintainability](https://api.codeclimate.com/v1/badges/460e2b6fba334a156b2e/maintainability)](https://codeclimate.com/github/lbiltech/telegram-bot-github-notify/maintainability)
+[![Quality Score](https://img.shields.io/scrutinizer/g/lbiltech/telegram-git-notifier-app.svg?style=flat-square)](https://scrutinizer-ci.com/g/lbiltech/telegram-git-notifier-app)
+[![Maintainability](https://api.codeclimate.com/v1/badges/460e2b6fba334a156b2e/maintainability)](https://codeclimate.com/github/lbiltech/telegram-git-notifier-app/maintainability)
 
 ## 📝 Information
 
@@ -22,7 +22,7 @@ and manage customization through messages and buttons on Telegram.
 1. **GitHub/GitLab Notifications to Telegram**: The package allows you to configure a Telegram bot to receive notifications from various GitHub/GitLab events, including events like **commits, pull requests, issues, releases, and many more**.
 
 <p align="center">
-  <img alt="GitHub/GitLab Notifications to Telegram" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/462f330f-11d3-43ef-89cf-c70ade57b654" />
+  <img alt="GitHub/GitLab Notifications to Telegram" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/462f330f-11d3-43ef-89cf-c70ade57b654" />
 </p>
 
 2. **Customize Notifications**: You can customize the types of notifications you want to receive through options on Telegram.
@@ -36,7 +36,7 @@ and manage customization through messages and buttons on Telegram.
 4. **Event Management**: You can manage specific events that you want to receive notifications for, allowing you to focus on what's most important for your projects.
 
 <p align="center">
-  <img alt="Event Management to Telegram" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/e217a2ad-49b5-4936-a2cd-fe4af66e2bfb" />
+  <img alt="Event Management to Telegram" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/e217a2ad-49b5-4936-a2cd-fe4af66e2bfb" />
 </p>
 
 5. **Easy Integration**:
@@ -72,10 +72,10 @@ Please choose only one of the following two ways to set up the project.
 First, please clone and install this project via [Composer](https://getcomposer.org/):
 
 ```bash
-composer create-project lbiltech/telegram-bot-github-notify
+composer create-project lbiltech/telegram-git-notifier-app
 ```
 
-After running the command above, you will have the project installed under the `telegram-bot-github-notify` directory,
+After running the command above, you will have the project installed under the `telegram-git-notifier-app` directory,
 and the environment file `.env` will be created automatically.
 
 Some the json files will be created automatically in the `storage` directory.
@@ -141,8 +141,8 @@ At this time, the source launch process is done, please skip way 2 and go to ste
 First, please clone this project and copy the environment file `.env.example` to `.env`:
 
 ```bash
-git clone git@github.com:lbiltech/telegram-bot-github-notify.git
-cd telegram-bot-github-notify
+git clone git@github.com:lbiltech/telegram-git-notifier-app.git
+cd telegram-git-notifier-app
 cp .env.example .env
 ```
 
@@ -323,7 +323,7 @@ You can use all the features of this bot.
 🎉🎉
 
 <p align="center">
-  <img alt="Menu features of this bot" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/1a725130-c7c4-4594-9669-abc6d2dc1fba" />
+  <img alt="Menu features of this bot" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/1a725130-c7c4-4594-9669-abc6d2dc1fba" />
 </p>
 
 **To increase ease of use. Let's create a menu with a list of commands listed for you.**
@@ -335,7 +335,7 @@ Please send the following message to your bot to create a menu button.
 ```
 
 <p align="center">
-  <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/70f79e8f-b075-455d-b928-f721ca5b11cc" /> <img alt="Set menu" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/53af5d51-7aa8-4dd8-99f6-3b55a9971cbe" />
+  <img alt="Set menu" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/70f79e8f-b075-455d-b928-f721ca5b11cc" /> <img alt="Set menu" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/53af5d51-7aa8-4dd8-99f6-3b55a9971cbe" />
 </p>
 
 Now you will need to add the Webhook for your GitHub and GitLab repository to receive notifications.
@@ -354,7 +354,7 @@ Now you will need to add the Webhook for your GitHub and GitLab repository to re
 Here is the first notification you will receive:
 
 <p align="center">
-  <img alt="Github ping event notification" src="https://github.com/lbiltech/telegram-bot-github-notify/assets/35853002/66b7fffa-d2fa-41f6-8caa-3c1ab96b63be" />
+  <img alt="Github ping event notification" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/66b7fffa-d2fa-41f6-8caa-3c1ab96b63be" />
 </p>
 
 ## 📌 Add webhook on your GitLab repository to receive notifications
