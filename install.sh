@@ -16,4 +16,6 @@ for file in "${json_files[@]}"; do
     fi
 done
 
-chmod -R 777 storage/json/*.json
+if [[ "$(uname -s -r)" == *"Linux"* && "$(cat /etc/os-release)" == *"Ubuntu"* ]]; then
+    chmod 777 storage/json/tgn/*.json
+fi

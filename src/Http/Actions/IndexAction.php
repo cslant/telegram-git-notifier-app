@@ -42,12 +42,12 @@ class IndexAction
      */
     public function __invoke(): void
     {
-//        if ($this->bot->isCallback()) {
-//            $callbackAction = new CallbackAction($this->appService, $this->settingService);
-//            $callbackAction();
-//            return;
-//        }
-//
+        if ($this->bot->isCallback()) {
+            $callbackAction = new CallbackAction($this->bot);
+            $callbackAction();
+            return;
+        }
+
         if ($this->bot->isMessage()) {
             $commandAction = new CommandAction($this->bot);
             $commandAction();
