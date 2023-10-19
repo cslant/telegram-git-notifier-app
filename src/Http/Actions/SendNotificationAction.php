@@ -2,63 +2,36 @@
 
 namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
-use GuzzleHttp\Client;
-use LbilTech\TelegramGitNotifier\Constants\EventConstant;
 use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
-use LbilTech\TelegramGitNotifier\Models\Event;
 use LbilTech\TelegramGitNotifier\Models\Setting;
-use LbilTech\TelegramGitNotifier\Services\AppService;
-use LbilTech\TelegramGitNotifier\Services\EventService;
-use LbilTech\TelegramGitNotifier\Services\NotificationService;
-use LbilTech\TelegramGitNotifier\Services\TelegramService;
-use LbilTech\TelegramGitNotifierApp\Services\SendNotificationService;
+use LbilTech\TelegramGitNotifier\Notifier;
+use LbilTech\TelegramGitNotifier\Objects\Validator;
 use Symfony\Component\HttpFoundation\Request;
 
 class SendNotificationAction
 {
-    protected AppService $appService;
-
-    protected TelegramService $telegramService;
-
-    protected NotificationService $notificationService;
-
-    protected SendNotificationService $sendNotificationService;
-
-    protected EventService $eventService;
-
     protected Request $request;
 
     protected array $chatIds = [];
 
-    protected Client $client;
+    protected Notifier $notifier;
 
-    public Setting $setting;
+    protected Setting $setting;
 
-    public Event $event;
-
-    public function __construct()
-    {
+    public function __construct(
+        Notifier $notifier,
+        Setting $setting,
+    ) {
         $this->request = Request::createFromGlobals();
-        $this->client = new Client();
-        $this->event = new Event();
-        $this->sendNotificationService = new SendNotificationService();
+        $this->notifier = $notifier;
+        $this->chatIds = $this->notifier->parseNotifyChatIds();
 
-        $this->setting = new Setting();
-        $this->setting = $this->sendNotificationService->setSettingFile($this->setting);
-        $this->setting->setSettingConfig();
-
-        $this->chatIds = config('telegram-git-notifier.bot.notify_chat_ids');
-
-        $this->appService = new AppService();
-        $this->appService->setCurrentChatId();
-
-        $this->telegramService = new TelegramService($this->appService->telegram);
-        $this->notificationService = new NotificationService($this->client);
+        $this->setting = $setting;
     }
 
     /**
-     * Handle send notify to telegram action
+     * Handle to send notification from webhook event to telegram
      *
      * @return void
      * @throws InvalidViewTemplateException
@@ -66,15 +39,9 @@ class SendNotificationAction
      */
     public function __invoke(): void
     {
-        // Send an event result to all chat ids in env
-        foreach (EventConstant::WEBHOOK_EVENT_HEADER as $platform => $header) {
-            $event = $this->request->server->get($header);
-            if (!is_null($event)) {
-                $this->notificationService->platform = $platform;
-                $this->event = $this->sendNotificationService->setEventByFlatForm($this->event, $platform);
-                $this->sendNotification($event);
-                return;
-            }
+        $eventName = $this->notifier->handleEventFromRequest($this->request);
+        if (!empty($eventName)) {
+            $this->sendNotification($eventName);
         }
     }
 
@@ -91,12 +58,21 @@ class SendNotificationAction
             return;
         }
 
-        foreach ($this->chatIds as $chatId) {
+        foreach ($this->chatIds as $chatId => $thread) {
             if (empty($chatId)) {
                 continue;
             }
 
-            $this->notificationService->sendNotify($chatId);
+            if (empty($thread)) {
+                $this->notifier->sendNotify(null, ['chat_id' => $chatId]);
+                continue;
+            }
+
+            foreach ($thread as $threadId) {
+                $this->notifier->sendNotify(null, [
+                    'chat_id' => $chatId, 'message_thread_id' => $threadId
+                ]);
+            }
         }
     }
 
@@ -110,12 +86,12 @@ class SendNotificationAction
      */
     private function validateAccessEvent(string $event): bool
     {
-        $payload = $this->notificationService->setPayload($this->request, $event);
-        $this->eventService = new EventService($this->setting, $this->event);
+        $payload = $this->notifier->setPayload($this->request, $event);
+        $validator = new Validator($this->setting, $this->notifier->event);
 
         if (empty($payload)
-            || !$this->eventService->validateAccessEvent(
-                $this->notificationService->platform,
+            || !$validator->isAccessEvent(
+                $this->notifier->event->platform,
                 $event,
                 $payload
             )

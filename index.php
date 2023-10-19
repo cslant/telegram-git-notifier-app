@@ -1,15 +1,17 @@
 <?php
 
+use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
-use LbilTech\TelegramGitNotifierApp\Http\Actions\SendNotificationAction;
+use LbilTech\TelegramGitNotifierApp\Http\Actions\IndexAction;
 
 require __DIR__ . '/init.php';
 
-$sendNotifyAction = new SendNotificationAction();
+$indexAction = new IndexAction();
 
 try {
-    $sendNotifyAction();
-} catch (InvalidViewTemplateException|SendNotificationException $e) {
+    $indexAction();
+} catch (InvalidViewTemplateException|SendNotificationException|EntryNotFoundException|MessageIsEmptyException $e) {
     error_log($e->getMessage());
 }
