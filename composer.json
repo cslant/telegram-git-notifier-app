@@ -1,6 +1,6 @@
 {
   "name": "lbiltech/telegram-git-notifier-app",
-  "description": "Send notification from Gitlab and Github events to Telegram",
+  "description": "The PHP app to send notification from Gitlab and Github events to Telegram",
   "keywords": [
     "lbiltech",
     "telegram-bot",
@@ -22,7 +22,7 @@
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "lbiltech/telegram-git-notifier": "dev-main"
+    "lbiltech/telegram-git-notifier": "^1.2.0"
   },
   "autoload": {
     "psr-4": {

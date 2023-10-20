@@ -4,10 +4,12 @@ namespace LbilTech\TelegramGitNotifierApp\Services;
 
 use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
-use Telegram;
+use LbilTech\TelegramGitNotifierApp\Traits\Markup;
 
 class CommandService
 {
+    use Markup;
+
     public const MENU_COMMANDS
         = [
             [
@@ -33,22 +35,6 @@ class CommandService
                 'description' => 'Go to settings of the bot'
             ],
         ];
-
-    /**
-     * Generate menu markup
-     *
-     * @return array[]
-     */
-    public function menuMarkup(Telegram $telegram): array
-    {
-        return [
-            [
-                $telegram->buildInlineKeyBoardButton("🗨 Discussion", config('telegram-git-notifier.author.discussion'))
-            ], [
-                $telegram->buildInlineKeyBoardButton("💠 Source Code", config('telegram-git-notifier.author.source_code'))
-            ]
-        ];
-    }
 
     /**
      * @param Bot $bot

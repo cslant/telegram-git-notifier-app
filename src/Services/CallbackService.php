@@ -5,9 +5,12 @@ namespace LbilTech\TelegramGitNotifierApp\Services;
 use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Constants\SettingConstant;
 use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
+use LbilTech\TelegramGitNotifierApp\Traits\Markup;
 
 class CallbackService
 {
+    use Markup;
+
     private Bot $bot;
 
     public function __construct(Bot $bot)
@@ -42,7 +45,7 @@ class CallbackService
                 break;
             case 'menu':
                 $view = view('tools.menu');
-                $markup = $this->menuMarkup();
+                $markup = $this->menuMarkup($this->bot->telegram);
                 break;
             default:
                 $this->bot->answerCallbackQuery('Unknown callback');
@@ -52,19 +55,5 @@ class CallbackService
         $this->bot->editMessageText($view, [
             'reply_markup' => $markup,
         ]);
-    }
-
-    /**
-     * @return array[]
-     */
-    public function menuMarkup(): array
-    {
-        return [
-            [
-                $this->bot->telegram->buildInlineKeyBoardButton('🗨 Discussion', config('telegram-git-notifier.author.discussion'))
-            ], [
-                $this->bot->telegram->buildInlineKeyBoardButton('💠 Source Code', config('telegram-git-notifier.author.source_code'))
-            ]
-        ];
     }
 }
