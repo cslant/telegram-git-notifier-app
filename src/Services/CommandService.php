@@ -30,7 +30,7 @@ class CommandService
                 'description' => 'To get Server Information'
             ], [
                 'command'     => '/settings',
-                'description' => 'Show settings of the bot'
+                'description' => 'Go to settings of the bot'
             ],
         ];
 
