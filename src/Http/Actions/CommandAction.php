@@ -27,7 +27,7 @@ class CommandAction
      */
     public function __invoke(): void
     {
-        $text = $this->bot->getCommandMessage();
+        $text = $this->bot->telegram->Text();
 
         switch ($text) {
             case '/start':

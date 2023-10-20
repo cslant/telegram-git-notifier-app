@@ -4,6 +4,7 @@ namespace LbilTech\TelegramGitNotifierApp\Services;
 
 use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Constants\SettingConstant;
+use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 
 class CallbackService
 {
@@ -18,7 +19,9 @@ class CallbackService
      * Answer the back button
      *
      * @param string $callback
+     *
      * @return void
+     * @throws MessageIsEmptyException
      */
     public function answerBackButton(string $callback): void
     {
@@ -30,17 +33,20 @@ class CallbackService
                 $markup = $this->bot->settingMarkup();
                 break;
             case 'settings.custom_events.github':
-                $view = view('tools.custom_events', ['platform' => 'github']);
+                $view = view('tools.custom_event', ['platform' => 'github']);
                 $markup = $this->bot->eventMarkup();
                 break;
             case 'settings.custom_events.gitlab':
-                $view = view('tools.custom_events', ['platform' => 'gitlab']);
+                $view = view('tools.custom_event', ['platform' => 'gitlab']);
                 $markup = $this->bot->eventMarkup(null, 'gitlab');
                 break;
-            default:
+            case 'menu':
                 $view = view('tools.menu');
                 $markup = $this->menuMarkup();
                 break;
+            default:
+                $this->bot->answerCallbackQuery('Unknown callback');
+                return;
         }
 
         $this->bot->editMessageText($view, [
@@ -55,9 +61,9 @@ class CallbackService
     {
         return [
             [
-                $this->bot->telegram->buildInlineKeyBoardButton("📞 Contact", config('author.contact'))
+                $this->bot->telegram->buildInlineKeyBoardButton('🗨 Discussion', config('telegram-git-notifier.author.discussion'))
             ], [
-                $this->bot->telegram->buildInlineKeyBoardButton("💠 Source Code", config('author.source_code'))
+                $this->bot->telegram->buildInlineKeyBoardButton('💠 Source Code', config('telegram-git-notifier.author.source_code'))
             ]
         ];
     }

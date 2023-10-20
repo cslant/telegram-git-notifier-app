@@ -48,7 +48,7 @@ class IndexAction
             return;
         }
 
-        if ($this->bot->isMessage()) {
+        if ($this->bot->isMessage() && $this->bot->isOwner()) {
             $commandAction = new CommandAction($this->bot);
             $commandAction();
             return;

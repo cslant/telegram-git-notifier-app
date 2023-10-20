@@ -4,6 +4,7 @@ namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
 
 use LbilTech\TelegramGitNotifier\Bot;
 use LbilTech\TelegramGitNotifier\Constants\SettingConstant;
+use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use LbilTech\TelegramGitNotifierApp\Services\CallbackService;
 
@@ -23,6 +24,7 @@ class CallbackAction
     /**
      * @return void
      * @throws MessageIsEmptyException
+     * @throws InvalidViewTemplateException
      */
     public function __invoke(): void
     {
