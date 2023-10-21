@@ -14,7 +14,7 @@ and manage customization through messages and buttons on Telegram.
 ## 📝 Information
 
 - Send notifications of your GitHub/GitLab repositories to Telegram Bots, Groups, Super Groups (Multiple Topics), and Channels.
-- The bot must be created using the [BotFather](https://core.telegram.org/bots#6-botfather)
+  - The bot must be created using the [BotFather](https://core.telegram.org/bots#6-botfather)
 
 ## 🎉 Features
 
@@ -34,8 +34,8 @@ and manage customization through messages and buttons on Telegram.
 
 4. **Event Management**: You can manage specific events that you want to receive notifications for, allowing you to focus on what's most important for your projects.
 
-- Support for multiple platforms: GitHub and GitLab.
-- Manage event notifications separately between platforms.
+   - Support for multiple platforms: GitHub and GitLab.
+   - Manage event notifications separately between platforms.
 
 <p align="center">
   <img alt="Event Management to Telegram" src="https://github.com/lbiltech/telegram-git-notifier-app/assets/35853002/e217a2ad-49b5-4936-a2cd-fe4af66e2bfb" />
@@ -54,16 +54,16 @@ and manage customization through messages and buttons on Telegram.
 [//]: # (features image)
 
 7. **For premium users, you can use the following features:**
-- **Support for multiple topics**: You can add multiple topics to the `.env` file. 
-  These topics will be the topics of your supergroups.
+   - **Support for multiple topics**: You can add multiple topics to the `.env` file. 
+     These topics will be the topics of your supergroups.
 
 [//]: # (features image)
 
 ## 📋 Requirements
 
 - PHP ^8.0
-- [Composer](https://getcomposer.org/)
-- Core: [Telegram Git Notifier](https://github.com/lbiltech/telegram-git-notifier)
+  - [Composer](https://getcomposer.org/)
+  - Core: [Telegram Git Notifier](https://github.com/lbiltech/telegram-git-notifier)
 
 ## 🔧 Installation
 
@@ -95,44 +95,44 @@ and the environment file `.env` will be created automatically.
 Some of the JSON files will be created automatically in the `storage` directory.
 These files are used to store the data and serve for features in this bot.
 
-### Create a New Bot
+#### 1. Create a New Bot
 
 To create a new bot, you need to talk to [BotFather](https://core.telegram.org/bots#6-botfather) and follow a few simple steps.
 
 1. Open a chat with [BotFather](https://telegram.me/botfather) and send `/newbot` command.
-2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
-3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
-4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
+   2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
+   3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
+   4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
 
 ```dotenv
 TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 
-### Get your Chat ID and add it to the .env file
+#### 2. Set up your domain and SSL certificate
 
-1. Open a chat with your bot.
-2. Send any message to your bot. (This handle needs to get your chat ID)
-3. Go to the following URL: `https://api.telegram.org/bot<YourTelegramBotToken>/getUpdates`
-4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
-5. Paste the Chat ID in your `.env` file.
-
-```dotenv
-TELEGRAM_BOT_CHAT_ID=123456789
-```
-
-### Set up your domain and SSL certificate
-
-**We recommend that you use HTTPS to set up your domain and webhook.** 
+**We recommend that you use HTTPS to set up your domain and webhook.**
 You can build your own server or use a service like [Heroku](https://www.heroku.com/).
 
 In this example, we will use localhost and [ngrok](https://ngrok.com/) to set up the domain and webhook:
 1. Download and install [ngrok](https://ngrok.com/download).
-2. Go to this project directory and run the command in the terminal: `php -S localhost:8000`
-3. Continue to run the command in the terminal: `ngrok http 8000`
-4. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
+   2. Go to this project directory and run the command in the terminal: `php -S localhost:8000`
+   3. Continue to run the command in the terminal: `ngrok http 8000`
+   4. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
 
 ```dotenv
 TGN_APP_URL=https://123456789.ngrok.io
+```
+
+#### 3. Get your Chat ID and add it to the .env file
+
+1. Open a chat with your bot.
+   2. Send any message to your bot. (This handle needs to get your chat ID)
+   3. Go to the following URL: `<TGN_APP_URL>/webhook/getUpdate.php`
+   4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
+   5. Paste the Chat ID in your `.env` file.
+
+```dotenv
+TELEGRAM_BOT_CHAT_ID=123456789
 ```
 
 At this time, the source launch process is done, please skip way 2 and go to step [II. Set the webhook](#ii-set-the-webhook) to continue.
@@ -160,7 +160,7 @@ cd telegram-git-notifier-app
 cp .env.example .env
 ```
 
-### Update the environment variables
+#### 1. Update the environment variables
 
 Open the `.env` file and update the following variables:
 
@@ -169,16 +169,16 @@ PHP_VERSION_SELECTED=8.2
 APP_PORT=3180
 
 # You can customize the container name to suit your needs using GitHub and GitLab
-CONTAINER_NAME=telegram-notify-bot
+CONTAINER_NAME=tgn-app
 ```
 
 > **Note:** 
 > 
 > - The `PHP_VERSION_SELECTED` variable is the PHP version you want to use in the container.
-> - The `APP_PORT` variable is the port of the container. (Please don't set the same port as the host)
-> - The `CONTAINER_NAME` variable is the name of the container you want to create.
+>   - The `APP_PORT` variable is the port of the container. (Please don't set the same port as the host)
+>   - The `CONTAINER_NAME` variable is the name of the container you want to create.
 
-### Install and run the container
+#### 2. Install and run the container
 
 Run the following command to install and run the container:
 
@@ -189,33 +189,22 @@ bash ./docker.sh
 Some of the JSON files will be created automatically in the `storage` directory.
 These files are used to store the data and serve for features in this bot.
 
-### Create a New Bot
+#### 3. Create a New Bot
 
 To create a new bot,
 you need to talk to [BotFather](https://core.telegram.org/bots#6-botfather) and follow a few simple steps.
 
 1. Open a chat with [BotFather](https://telegram.me/botfather) and send `/newbot` command.
-2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
-3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
-4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
+   2. Enter a friendly name for your bot. This name will be displayed in contact details and elsewhere.
+   3. Enter a unique username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
+   4. Copy the HTTP API access token provided by [BotFather](https://telegram.me/botfather) and paste it into your `.env` file.
 
 ```dotenv
 TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 
-### Get your Chat ID and add it to the .env file
 
-1. Open a chat with your bot.
-2. Send any message to your bot. (This handle needs to get your chat ID)
-3. Go to the following URL: `https://api.telegram.org/bot<YourTelegramBotToken>/getUpdates`
-4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
-5. Paste the Chat ID in your `.env` file.
-
-```dotenv
-TELEGRAM_BOT_CHAT_ID=123456789
-```
-
-### Set up your domain and SSL certificate
+#### 4. Set up your domain and SSL certificate
 
 In this way, we use the proxy in the container and [ngrok](https://ngrok.com/) to set up the domain and webhook:
 1. Check the proxy of the container: `docker inspect <CONTAINER_NAME>-nginx | grep IPAddress`
@@ -227,7 +216,7 @@ Example:
 ![image](https://github.com/lbiltech/lemp-docker/assets/35853002/8dc8ba3f-b1e9-4bff-901d-6bb7747acda4)
 
 2. Download and install [ngrok](https://ngrok.com/download).
-2. Continue to run the command in the terminal: `ngrok http <CONTAINER_IP>`
+   2. Continue to run the command in the terminal: `ngrok http <CONTAINER_IP>`
 
 > **Note:** Replace `<CONTAINER_IP>` is the IP address of the container in step 1.
 
@@ -240,7 +229,19 @@ ngrok http 172.28.0.3
 3. Copy the HTTPS URL provided by ngrok and paste it into your `.env` file.
 
 ```dotenv
-APP_URL=https://123456789.ngrok-free.app
+TGN_APP_URL=https://123456789.ngrok-free.app
+```
+
+#### 5. Get your Chat ID and add it to the .env file
+
+1. Open a chat with your bot.
+   2. Send any message to your bot. (This handle needs to get your chat ID)
+   3. Go to the following URL: `<TGN_APP_URL>/webhook/getUpdate.php`
+   4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
+   5. Paste the Chat ID in your `.env` file.
+
+```dotenv
+TELEGRAM_BOT_CHAT_ID=123456789
 ```
 
 </details>
@@ -281,38 +282,69 @@ https://api.telegram.org/bot<YourTelegramBotToken>/setWebhook?url=<APP_URL>
 
 ### III. Add chat IDs you want to receive notifications to the .env file
 
-You can add multiple chat IDs to the `.env` file. 
+#### 1. Add multiple chat IDs to the `.env` file.
 
 **These chat IDs will be the chat IDs of your groups, channels, or users.**
 
 Also, you can add **the chat ID of this bot** to receive incoming notifications for itself.
 
 ```dotenv
-TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
+TELEGRAM_NOTIFY_CHAT_IDS="-978339113;-1001933979183"
 ```
 
-> **Note:** Please use commas to separate chat IDs.
+#### 2. Add a topic for supergroups with premium users (Thread ID)
+
+You can add topic for supergroups with premium users (Thread ID).
+
+**These topics will be the topics of your supergroups.**
+
+```dotenv
+TELEGRAM_NOTIFY_CHAT_IDS="-978339113;-1001933979183:topic_1;"
+```
+
+#### 3. Add multiple topics for supergroups with premium users (Thread IDs)
+
+You can add multiple topics for each supergroup with premium users (Thread IDs).
+
+```dotenv
+TELEGRAM_NOTIFY_CHAT_IDS="-978339113;-1001933979183:topic_1,topic_2;"
+```
+
+> **Note:**
+> 
+> - Please use semicolon ";" to separate chat ids
+>   - And use a colon ":" to separate chat ID and topic
+>   - And use the comma "," if you want to add multiple topics
 
 ---
 
 Now your configuration is complete. And the `.env` file will be like this:
 
 ```dotenv
-APP_NAME='Telegram GitHub/GitLab Notify Bot'
+TGN_APP_NAME='Telegram GitHub/GitLab Notify Bot'
 
-# Set your app URL here
-APP_URL=https://123456789.ngrok.io
+# Set your app URL here (Required for the bot to work properly)
+TGN_APP_URL=https://123456789.ngrok.io
 
 TELEGRAM_BOT_TOKEN=6162840106:AAH3g20lMQIkG_wHHu8R_ngdtG541uzoq4
 TELEGRAM_BOT_CHAT_ID=6872320129
 
-# Set your telegram group chat IDs here ( please use comma to separate )
+# Set the chat IDs that will receive notifications here.
+# You can add the owner bot ID, group id, ...
+# -------------------------------------------------------
+# Note:
+# Please use semicolon ";" to separate chat ids
+# And use colon ":" to separate chat ID and thread ID
+# And use comma "," if you want to add multiple thread ids
+# -------------------------------------------------------
+# The environment variable is expected to be in the format:
+# "chat_id1;chat_id2:thread_id2;chat_id3:thread_id3_1,thread_id3_2;..."
 TELEGRAM_NOTIFY_CHAT_IDS="-978339113,-1001933979183"
 
 TIMEZONE=Asia/Ho_Chi_Minh
 
 PHP_VERSION_SELECTED=8.2
-CONTAINER_NAME=telegram-notify-bot
+CONTAINER_NAME=tgn-bot
 APP_PORT=3180
 ```
 
@@ -357,13 +389,13 @@ Now you will need to add the Webhook for your GitHub and GitLab repository to re
 ## 📌 Add webhook on your GitHub repository to receive notifications
 
 1. Go to your repository settings.
-2. Go to the `Webhooks` section.
-3. Click on `Add webhook`.
-4. Set `Payload URL` to `<APP_URL>`.
-5. Set `Content type` to `application/x-www-form-urlencoded`.
-6. Which events would you like to trigger this webhook? Select `Let me select individual events.`.
-7. Click on the `Active` checkbox and Add webhook button.
-8. Done. You will receive a notification when your repository has a new event.
+   2. Go to the `Webhooks` section.
+   3. Click on `Add webhook`.
+   4. Set `Payload URL` to `<APP_URL>`.
+   5. Set `Content type` to `application/x-www-form-urlencoded`.
+   6. Which events would you like to trigger this webhook? Select `Let me select individual events.`.
+   7. Click on the `Active` checkbox and Add webhook button.
+   8. Done. You will receive a notification when your repository has a new event.
 
 Here is the first notification you will receive:
 
@@ -374,11 +406,11 @@ Here is the first notification you will receive:
 ## 📌 Add a webhook on your GitLab repository to receive notifications
 
 1. Go to your repository settings.
-2. Go to the `Webhooks` section.
-3. Click on `Add new webhook`.
-4. Set `URL` to `<APP_URL>`.
-5. Choose any `Trigger` you want.
-6. Click on the `Enable SSL verification` checkbox and Add webhook button.
+   2. Go to the `Webhooks` section.
+   3. Click on `Add new webhook`.
+   4. Set `URL` to `<APP_URL>`.
+   5. Choose any `Trigger` you want.
+   6. Click on the `Enable SSL verification` checkbox and Add webhook button.
 
 > **Note: You can set up this webhook for different repositories. Please similarly set up the webhook for each repository.**
 
