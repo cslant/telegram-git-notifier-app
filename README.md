@@ -65,7 +65,7 @@ and manage customization through messages and buttons on Telegram.
 
 ## 📋 Requirements
 
-- PHP ^8.0
+- PHP ^8.1
 - [Composer](https://getcomposer.org/)
 - Core: [Telegram Git Notifier](https://github.com/cslant/telegram-git-notifier)
 
