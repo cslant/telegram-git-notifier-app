@@ -2,13 +2,13 @@
 
 namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
-use GuzzleHttp\Client;
 use CSlant\TelegramGitNotifier\Bot;
 use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use CSlant\TelegramGitNotifier\Exceptions\SendNotificationException;
 use CSlant\TelegramGitNotifier\Notifier;
+use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Telegram;
 
@@ -45,12 +45,14 @@ class IndexAction
         if ($this->bot->isCallback()) {
             $callbackAction = new CallbackAction($this->bot);
             $callbackAction();
+
             return;
         }
 
         if ($this->bot->isMessage() && $this->bot->isOwner()) {
             $commandAction = new CommandAction($this->bot);
             $commandAction();
+
             return;
         }
 

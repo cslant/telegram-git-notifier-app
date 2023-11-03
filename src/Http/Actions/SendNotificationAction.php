@@ -65,12 +65,13 @@ class SendNotificationAction
 
             if (empty($thread)) {
                 $this->notifier->sendNotify(null, ['chat_id' => $chatId]);
+
                 continue;
             }
 
             foreach ($thread as $threadId) {
                 $this->notifier->sendNotify(null, [
-                    'chat_id' => $chatId, 'message_thread_id' => $threadId
+                    'chat_id' => $chatId, 'message_thread_id' => $threadId,
                 ]);
             }
         }

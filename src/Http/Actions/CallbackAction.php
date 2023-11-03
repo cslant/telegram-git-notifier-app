@@ -32,11 +32,13 @@ class CallbackAction
 
         if (str_contains($callback, SettingConstant::SETTING_CUSTOM_EVENTS)) {
             $this->bot->eventHandle($callback);
+
             return;
         }
 
         if (str_contains($callback, SettingConstant::SETTING_BACK)) {
             $this->callbackService->answerBackButton($callback);
+
             return;
         }
 
