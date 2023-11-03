@@ -86,7 +86,13 @@ class CallbackService
 
         $callback = str_replace(SettingConstant::SETTING_PREFIX, '', $callback);
 
-        if ($this->bot->setting->updateSetting($callback, !$this->bot->setting->getSettings()[$callback])) {
+        $settings = $this->bot->setting->getSettings();
+        if (array_key_exists($callback, $settings)
+            && $this->bot->setting->updateSetting(
+                $callback,
+                !$settings[$callback]
+            )
+        ) {
             $this->bot->editMessageReplyMarkup([
                 'reply_markup' => $this->bot->settingMarkup(),
             ]);
