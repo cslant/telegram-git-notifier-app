@@ -8,6 +8,9 @@ use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use CSlant\TelegramGitNotifier\Exceptions\SendNotificationException;
 use CSlant\TelegramGitNotifier\Notifier;
+use CSlant\TelegramGitNotifierApp\Services\CallbackService;
+use CSlant\TelegramGitNotifierApp\Services\CommandService;
+use CSlant\TelegramGitNotifierApp\Services\NotificationService;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Telegram;
@@ -43,20 +46,20 @@ class IndexAction
     public function __invoke(): void
     {
         if ($this->bot->isCallback()) {
-            $callbackAction = new CallbackAction($this->bot);
-            $callbackAction();
+            $callbackAction = new CallbackService($this->bot);
+            $callbackAction->handle();
 
             return;
         }
 
         if ($this->bot->isMessage() && $this->bot->isOwner()) {
-            $commandAction = new CommandAction($this->bot);
-            $commandAction();
+            $commandAction = new CommandService($this->bot);
+            $commandAction->handle();
 
             return;
         }
 
-        $sendNotificationAction = new SendNotificationAction($this->notifier, $this->bot->setting);
-        $sendNotificationAction();
+        $sendNotification = new NotificationService($this->notifier, $this->bot->setting);
+        $sendNotification->handle();
     }
 }

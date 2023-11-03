@@ -20,12 +20,13 @@
   "homepage": "https://github.com/cslant/telegram-git-notifier-app",
   "license": "MIT",
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "ext-json": "*",
     "cslant/telegram-git-notifier": "^1.3.1"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^v3.37.1"
+    "friendsofphp/php-cs-fixer": "^v3.37.1",
+    "phpstan/phpstan": "^1.10.39"
   },
   "autoload": {
     "psr-4": {
@@ -48,6 +49,7 @@
     "optimize-autoloader": true
   },
   "scripts": {
+    "analyse": "vendor/bin/phpstan",
     "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
     "post-install-cmd": [
       "bash vendor/cslant/telegram-git-notifier/install.sh"
