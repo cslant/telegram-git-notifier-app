@@ -4,6 +4,7 @@ namespace CSlant\TelegramGitNotifierApp\Services;
 
 use CSlant\TelegramGitNotifier\Bot;
 use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
+use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use CSlant\TelegramGitNotifierApp\Traits\Markup;
 
 class CommandService
@@ -36,6 +37,13 @@ class CommandService
             ],
         ];
 
+    private Bot $bot;
+
+    public function __construct(Bot $bot)
+    {
+        $this->bot = $bot;
+    }
+
     /**
      * @param Bot $bot
      *
@@ -52,5 +60,46 @@ class CommandService
             __DIR__ . '/../../resources/images/start.png',
             ['caption' => $reply]
         );
+    }
+
+    /**
+     * @return void
+     * @throws EntryNotFoundException
+     * @throws MessageIsEmptyException
+     */
+    public function handle(): void
+    {
+        $text = $this->bot->telegram->Text();
+
+        switch ($text) {
+            case '/start':
+                $this->sendStartMessage($this->bot);
+
+                break;
+            case '/menu':
+                $this->bot->sendMessage(
+                    view('tools.menu'),
+                    ['reply_markup' => $this->menuMarkup($this->bot->telegram)]
+                );
+
+                break;
+            case '/token':
+            case '/id':
+            case '/usage':
+            case '/server':
+                $this->bot->sendMessage(view('tools.' . trim($text, '/')));
+
+                break;
+            case '/settings':
+                $this->bot->settingHandle();
+
+                break;
+            case '/set_menu':
+                $this->bot->setMyCommands(CommandService::MENU_COMMANDS);
+
+                break;
+            default:
+                $this->bot->sendMessage('🤨 Invalid Request!');
+        }
     }
 }

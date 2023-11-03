@@ -1,15 +1,16 @@
 <?php
 
-namespace CSlant\TelegramGitNotifierApp\Http\Actions;
+namespace CSlant\TelegramGitNotifierApp\Services;
 
 use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use CSlant\TelegramGitNotifier\Exceptions\SendNotificationException;
 use CSlant\TelegramGitNotifier\Models\Setting;
 use CSlant\TelegramGitNotifier\Notifier;
 use CSlant\TelegramGitNotifier\Objects\Validator;
 use Symfony\Component\HttpFoundation\Request;
 
-class SendNotificationAction
+class NotificationService
 {
     protected Request $request;
 
@@ -36,8 +37,9 @@ class SendNotificationAction
      * @return void
      * @throws InvalidViewTemplateException
      * @throws SendNotificationException
+     * @throws MessageIsEmptyException
      */
-    public function __invoke(): void
+    public function handle(): void
     {
         $eventName = $this->notifier->handleEventFromRequest($this->request);
         if (!empty($eventName)) {
@@ -51,6 +53,7 @@ class SendNotificationAction
      * @return void
      * @throws InvalidViewTemplateException
      * @throws SendNotificationException
+     * @throws MessageIsEmptyException
      */
     private function sendNotification(string $event): void
     {
@@ -83,7 +86,7 @@ class SendNotificationAction
      * @param string $event
      *
      * @return bool
-     * @throws InvalidViewTemplateException
+     * @throws InvalidViewTemplateException|MessageIsEmptyException
      */
     private function validateAccessEvent(string $event): bool
     {
