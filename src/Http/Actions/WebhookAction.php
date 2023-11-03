@@ -1,8 +1,8 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
+namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
-use LbilTech\TelegramGitNotifier\Webhook;
+use CSlant\TelegramGitNotifier\Webhook;
 
 class WebhookAction
 {

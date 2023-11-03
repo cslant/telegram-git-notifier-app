@@ -1,10 +1,10 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Services;
+namespace CSlant\TelegramGitNotifierApp\Services;
 
-use LbilTech\TelegramGitNotifier\Bot;
-use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
-use LbilTech\TelegramGitNotifierApp\Traits\Markup;
+use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
+use CSlant\TelegramGitNotifierApp\Traits\Markup;
 
 class CommandService
 {
@@ -13,26 +13,26 @@ class CommandService
     public const MENU_COMMANDS
         = [
             [
-                'command'     => '/start',
-                'description' => 'Welcome to the bot'
+                'command' => '/start',
+                'description' => 'Welcome to the bot',
             ], [
-                'command'     => '/menu',
-                'description' => 'Show menu of the bot'
+                'command' => '/menu',
+                'description' => 'Show menu of the bot',
             ], [
-                'command'     => '/token',
-                'description' => 'Show token of the bot'
+                'command' => '/token',
+                'description' => 'Show token of the bot',
             ], [
-                'command'     => '/id',
-                'description' => 'Show the ID of the current chat'
+                'command' => '/id',
+                'description' => 'Show the ID of the current chat',
             ], [
-                'command'     => '/usage',
-                'description' => 'Show step by step usage'
+                'command' => '/usage',
+                'description' => 'Show step by step usage',
             ], [
-                'command'     => '/server',
-                'description' => 'To get Server Information'
+                'command' => '/server',
+                'description' => 'To get Server Information',
             ], [
-                'command'     => '/settings',
-                'description' => 'Go to settings of the bot'
+                'command' => '/settings',
+                'description' => 'Go to settings of the bot',
             ],
         ];
 

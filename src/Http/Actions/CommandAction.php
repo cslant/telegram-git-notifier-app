@@ -1,11 +1,11 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
+namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
-use LbilTech\TelegramGitNotifier\Bot;
-use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
-use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
-use LbilTech\TelegramGitNotifierApp\Services\CommandService;
+use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
+use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
+use CSlant\TelegramGitNotifierApp\Services\CommandService;
 
 class CommandAction
 {
@@ -32,24 +32,29 @@ class CommandAction
         switch ($text) {
             case '/start':
                 $this->commandService->sendStartMessage($this->bot);
+
                 break;
             case '/menu':
                 $this->bot->sendMessage(
                     view('tools.menu'),
                     ['reply_markup' => $this->commandService->menuMarkup($this->bot->telegram)]
                 );
+
                 break;
             case '/token':
             case '/id':
             case '/usage':
             case '/server':
                 $this->bot->sendMessage(view('tools.' . trim($text, '/')));
+
                 break;
             case '/settings':
                 $this->bot->settingHandle();
+
                 break;
             case '/set_menu':
                 $this->bot->setMyCommands(CommandService::MENU_COMMANDS);
+
                 break;
             default:
                 $this->bot->sendMessage('🤨 Invalid Request!');

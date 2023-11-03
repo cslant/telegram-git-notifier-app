@@ -1,12 +1,12 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
+namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
-use LbilTech\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
-use LbilTech\TelegramGitNotifier\Exceptions\SendNotificationException;
-use LbilTech\TelegramGitNotifier\Models\Setting;
-use LbilTech\TelegramGitNotifier\Notifier;
-use LbilTech\TelegramGitNotifier\Objects\Validator;
+use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
+use CSlant\TelegramGitNotifier\Exceptions\SendNotificationException;
+use CSlant\TelegramGitNotifier\Models\Setting;
+use CSlant\TelegramGitNotifier\Notifier;
+use CSlant\TelegramGitNotifier\Objects\Validator;
 use Symfony\Component\HttpFoundation\Request;
 
 class SendNotificationAction
@@ -65,12 +65,13 @@ class SendNotificationAction
 
             if (empty($thread)) {
                 $this->notifier->sendNotify(null, ['chat_id' => $chatId]);
+
                 continue;
             }
 
             foreach ($thread as $threadId) {
                 $this->notifier->sendNotify(null, [
-                    'chat_id' => $chatId, 'message_thread_id' => $threadId
+                    'chat_id' => $chatId, 'message_thread_id' => $threadId,
                 ]);
             }
         }
