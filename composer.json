@@ -1,8 +1,8 @@
 {
-  "name": "lbiltech/telegram-git-notifier-app",
+  "name": "cslant/telegram-git-notifier-app",
   "description": "The PHP app to send notification from Gitlab and Github events to Telegram",
   "keywords": [
-    "lbiltech",
+    "cslant",
     "telegram-bot",
     "notify",
     "git-webhook",
@@ -17,16 +17,16 @@
     "telegram-git-notifier-app"
   ],
   "type": "project",
-  "homepage": "https://github.com/lbiltech/telegram-git-notifier-app",
+  "homepage": "https://github.com/cslant/telegram-git-notifier-app",
   "license": "MIT",
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "lbiltech/telegram-git-notifier": "^1.2.0"
+    "cslant/telegram-git-notifier": "^1.3.0"
   },
   "autoload": {
     "psr-4": {
-      "LbilTech\\TelegramGitNotifierApp\\": "src/"
+      "CSlant\\TelegramGitNotifierApp\\": "src/"
     }
   },
   "authors": [
@@ -38,7 +38,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/lbiltech/telegram-git-notifier-app/issues"
+    "issues": "https://github.com/cslant/telegram-git-notifier-app/issues"
   },
   "config": {
     "sort-packages": true,
@@ -46,10 +46,10 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "bash ./install.sh"
+      "bash vendor/cslant/telegram-git-notifier-app/install.sh"
     ],
     "post-update-cmd": [
-      "bash ./install.sh"
+      "bash vendor/cslant/telegram-git-notifier-app/install.sh"
     ]
   }
 }

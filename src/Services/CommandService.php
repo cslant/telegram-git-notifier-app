@@ -1,10 +1,10 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Services;
+namespace CSlant\TelegramGitNotifierApp\Services;
 
-use LbilTech\TelegramGitNotifier\Bot;
-use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
-use LbilTech\TelegramGitNotifierApp\Traits\Markup;
+use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
+use CSlant\TelegramGitNotifierApp\Traits\Markup;
 
 class CommandService
 {

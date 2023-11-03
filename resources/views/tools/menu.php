@@ -1,6 +1,6 @@
 <?php
 
-use LbilTech\TelegramGitNotifierApp\Services\CommandService;
+use CSlant\TelegramGitNotifierApp\Services\CommandService;
 
 $menuCommands = CommandService::MENU_COMMANDS ?? [];
 ?>

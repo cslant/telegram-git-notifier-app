@@ -1,11 +1,11 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Http\Actions;
+namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
-use LbilTech\TelegramGitNotifier\Bot;
-use LbilTech\TelegramGitNotifier\Exceptions\EntryNotFoundException;
-use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
-use LbilTech\TelegramGitNotifierApp\Services\CommandService;
+use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
+use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
+use CSlant\TelegramGitNotifierApp\Services\CommandService;
 
 class CommandAction
 {

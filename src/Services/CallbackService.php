@@ -1,11 +1,11 @@
 <?php
 
-namespace LbilTech\TelegramGitNotifierApp\Services;
+namespace CSlant\TelegramGitNotifierApp\Services;
 
-use LbilTech\TelegramGitNotifier\Bot;
-use LbilTech\TelegramGitNotifier\Constants\SettingConstant;
-use LbilTech\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
-use LbilTech\TelegramGitNotifierApp\Traits\Markup;
+use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Constants\SettingConstant;
+use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
+use CSlant\TelegramGitNotifierApp\Traits\Markup;
 
 class CallbackService
 {
