@@ -2,6 +2,7 @@
 
 namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
+use CSlant\TelegramGitNotifier\Exceptions\WebhookException;
 use CSlant\TelegramGitNotifier\Webhook;
 
 class WebhookAction
@@ -21,6 +22,7 @@ class WebhookAction
      * Set webhook for telegram bot
      *
      * @return false|string
+     * @throws WebhookException
      */
     public function set(): false|string
     {
@@ -31,6 +33,7 @@ class WebhookAction
      * Delete webhook for telegram bot
      *
      * @return false|string
+     * @throws WebhookException
      */
     public function delete(): false|string
     {
@@ -41,6 +44,7 @@ class WebhookAction
      * Get webhook update
      *
      * @return false|string
+     * @throws WebhookException
      */
     public function getUpdates(): false|string
     {
