@@ -4,6 +4,8 @@ namespace CSlant\TelegramGitNotifierApp\Services;
 
 use CSlant\TelegramGitNotifier\Bot;
 use CSlant\TelegramGitNotifier\Constants\SettingConstant;
+use CSlant\TelegramGitNotifier\Exceptions\BotException;
+use CSlant\TelegramGitNotifier\Exceptions\CallbackException;
 use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
 use CSlant\TelegramGitNotifierApp\Traits\Markup;
@@ -26,6 +28,8 @@ class CallbackService
      *
      * @return void
      * @throws MessageIsEmptyException
+     * @throws BotException
+     * @throws CallbackException
      */
     public function answerBackButton(string $callback): void
     {
@@ -67,6 +71,7 @@ class CallbackService
      * @return void
      * @throws MessageIsEmptyException
      * @throws InvalidViewTemplateException
+     * @throws BotException|CallbackException
      */
     public function handle(): void
     {

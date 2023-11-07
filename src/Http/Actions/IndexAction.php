@@ -3,6 +3,9 @@
 namespace CSlant\TelegramGitNotifierApp\Http\Actions;
 
 use CSlant\TelegramGitNotifier\Bot;
+use CSlant\TelegramGitNotifier\Exceptions\BotException;
+use CSlant\TelegramGitNotifier\Exceptions\CallbackException;
+use CSlant\TelegramGitNotifier\Exceptions\ConfigFileException;
 use CSlant\TelegramGitNotifier\Exceptions\EntryNotFoundException;
 use CSlant\TelegramGitNotifier\Exceptions\InvalidViewTemplateException;
 use CSlant\TelegramGitNotifier\Exceptions\MessageIsEmptyException;
@@ -25,6 +28,9 @@ class IndexAction
 
     protected Request $request;
 
+    /**
+     * @throws ConfigFileException
+     */
     public function __construct()
     {
         $this->client = new Client();
@@ -38,10 +44,12 @@ class IndexAction
      * Handle telegram git notifier app
      *
      * @return void
-     * @throws InvalidViewTemplateException
-     * @throws SendNotificationException
      * @throws EntryNotFoundException
+     * @throws InvalidViewTemplateException
      * @throws MessageIsEmptyException
+     * @throws SendNotificationException
+     * @throws BotException
+     * @throws CallbackException
      */
     public function __invoke(): void
     {
