@@ -3,6 +3,7 @@
 $finder = Symfony\Component\Finder\Finder::create()
     ->in([
         __DIR__ . '/src',
+        __DIR__ . '/webhooks',
     ])
     ->name('*.php')
     ->ignoreDotFiles(true)

@@ -11,6 +11,8 @@ and manage customization through messages and buttons on Telegram.
 
 ![License](https://img.shields.io/github/license/cslant/telegram-git-notifier-app.svg?style=flat-square)
 [![Latest Version](https://img.shields.io/github/release/cslant/telegram-git-notifier-app.svg?style=flat-square)](https://github.com/cslant/telegram-git-notifier-app/releases)
+![Test Status](https://img.shields.io/github/actions/workflow/status/cslant/telegram-git-notifier-app/setup_test.yml?label=tests&branch=main)
+![Code Style Status](https://img.shields.io/github/actions/workflow/status/cslant/telegram-git-notifier-app/php-cs-fixer.yml?label=code%20style&branch=main)
 [![StyleCI](https://styleci.io/repos/656960426/shield)](https://styleci.io/repos/656960426)
 [![Quality Score](https://img.shields.io/scrutinizer/g/cslant/telegram-git-notifier-app.svg?style=flat-square)](https://scrutinizer-ci.com/g/cslant/telegram-git-notifier-app)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7ccaccebe9cd58ff3df5/maintainability)](https://codeclimate.com/github/cslant/telegram-git-notifier-app/maintainability)
@@ -131,7 +133,7 @@ TGN_APP_URL=https://123456789.ngrok.io
 
 1. Open a chat with your bot.
 2. Send any message to your bot. (This handle needs to get your chat ID)
-3. Go to the following URL: `<TGN_APP_URL>/webhook/getUpdate.php`
+3. Go to the following URL: `<TGN_APP_URL>/webhooks/getUpdate.php`
 4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
 5. Paste the Chat ID in your `.env` file.
 
@@ -240,7 +242,7 @@ TGN_APP_URL=https://123456789.ngrok-free.app
 
 1. Open a chat with your bot.
 2. Send any message to your bot. (This handle needs to get your chat ID)
-3. Go to the following URL: `<TGN_APP_URL>/webhook/getUpdate.php`
+3. Go to the following URL: `<TGN_APP_URL>/webhooks/getUpdate.php`
 4. Look for the `"chat":{"id":` field and copy the number after it. This is your Chat ID.
 5. Paste the Chat ID in your `.env` file.
 
@@ -261,7 +263,7 @@ After setting up your domain and SSL certificate, you need to set up the webhook
 **Go to:**
 
 ```text
-<APP_URL>/webhook/set.php
+<APP_URL>/webhooks/set.php
 ```
 
 > **Note:** Replace `<APP_URL>` with your app URL in .env file.
