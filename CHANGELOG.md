@@ -2,6 +2,16 @@
 
 Here you can see the full list of changes between each Telegram Git Notifier PHP release.
 
+## v1.3.1 - 2023-11-08
+
+### 📝 Small Changed
+
+- Change paths and add exceptions for webhook actions.
+- Update the license.
+- Update some workflow for analytic and format code.
+
+View all at #104
+
 ## v1.3.0 - 2023-11-03
 
 ### ✨  New Release: Enhanced Features and Optimizations!
