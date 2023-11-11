@@ -2,6 +2,6 @@ parameters:
     level: 8
     paths:
         - src
-        - webhooks
+        - webhook
     tmpDir: build/phpstan
     checkMissingIterableValueType: false
