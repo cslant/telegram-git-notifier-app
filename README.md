@@ -1,3 +1,14 @@
+> [!WARNING]
+> ## ⚠️ This Project is Deprecated – Use the New Laravel Package  
+> * This project is outdated as it is built on a pure PHP source code.  
+> * Instead, we highly recommend using our latest **Laravel package**, which offers:  
+>   - **Better security** with built-in authentication and protection mechanisms.  
+>   - **More features** for modern web development.  
+>   - **Active maintenance** and community support.  
+> * 👉 [Click here to explore the new **Laravel Telegram Git Notifier** package](https://github.com/cslant/laravel-telegram-git-notifier)
+
+---
+
 # Welcome to Telegram Bot GitHub/GitLab Notify 👋
 
 This package provides the ability to integrate the Telegram messaging service and GitHub/GitLab.
